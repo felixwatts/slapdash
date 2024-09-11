@@ -1,0 +1,19 @@
+[package]
+name = "slapdash"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tide = "0.16.0"
+tide-sqlx = { version = "0.6.1", features = ["postgres", "native-tls"] }
+sqlx = { version = "0.5", features = [ "runtime-async-std-native-tls", "time" ] }
+async-std = { version = "1.13.0", features = ["attributes"] }
+serde = { version = "1.0.210", features = ["derive"] }
+time = { version = "0.2.27", features = ["serde"] }
+dotenv = "0.15.0"
+dotenv_codegen = "0.15.0"
+serde_json = "1.0.128"
+askama = "0.12.1"
+askama_tide = "0.15.0"

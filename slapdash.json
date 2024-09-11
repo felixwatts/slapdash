@@ -1,0 +1,40 @@
+{
+    "main": {
+        "width": 12,
+        "height": 12
+    },
+    "widgets": [
+        {
+            "left": 1,
+            "top": 1,
+            "width": 4,
+            "height": 3,
+            "series": "bsoc",
+            "typ": "Value"
+        },
+        {
+            "left": 5,
+            "top": 1,
+            "width": 4,
+            "height": 6,
+            "series": "turdsmell",
+            "typ": "Value"
+        },
+        {
+            "left": 9,
+            "top": 1,
+            "width": 4,
+            "height": 4,
+            "series": "bsoc",
+            "typ": "Line"
+        },
+        {
+            "left": 1,
+            "top": 7,
+            "width": 12,
+            "height": 6,
+            "series": "bsoc",
+            "typ": "Line"
+        }
+    ]
+}

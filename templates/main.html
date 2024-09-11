@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <style>
+            .main-grid {
+                margin: 8px;
+                display: grid;
+                gap: 8px;
+                grid-template-columns: {% for _ in 0..config.width %}auto {% endfor %};
+                grid-template-rows: {% for _ in 0..config.height %}80px {% endfor %};
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-grid">
+            {% for widget in widgets %}
+                {{ widget|safe }}
+            {% endfor %}
+        </div>
+    </body>
+</html>
