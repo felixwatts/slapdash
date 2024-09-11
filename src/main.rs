@@ -5,17 +5,11 @@ mod model;
 mod view;
 mod controller;
 mod db;
-
 use std::fs::File;
 use std::io::Read;
-
-use model::Config;
-use sqlx::prelude::*;
 use sqlx::postgres::Postgres;
-use tide::Response;
-use tide::StatusCode;
 use tide_sqlx::SQLxMiddleware;
-use tide_sqlx::SQLxRequestExt;
+
 
 #[async_std::main]
 async fn main() -> tide::Result<()> {
