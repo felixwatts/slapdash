@@ -10,7 +10,6 @@ use std::io::Read;
 use sqlx::postgres::Postgres;
 use tide_sqlx::SQLxMiddleware;
 
-
 #[async_std::main]
 async fn main() -> tide::Result<()> {
     let config = load_config()?;
@@ -22,7 +21,7 @@ async fn main() -> tide::Result<()> {
     app.at("/").get(controller::get);
     app.at("/:secret/:series/:value").get(controller::put);
 
-    app.listen("127.0.0.1:8080").await?;
+    app.listen(format!("127.0.0.1:{}", dotenv!("LISTEN_PORT"))).await?;
     Ok(())
 }
 
