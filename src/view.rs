@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 use askama::Template;
 use crate::model::*;
 
@@ -17,7 +19,8 @@ pub (crate) struct WidgetTemplate{
 
 pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
-    Line(LineWidgetTemplate)
+    Line(LineWidgetTemplate),
+    Gague(GagueWidgetTemplate)
 }
 
 #[derive(Template)]
@@ -28,6 +31,38 @@ pub (crate) struct ValueWidgetTemplate{
 }
 
 #[derive(Template)]
+#[template(path = "widget_gague.html")]
+pub (crate) struct GagueWidgetTemplate{
+    pub config: WidgetConfig,
+    pub point: Option<f32>
+}
+
+impl GagueWidgetTemplate{
+    pub fn arc_svg(&self) -> String {
+        // "M 50 12 A 38 38 0 0 1 88 50"
+
+        match self.config.typ {
+            WidgetType::Gague { min, max } => {
+                match self.point {
+                    Some(value) => {
+                        let proportion = (value - min) / (max - min);
+                        let angle = proportion * 2.0 * PI;
+                        let end_x = 50.0 + 38.0 * angle.cos();
+                        let end_y = 50.0 + 38.0 * angle.sin();
+
+                        let large_arc_flag = if angle > PI { "1" } else { "0" };
+
+                        format!("M 50 12 A 38 38 0 {large_arc_flag} 0 {end_x} {end_y}")
+                    },
+                    None => String::default()
+                }
+            },
+            _ => panic!()
+        }
+    }
+}
+
+#[derive(Template)]
 #[template(path = "widget_line.html")]
 pub (crate) struct LineWidgetTemplate{
     pub config: WidgetConfig,
@@ -35,6 +70,26 @@ pub (crate) struct LineWidgetTemplate{
 }
 
 impl LineWidgetTemplate{
+    pub fn axis_label_bottom(&self) -> String {
+        self
+            .data
+            .iter()
+            .map(|point| point.value)
+            .min_by(f32::total_cmp)
+            .map(|v| format!("{v:.1}"))
+            .unwrap_or_default()
+    }
+
+    pub fn axis_label_top(&self) -> String {
+        self
+            .data
+            .iter()
+            .map(|point| point.value)
+            .max_by(f32::total_cmp)
+            .map(|v| format!("{v:.1}"))
+            .unwrap_or_default()
+    }
+
     pub fn points_svg(&self) -> String {
         if self.data.len() == 0 {
             return String::default();
@@ -55,13 +110,16 @@ impl LineWidgetTemplate{
             return String::default();
         }
 
+        let view_box_width = self.view_box_width();
+        let view_box_height = self.view_box_height();
+
         let x_range = (x_max - x_min) as f32;
         let normalize_x = |x: i64| {
-            (((x - x_min) as f32) / x_range) * 100.0
+            (((x - x_min) as f32) / x_range) * view_box_width
         };
 
         let normalize_y = |y: f32| {
-            100.0 - (((y - y_min) / (y_max - y_min)) * 100.0)
+            view_box_height - (((y - y_min) / (y_max - y_min)) * view_box_height)
         };
 
         let result: String = self
@@ -77,5 +135,21 @@ impl LineWidgetTemplate{
             .collect();
 
         result
+    }
+
+    pub fn view_box_width(&self) -> f32 {
+        self.config.width as f32 * 100.0
+    }
+
+    pub fn view_box_height(&self) -> f32 {
+        (self.config.height - 1) as f32 * 100.0
+    }
+
+    pub fn y_axis_left(&self) -> f32 {
+        self.view_box_width() - 4.0
+    }
+
+    pub fn y_axis_bottom(&self) -> f32 {
+        self.view_box_height()
     }
 }

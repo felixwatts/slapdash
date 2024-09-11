@@ -38,7 +38,7 @@ pub(crate) async fn get(db: &mut PgConnection, series: &str) -> tide::Result<Vec
         WHERE 
             series.name = $1
             AND time > NOW() - INTERVAL '24 hours'
-        ORDER BY time DESC
+        ORDER BY time ASC
         ",
         series
     )
