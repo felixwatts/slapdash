@@ -39,8 +39,6 @@ pub (crate) struct GagueWidgetTemplate{
 
 impl GagueWidgetTemplate{
     pub fn arc_svg(&self) -> String {
-        // "M 50 12 A 38 38 0 0 1 88 50"
-
         match self.config.typ {
             WidgetType::Gague { min, max } => {
                 match self.point {
@@ -51,8 +49,6 @@ impl GagueWidgetTemplate{
                         let end_y = 50.0 + 38.0 * (angle - (PI/2.0)).sin();
 
                         let large_arc_flag = if angle > PI { "1" } else { "0" };
-
-                        println!("{min} {max} {proportion} {angle} {end_x} {end_y} {large_arc_flag}");
 
                         format!("M 50 12 A 38 38 1 {large_arc_flag} 1 {end_x} {end_y}")
                     },

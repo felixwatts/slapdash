@@ -2,7 +2,7 @@
     <h2 class="w3-display-topleft">{{ config.series }}</h2>
     <h1 class="w3-display-middle">
         {% if let Some(value) = point %}
-            {{ value }}
+            {{ "{:.2}"|format(value)  }}
         {% else %}
             No data
         {% endif %}

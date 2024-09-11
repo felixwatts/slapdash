@@ -24,8 +24,12 @@ pub(crate) async fn put(req: tide::Request<Config>) -> tide::Result {
     let series = req.param("series")?;
     let value_str = req.param("value")?;
     let value: f32 = value_str.parse()?;
-    let mut db = req.sqlx_conn::<Postgres>().await;
-    db::put(db.acquire().await?, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+
+    if value.is_normal() {
+        let mut db = req.sqlx_conn::<Postgres>().await;
+        db::put(db.acquire().await?, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+    }
+
     Ok(Response::builder(StatusCode::Ok).build())
 }
 
