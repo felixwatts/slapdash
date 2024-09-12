@@ -4,20 +4,22 @@
         "height": 12
     },
     "widgets": [
+
         {
-            "left": 1,
+            "left": 4,
             "top": 1,
-            "width": 3,
-            "height": 3,
-            "series": "battery_level",
+            "width": 4,
+            "height": 2,
+            "series": "battery_kwh",
             "typ": "Value",
             "color": "DeepOrange"
         },
         {
-            "left": 4,
+            "left": 1,
             "top": 1,
             "width": 3,
-            "height": 3,
+            "height": 4,
+
             "series": "battery_level",
             "typ": {
                 "Gague": {
@@ -27,11 +29,39 @@
             },
             "color": "DeepOrange"
         },
+
         {
-            "left": 7,
+            "left": 4,
+            "top": 3,
+            "width": 2,
+            "height": 2,
+            "series": "battery_v",
+            "typ": "Value",
+            "color": "DeepOrange"
+        },
+
+    
+        {
+            "left": 6,
+            "top": 3,
+            "width": 2,
+            "height": 2,
+
+            "series": "battery_cycles",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 3000
+                }
+            },
+            "color": "DeepOrange"
+        },
+
+        {
+            "left": 8,
             "top": 1,
-            "width": 6,
-            "height": 3,
+            "width": 5,
+            "height": 4,
             "series": "battery_level",
             "typ": "Line",
             "color": "DeepOrange"
@@ -39,7 +69,7 @@
 
         {
             "left": 1,
-            "top": 4,
+            "top": 5,
             "width": 3,
             "height": 3,
             "series": "water_level",
@@ -48,7 +78,7 @@
         },
         {
             "left": 4,
-            "top": 4,
+            "top": 5,
             "width": 3,
             "height": 3,
             "series": "water_level",
@@ -62,7 +92,7 @@
         },
         {
             "left": 7,
-            "top": 4,
+            "top": 5,
             "width": 6,
             "height": 3,
             "series": "water_level",
