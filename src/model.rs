@@ -82,14 +82,27 @@ impl Point{
 
 #[derive(Deserialize, Clone)]
 pub(crate) struct Config{
-    pub main: MainConfig,
     pub widgets: Vec<WidgetConfig>
 }
 
-#[derive(Deserialize, Clone)]
-pub(crate) struct MainConfig{
-    pub width: u16,
-    pub height: u16
+impl Config {
+    pub fn width(&self) -> u16 {
+        self
+            .widgets
+            .iter()
+            .map(|w| w.left + w.width - 1)
+            .max()
+            .unwrap_or_default()
+    }
+
+    pub fn height(&self) -> u16 {
+        self
+            .widgets
+            .iter()
+            .map(|w| w.top + w.height - 1)
+            .max()
+            .unwrap_or_default()
+    }
 }
 
 #[derive(Deserialize, Clone)]

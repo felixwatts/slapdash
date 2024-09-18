@@ -6,7 +6,8 @@ use crate::model::*;
 #[derive(Template)]
 #[template(path = "main.html")]
 pub (crate) struct MainTemplate {
-    pub config: MainConfig,
+    pub width: u16,
+    pub height: u16,
     pub widgets: Vec<WidgetTemplate>
 }
 

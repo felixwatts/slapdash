@@ -5,7 +5,7 @@ use crate::model::*;
 pub(crate) async fn put(db: &mut PgConnection, series: &str, point: f32) -> tide::Result<()> {
     sqlx::query!("
         WITH series_row AS (
-            INSERT INTO series (name)
+            INSERT INTO series (name) 
             VALUES ($1)
             ON CONFLICT (name) DO UPDATE
             SET name = EXCLUDED.name -- This is a no-op, just to handle conflict

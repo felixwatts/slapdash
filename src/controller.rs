@@ -7,18 +7,20 @@ use crate::model::WidgetType;
 use crate::view::{GagueWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Config, WidgetConfig}, view::{MainTemplate, WidgetTemplate}};
 
-pub(crate) async fn get(req: tide::Request<Config>) -> tide::Result {
+pub(crate) async fn get(req: tide::Request<(String, Config)>) -> tide::Result {
     let mut db = req.sqlx_conn::<Postgres>().await;
-    let config = req.state();
+    let (_secret, config) = req.state();
 
     let template = build_main(config, db.acquire().await?).await?;
 
     Ok(askama_tide::into_response(&template))
 }
 
-pub(crate) async fn put(req: tide::Request<Config>) -> tide::Result {
+pub(crate) async fn put(req: tide::Request<(String, Config)>) -> tide::Result {
+    let (expected_secret, _config) = req.state();
     let actual_secret = req.param("secret")?;
-    if actual_secret != dotenv!("SECRET") {
+
+    if actual_secret != expected_secret {
         return Err(tide::Error::from_str(StatusCode::Unauthorized, "Unauthorized"));
     }
     let series = req.param("series")?;
@@ -42,7 +44,8 @@ pub(crate) async fn build_main(config: &Config, db: &mut PgConnection) -> tide::
 
     Ok(
         MainTemplate{
-            config: config.main.clone(),
+            width: config.width(),
+            height: config.height(),
             widgets: widget_templates
         }
     )
