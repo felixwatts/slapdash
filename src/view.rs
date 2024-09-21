@@ -21,13 +21,13 @@ pub (crate) struct WidgetTemplate{
 pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
     Line(LineWidgetTemplate),
-    Gague(GagueWidgetTemplate)
+    Gague(GagueWidgetTemplate),
+    Label
 }
 
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
-    pub config: WidgetConfig,
     pub point: Option<f32>
 }
 

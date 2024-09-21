@@ -34,7 +34,7 @@ pub(crate) enum Color{
 }
 
 impl Color{
-    pub fn to_css(&self) -> &'static str {
+    pub fn to_css_class(&self) -> &'static str {
         match self{
             Color::Red => "w3-red",
             Color::Pink => "w3-pink",
@@ -64,6 +64,39 @@ impl Color{
             Color::PaleYellow => "w3-pale-yellow",
             Color::PaleGreen => "w3-pale-green",
             Color::PaleBlue => "w3-pale-blue",
+        }
+    }
+
+    pub fn to_css_stroke(&self) -> &'static str {
+        match self{
+            Color::Red => "white",
+            Color::Pink => "white",
+            Color::Purple => "white",
+            Color::DeepPurple => "white",
+            Color::Indigo => "white",
+            Color::Blue => "white",
+            Color::LightBlue => "black",
+            Color::Cyan => "black",
+            Color::Aqua => "black",
+            Color::Teal => "white",
+            Color::Green => "white",
+            Color::LightGreen => "black",
+            Color::Lime => "black",
+            Color::Sand => "black",
+            Color::Khaki => "black",
+            Color::Yellow => "black",
+            Color::Amber => "black",
+            Color::Orange => "black",
+            Color::DeepOrange => "white",
+            Color::BlueGray => "white",
+            Color::Brown => "white",
+            Color::LightGray => "black",
+            Color::Gray => "black",
+            Color::DarkGray => "white",
+            Color::PaleRed => "black",
+            Color::PaleYellow => "black",
+            Color::PaleGreen => "black",
+            Color::PaleBlue => "black",
         }
     }
 }
@@ -107,6 +140,7 @@ impl Config {
 
 #[derive(Deserialize, Clone)]
 pub(crate) struct WidgetConfig{
+    pub label: String,
     pub left: u16,
     pub top: u16,
     pub width: u16,
@@ -116,9 +150,20 @@ pub(crate) struct WidgetConfig{
     pub color: Option<Color>
 }
 
+impl WidgetConfig{
+    pub(crate) fn color_css_class(&self) -> &str {
+        self.color.as_ref().map(Color::to_css_class).unwrap_or(Color::default().to_css_class())
+    }
+
+    pub(crate) fn stroke_css_color(&self) -> &str {
+        self.color.as_ref().map(Color::to_css_stroke).unwrap_or(Color::default().to_css_stroke())
+    }
+}
+
 #[derive(Deserialize, Clone)]
 pub(crate) enum WidgetType{
     Value,
     Line,
-    Gague{ min: f32, max:f32 }
+    Gague{ min: f32, max:f32 },
+    Label
 }

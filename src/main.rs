@@ -10,6 +10,9 @@ use tide_sqlx::SQLxMiddleware;
 
 #[async_std::main]
 async fn main() -> tide::Result<()> {
+    dotenv::dotenv().ok();
+
+
     let database_url = expect_env_var("DATABASE_URL");
     let listen_addr = expect_env_var("LISTEN_ADDR");
     let secret = expect_env_var("SECRET");

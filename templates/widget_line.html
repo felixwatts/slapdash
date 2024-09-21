@@ -1,6 +1,5 @@
-<h2>{{ config.series }}</h2>
 <svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 {{ Self::view_box_width(self) }} {{ Self::view_box_height(self) }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <polyline points="{{ Self::points_svg(self) }}" style="fill:none;stroke:white;stroke-width:4px" />
-    <text text-anchor="end" dominant-baseline="hanging" x="{{ Self::y_axis_left(self) }}" y="0.5" stroke="none" fill="white" >{{ Self::axis_label_top(self) }}</text>
-    <text text-anchor="end" dominant-baseline="auto" x="{{ Self::y_axis_left(self) }}" y="{{ Self::y_axis_bottom(self) }}" stroke="none" fill="white">{{ Self::axis_label_bottom(self) }}</text>
+    <polyline points="{{ Self::points_svg(self) }}" style="fill:none;stroke:{{ config.stroke_css_color() }};stroke-width:4px" />
+    <text text-anchor="end" dominant-baseline="hanging" x="{{ Self::y_axis_left(self) }}" y="0.5" stroke="none" fill="{{ config.stroke_css_color() }}" >{{ Self::axis_label_top(self) }}</text>
+    <text text-anchor="end" dominant-baseline="auto" x="{{ Self::y_axis_left(self) }}" y="{{ Self::y_axis_bottom(self) }}" stroke="none" fill="{{ config.stroke_css_color() }}">{{ Self::axis_label_bottom(self) }}</text>
 </svg>

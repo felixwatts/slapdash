@@ -2,21 +2,33 @@
     "widgets": [
 
         {
-            "left": 4,
+            "label": "Battery",
+            "left": 1,
             "top": 1,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "DeepOrange"
+        },
+        {
+            "label": "Rcap kWh",
+            "left": 4,
+            "top": 2,
             "width": 4,
             "height": 2,
-            "series": "f32/battery/residual_capacity_kwh",
+            "series": "f32_battery_residual_capacity_kwh",
             "typ": "Value",
             "color": "DeepOrange"
         },
         {
+            "label": "SoC %",
             "left": 1,
-            "top": 1,
+            "top": 2,
             "width": 3,
             "height": 4,
 
-            "series": "f32/battery/level_pct",
+            "series": "f32_battery_level_pct",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -25,25 +37,24 @@
             },
             "color": "DeepOrange"
         },
-
         {
+            "label": "Voltage",
             "left": 4,
-            "top": 3,
+            "top": 4,
             "width": 2,
             "height": 2,
-            "series": "f32/battery/voltage",
+            "series": "f32_battery_voltage",
             "typ": "Value",
             "color": "DeepOrange"
         },
-
-    
         {
+            "label": "Cycles",
             "left": 6,
-            "top": 3,
+            "top": 4,
             "width": 2,
             "height": 2,
 
-            "series": "f32/battery/cycles",
+            "series": "f32_battery_cycles",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -52,32 +63,45 @@
             },
             "color": "DeepOrange"
         },
-
         {
+            "label": "SoC %",
             "left": 8,
-            "top": 1,
+            "top": 2,
             "width": 5,
             "height": 4,
-            "series": "f32/battery/level_pct",
+            "series": "f32_battery_level_pct",
             "typ": "Line",
             "color": "DeepOrange"
         },
 
+
         {
+            "label": "Water",
             "left": 1,
-            "top": 5,
+            "top": 6,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Blue"
+        },
+        {
+            "label": "Level %",
+            "left": 1,
+            "top": 7,
             "width": 3,
             "height": 3,
-            "series": "f32/water/level_pct",
+            "series": "f32_water_level_pct",
             "typ": "Value",
             "color": "Blue"
         },
         {
+            "label": "Level %",
             "left": 4,
-            "top": 5,
+            "top": 7,
             "width": 3,
             "height": 3,
-            "series": "f32/water/level_pct",
+            "series": "f32_water_level_pct",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -87,13 +111,264 @@
             "color": "Blue"
         },
         {
+            "label": "Level %",
             "left": 7,
-            "top": 5,
+            "top": 7,
             "width": 6,
             "height": 3,
-            "series": "f32/water/level_pct",
+            "series": "f32_water_level_pct",
             "typ": "Line",
             "color": "Blue"
+        },
+
+        {
+            "label": "Mains Cabin",
+            "left": 1,
+            "top": 10,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Green"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 11,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_cabin_today_energy_kwh",
+            "typ": "Value",
+            "color": "Green"
+        },
+        {
+            "label": "Today Mins",
+            "left": 4,
+            "top": 11,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_cabin_today_runtime_mins",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1440
+                }
+            },
+            "color": "Green"
+        },
+        {
+            "label": "Current Power W",
+            "left": 7,
+            "top": 11,
+            "width": 6,
+            "height": 3,
+            "series": "f32_tapo_cabin_current_power_w",
+            "typ": "Line",
+            "color": "Green"
+        },
+
+        {
+            "label": "Mains Outside",
+            "left": 1,
+            "top": 14,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Green"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 15,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_outside_today_energy_kwh",
+            "typ": "Value",
+            "color": "Green"
+        },
+        {
+            "label": "Today Mins",
+            "left": 4,
+            "top": 15,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_outside_today_runtime_mins",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1440
+                }
+            },
+            "color": "Green"
+        },
+        {
+            "label": "Current Power W",
+            "left": 7,
+            "top": 15,
+            "width": 6,
+            "height": 3,
+            "series": "f32_tapo_outside_current_power_w",
+            "typ": "Line",
+            "color": "Green"
+        },
+
+        {
+            "label": "Mains Bathroom",
+            "left": 1,
+            "top": 18,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Green"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 19,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_bathroom_today_energy_kwh",
+            "typ": "Value",
+            "color": "Green"
+        },
+        {
+            "label": "Today Mins",
+            "left": 4,
+            "top": 19,
+            "width": 3,
+            "height": 3,
+            "series": "f32_tapo_bathroom_today_runtime_mins",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1440
+                }
+            },
+            "color": "Green"
+        },
+        {
+            "label": "Current Power W",
+            "left": 7,
+            "top": 19,
+            "width": 6,
+            "height": 3,
+            "series": "f32_tapo_bathroom_current_power_w",
+            "typ": "Line",
+            "color": "Green"
+        },
+
+        {
+            "label": "MPPT Cabin",
+            "left": 1,
+            "top": 22,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Amber"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 23,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_cabin_yield_today_kwh",
+            "typ": "Value",
+            "color": "Amber"
+        },
+        {
+            "label": "Max Today W",
+            "left": 1,
+            "top": 25,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_cabin_max_power_today_w",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1200
+                }
+            },
+            "color": "Amber"
+        },
+        {
+            "label": "Current Power W",
+            "left": 4,
+            "top": 23,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_cabin_panel_power_w",
+            "typ": "Line",
+            "color": "Amber"
+        },
+        {
+            "label": "Panel Voltage",
+            "left": 4,
+            "top": 25,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_cabin_panel_v",
+            "typ": "Line",
+            "color": "Amber"
+        },
+
+        {
+            "label": "MPPT Workshop",
+            "left": 1,
+            "top": 27,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Amber"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 28,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_workshop_yield_today_kwh",
+            "typ": "Value",
+            "color": "Amber"
+        },
+        {
+            "label": "Max Today W",
+            "left": 1,
+            "top": 30,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_workshop_max_power_today_w",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1200
+                }
+            },
+            "color": "Amber"
+        },
+        {
+            "label": "Current Power W",
+            "left": 4,
+            "top": 28,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_workshop_panel_power_w",
+            "typ": "Line",
+            "color": "Amber"
+        },
+        {
+            "label": "Panel Voltage",
+            "left": 4,
+            "top": 30,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_workshop_panel_v",
+            "typ": "Line",
+            "color": "Amber"
         }
     ]
 }

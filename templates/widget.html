@@ -1,4 +1,5 @@
-<div class="{{ config.color.clone().unwrap_or_default().to_css() }} w3-round w3-container" style="grid-column-start: {{ config.left }}; grid-column-end: {{ config.left + config.width }}; grid-row-start: {{ config.top }}; grid-row-end: {{ config.top + config.height }};">
+<div class="{{ config.color_css_class() }} w3-round w3-container" style="grid-column-start: {{ config.left }}; grid-column-end: {{ config.left + config.width }}; grid-row-start: {{ config.top }}; grid-row-end: {{ config.top + config.height }};">
+    <h2>{{ config.label }}</h2>
     {% match template %}
     {% when WidgetTemplateInner::Line with (template) %}
         {{ template|safe }}
@@ -6,5 +7,6 @@
         {{ template|safe }}
     {% when WidgetTemplateInner::Gague with (template) %}
         {{ template|safe }}
+    {% when WidgetTemplateInner::Label %}
     {% endmatch %}
 </div>

@@ -1,10 +1,7 @@
-<div class="w3-display-container" style="height:100%">
-    <h2 class="w3-display-topleft">{{ config.series }}</h2>
-    <h1 class="w3-display-middle">
-        {% if let Some(value) = point %}
-            {{ "{:.2}"|format(value)  }}
-        {% else %}
-            No data
-        {% endif %}
-    </h1>
-</div>
+<h1 style="text-align: center;">
+    {% if let Some(value) = point %}
+        {{ "{:.2}"|format(value)  }}
+    {% else %}
+        No data
+    {% endif %}
+</h1>
