@@ -44,7 +44,7 @@ impl FreshnessWidgetTemplate{
         match self.last_update_time {
             Some(time) => {
                 let age = PrimitiveDateTime::now() - time;
-                format!("{}:{}:{}", &age.whole_hours(), &age.whole_minutes(), &age.whole_seconds())
+                format!("{} mins", &age.whole_minutes())
             },
             None => "No data".into()
         }
