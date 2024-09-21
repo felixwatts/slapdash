@@ -83,7 +83,7 @@
             "height": 1,
             "series": "",
             "typ": "Label",
-            "color": "Blue"
+            "color": "Teal"
         },
         {
             "label": "Level %",
@@ -93,7 +93,7 @@
             "height": 3,
             "series": "f32_water_level_pct",
             "typ": "Value",
-            "color": "Blue"
+            "color": "Teal"
         },
         {
             "label": "Level %",
@@ -108,7 +108,7 @@
                     "max": 100
                 }
             },
-            "color": "Blue"
+            "color": "Teal"
         },
         {
             "label": "Level %",
@@ -118,7 +118,7 @@
             "height": 3,
             "series": "f32_water_level_pct",
             "typ": "Line",
-            "color": "Blue"
+            "color": "Teal"
         },
 
         {
@@ -369,6 +369,78 @@
             "series": "f32_victron_mppt_workshop_panel_v",
             "typ": "Line",
             "color": "Amber"
+        },
+
+        {
+            "label": "Inverter",
+            "left": 1,
+            "top": 32,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Purple"
+        },
+        {
+            "label": "Power Out W",
+            "left": 1,
+            "top": 33,
+            "width": 12,
+            "height": 3,
+            "series": "f32_victron_inverter_ac_out_s_w",
+            "typ": "Line",
+            "color": "Purple"
+        },
+
+        {
+            "label": "Weather",
+            "left": 1,
+            "top": 36,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Blue"
+        },
+        {
+            "label": "Air Temp C",
+            "left": 1,
+            "top": 37,
+            "width": 3,
+            "height": 3,
+            "series": "f32_weather_air_temp_c",
+            "typ": "Value",
+            "color": "Blue"
+        },
+        {
+            "label": "Air Temp C",
+            "left": 4,
+            "top": 37,
+            "width": 9,
+            "height": 3,
+            "series": "f32_weather_air_temp_c",
+            "typ": "Line",
+            "color": "Blue"
+        },
+        {
+            "label": "Wind m/s",
+            "left": 1,
+            "top": 40,
+            "width": 3,
+            "height": 3,
+            "series": "f32_weather_wind_avg_mps",
+            "typ": "Value",
+            "color": "Blue"
+        },
+        {
+            "label": "Wind m/s",
+            "left": 4,
+            "top": 40,
+            "width": 9,
+            "height": 3,
+            "series": "f32_weather_wind_avg_mps",
+            "typ": "Line",
+            "color": "Blue"
         }
     ]
 }
