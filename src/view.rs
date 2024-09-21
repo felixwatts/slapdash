@@ -1,6 +1,7 @@
-use std::f32::consts::PI;
+use std::{f32::consts::PI, fmt::Debug};
 
 use askama::Template;
+use time::PrimitiveDateTime;
 use crate::model::*;
 
 #[derive(Template)]
@@ -22,13 +23,32 @@ pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
     Line(LineWidgetTemplate),
     Gague(GagueWidgetTemplate),
-    Label
+    Label,
+    Freshness(FreshnessWidgetTemplate)
 }
 
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
     pub point: Option<f32>
+}
+
+#[derive(Template)]
+#[template(path = "widget_freshness.html")]
+pub (crate) struct FreshnessWidgetTemplate{
+    pub last_update_time: Option<time::PrimitiveDateTime>
+}
+
+impl FreshnessWidgetTemplate{
+    pub(crate) fn freshness(&self) -> String{
+        match self.last_update_time {
+            Some(time) => {
+                let age = PrimitiveDateTime::now() - time;
+                format!("{}:{}:{}", &age.whole_hours(), &age.whole_minutes(), &age.whole_seconds())
+            },
+            None => "No data".into()
+        }
+    }
 }
 
 #[derive(Template)]

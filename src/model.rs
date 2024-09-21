@@ -165,5 +165,6 @@ pub(crate) enum WidgetType{
     Value,
     Line,
     Gague{ min: f32, max:f32 },
-    Label
+    Label,
+    Freshness
 }
