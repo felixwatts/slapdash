@@ -23,7 +23,7 @@ pub(crate) async fn put(db: &mut PgConnection, series: &str, point: f32) -> tide
     )
     .execute(db)
     .await
-    .map_err(|e| tide::Error::from_display(e))?;
+    .map_err(tide::Error::from_display)?;
 
     Ok(())
 }
@@ -44,7 +44,7 @@ pub(crate) async fn get(db: &mut PgConnection, series: &str) -> tide::Result<Vec
     )
     .fetch_all(db)
     .await
-    .map_err(|e| tide::Error::from_display(e))?;
+    .map_err(tide::Error::from_display)?;
 
     Ok(points)
 }

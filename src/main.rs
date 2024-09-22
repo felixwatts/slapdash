@@ -31,10 +31,10 @@ async fn main() -> tide::Result<()> {
 }
 
 fn load_config() -> tide::Result<model::Config> {
-    let mut file = File::open("slapdash.json").map_err(|e| tide::Error::from_display(e))?;
+    let mut file = File::open("slapdash.json").map_err(tide::Error::from_display)?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).map_err(|e| tide::Error::from_display(e))?;
-    Ok(serde_json::from_str(&contents).map_err(|e| tide::Error::from_display(e))?)
+    file.read_to_string(&mut contents).map_err(tide::Error::from_display)?;
+    serde_json::from_str(&contents).map_err(tide::Error::from_display)
 }
 
 fn expect_env_var(name: &'static str) -> String{

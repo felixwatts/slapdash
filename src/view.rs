@@ -1,5 +1,5 @@
-use std::{f32::consts::PI, fmt::Debug};
-
+use std::f32::consts::PI;
+use std::fmt::Write;
 use askama::Template;
 use time::PrimitiveDateTime;
 use crate::model::*;
@@ -110,7 +110,7 @@ impl LineWidgetTemplate{
     }
 
     pub fn points_svg(&self) -> String {
-        if self.data.len() == 0 {
+        if self.data.is_empty() {
             return String::default();
         }
 
@@ -150,8 +150,7 @@ impl LineWidgetTemplate{
                     normalize_y(point.value)
                 )
             )
-            .map(|(x, y)| format!("{x},{y} "))
-            .collect();
+            .fold(String::new(), |mut s, (x, y)| { write!(s, "{x},{y} ").unwrap(); s});
 
         result
     }
