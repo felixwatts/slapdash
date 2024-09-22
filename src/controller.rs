@@ -1,3 +1,5 @@
+use std::num::FpCategory;
+
 use sqlx::{Acquire, PgConnection, Postgres};
 use tide::{Response, StatusCode};
 use tide_sqlx::SQLxRequestExt;
@@ -27,9 +29,12 @@ pub(crate) async fn put(req: tide::Request<(String, Config)>) -> tide::Result {
     let value_str = req.param("value")?;
     let value: f32 = value_str.parse()?;
 
-    if value.is_normal() {
-        let mut db = req.sqlx_conn::<Postgres>().await;
-        db::put(db.acquire().await?, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+    match value.classify() {
+        FpCategory::Normal | FpCategory::Zero => {
+            let mut db = req.sqlx_conn::<Postgres>().await;
+            db::put(db.acquire().await?, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+        },
+        _ => {}
     }
 
     Ok(Response::builder(StatusCode::Ok).build())
