@@ -2,7 +2,7 @@
     "widgets": [
 
         {
-            "label": "Battery",
+            "label": "🔋 Battery",
             "left": 1,
             "top": 1,
             "width": 6,
@@ -86,7 +86,7 @@
 
 
         {
-            "label": "Water",
+            "label": "🚰 Water",
             "left": 1,
             "top": 6,
             "width": 6,
@@ -142,7 +142,7 @@
         },
 
         {
-            "label": "Mains Cabin",
+            "label": "🔌 Mains - Cabin",
             "left": 1,
             "top": 10,
             "width": 6,
@@ -198,7 +198,7 @@
         },
 
         {
-            "label": "Mains Outside",
+            "label": "🔌 Mains - Outside",
             "left": 1,
             "top": 14,
             "width": 6,
@@ -254,7 +254,7 @@
         },
 
         {
-            "label": "Mains Bathroom",
+            "label": "🔌 Mains - Bathroom",
             "left": 1,
             "top": 18,
             "width": 6,
@@ -310,7 +310,7 @@
         },
 
         {
-            "label": "MPPT Cabin",
+            "label": "🌞 Solar - Cabin",
             "left": 1,
             "top": 22,
             "width": 6,
@@ -376,7 +376,7 @@
         },
 
         {
-            "label": "MPPT Workshop",
+            "label": "🌞 Solar - Workshop",
             "left": 1,
             "top": 27,
             "width": 6,
@@ -442,7 +442,7 @@
         },
 
         {
-            "label": "Inverter",
+            "label": "∿ Inverter",
             "left": 1,
             "top": 32,
             "width": 6,
@@ -473,7 +473,7 @@
         },
 
         {
-            "label": "Weather",
+            "label": "⛅ Weather",
             "left": 1,
             "top": 36,
             "width": 6,
