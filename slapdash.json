@@ -22,7 +22,7 @@
             "color": "DeepOrange"
         },
         {
-            "label": "Rcap kWh",
+            "label": "Remaining kWh",
             "left": 4,
             "top": 2,
             "width": 4,
@@ -32,7 +32,7 @@
             "color": "DeepOrange"
         },
         {
-            "label": "SoC %",
+            "label": "Charge %",
             "left": 1,
             "top": 2,
             "width": 3,
@@ -74,7 +74,7 @@
             "color": "DeepOrange"
         },
         {
-            "label": "SoC %",
+            "label": "Charge %",
             "left": 8,
             "top": 2,
             "width": 5,
