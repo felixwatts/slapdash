@@ -531,6 +531,67 @@
             "series": "f32_weather_wind_avg_mps",
             "typ": "Line",
             "color": "Blue"
+        },
+
+        {
+            "label": "🏠 Cabin",
+            "left": 1,
+            "top": 43,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Brown"
+        },
+        {
+            "label": "",
+            "left": 7,
+            "top": 43,
+            "width": 3,
+            "height": 1,
+            "series": "f32_cabin_temperature_c",
+            "typ": "Freshness",
+            "color": "Brown"
+        },
+        {
+            "label": "Air Temp C",
+            "left": 1,
+            "top": 44,
+            "width": 3,
+            "height": 3,
+            "series": "f32_cabin_temperature_c",
+            "typ": "Value",
+            "color": "Brown"
+        },
+        {
+            "label": "Air Temp C",
+            "left": 4,
+            "top": 44,
+            "width": 9,
+            "height": 3,
+            "series": "f32_cabin_temperature_c",
+            "typ": "Line",
+            "color": "Blue"
+        },
+        {
+            "label": "Humidity %",
+            "left": 1,
+            "top": 47,
+            "width": 3,
+            "height": 3,
+            "series": "f32_cabin_relative_humidity_pct",
+            "typ": "Value",
+            "color": "Brown"
+        },
+        {
+            "label": "Humidity %",
+            "left": 4,
+            "top": 47,
+            "width": 9,
+            "height": 3,
+            "series": "f32_cabin_relative_humidity_pct",
+            "typ": "Line",
+            "color": "Brown"
         }
     ]
 }
