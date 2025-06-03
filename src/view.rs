@@ -66,12 +66,15 @@ impl GagueWidgetTemplate{
                     Some(value) => {
                         let proportion = (value - min) / (max - min);
                         let angle = proportion * 2.0 * PI;
-                        let end_x = 50.0 + 38.0 * (angle - (PI/2.0)).cos();
-                        let end_y = 50.0 + 38.0 * (angle - (PI/2.0)).sin();
+                        let radius = 38.0;
+                        let start_x = 50.0 + radius * (-PI/2.0).cos();
+                        let start_y = 50.0 + radius * (-PI/2.0).sin();
+                        let end_x = 50.0 + radius * (angle - (PI/2.0)).cos();
+                        let end_y = 50.0 + radius * (angle - (PI/2.0)).sin();
 
                         let large_arc_flag = if angle > PI { "1" } else { "0" };
 
-                        format!("M 50 12 A 38 38 1 {large_arc_flag} 1 {end_x} {end_y}")
+                        format!("M {start_x} {start_y} A {radius} {radius} 1 {large_arc_flag} 1 {end_x} {end_y}")
                     },
                     None => String::default()
                 }
