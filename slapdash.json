@@ -571,7 +571,7 @@
             "height": 3,
             "series": "f32_cabin_temperature_c",
             "typ": "Line",
-            "color": "Blue"
+            "color": "Brown"
         },
         {
             "label": "Humidity %",
