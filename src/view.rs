@@ -63,7 +63,8 @@ impl GagueWidgetTemplate{
         match self.config.typ {
             WidgetType::Gague { min, max } => {
                 match self.point {
-                    Some(value) => {
+                    Some(mut value) => {
+                        value = value.clamp(min, max);
                         let proportion = (value - min) / (max - min);
                         let angle = proportion * 2.0 * PI;
                         let radius = 38.0;
