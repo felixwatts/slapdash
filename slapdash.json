@@ -310,7 +310,7 @@
         },
 
         {
-            "label": "🌞 Solar - Cabin",
+            "label": "🌞 Solar - A + B",
             "left": 1,
             "top": 22,
             "width": 6,
@@ -325,7 +325,7 @@
             "top": 22,
             "width": 3,
             "height": 1,
-            "series": "f32_victron_mppt_cabin_yield_today_kwh",
+            "series": "f32_victron_mppt_a_b_yield_today_kwh",
             "typ": "Freshness",
             "color": "Amber"
         },
@@ -335,7 +335,7 @@
             "top": 23,
             "width": 3,
             "height": 2,
-            "series": "f32_victron_mppt_cabin_yield_today_kwh",
+            "series": "f32_victron_mppt_a_b_yield_today_kwh",
             "typ": "Value",
             "color": "Amber"
         },
@@ -345,7 +345,7 @@
             "top": 25,
             "width": 3,
             "height": 2,
-            "series": "f32_victron_mppt_cabin_max_power_today_w",
+            "series": "f32_victron_mppt_a_b_max_power_today_w",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -360,7 +360,7 @@
             "top": 23,
             "width": 9,
             "height": 2,
-            "series": "f32_victron_mppt_cabin_panel_power_w",
+            "series": "f32_victron_mppt_a_b_panel_power_w",
             "typ": "Line",
             "color": "Amber"
         },
@@ -370,13 +370,13 @@
             "top": 25,
             "width": 9,
             "height": 2,
-            "series": "f32_victron_mppt_cabin_panel_v",
+            "series": "f32_victron_mppt_a_b_panel_v",
             "typ": "Line",
             "color": "Amber"
         },
 
         {
-            "label": "🌞 Solar - Workshop",
+            "label": "🌞 Solar - C",
             "left": 1,
             "top": 27,
             "width": 6,
@@ -391,7 +391,7 @@
             "top": 27,
             "width": 3,
             "height": 1,
-            "series": "f32_victron_mppt_workshop_yield_today_kwh",
+            "series": "f32_victron_mppt_c_yield_today_kwh",
             "typ": "Freshness",
             "color": "Amber"
         },
@@ -401,7 +401,7 @@
             "top": 28,
             "width": 3,
             "height": 2,
-            "series": "f32_victron_mppt_workshop_yield_today_kwh",
+            "series": "f32_victron_mppt_c_yield_today_kwh",
             "typ": "Value",
             "color": "Amber"
         },
@@ -411,7 +411,7 @@
             "top": 30,
             "width": 3,
             "height": 2,
-            "series": "f32_victron_mppt_workshop_max_power_today_w",
+            "series": "f32_victron_mppt_c_max_power_today_w",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -426,7 +426,7 @@
             "top": 28,
             "width": 9,
             "height": 2,
-            "series": "f32_victron_mppt_workshop_panel_power_w",
+            "series": "f32_victron_mppt_c_panel_power_w",
             "typ": "Line",
             "color": "Amber"
         },
@@ -436,7 +436,73 @@
             "top": 30,
             "width": 9,
             "height": 2,
-            "series": "f32_victron_mppt_workshop_panel_v",
+            "series": "f32_victron_mppt_c_panel_v",
+            "typ": "Line",
+            "color": "Amber"
+        },
+
+                {
+            "label": "🌞 Solar - D",
+            "left": 1,
+            "top": 32,
+            "width": 6,
+            "height": 1,
+            "series": "",
+            "typ": "Label",
+            "color": "Amber"
+        },
+        {
+            "label": "",
+            "left": 7,
+            "top": 32,
+            "width": 3,
+            "height": 1,
+            "series": "f32_victron_mppt_d_yield_today_kwh",
+            "typ": "Freshness",
+            "color": "Amber"
+        },
+        {
+            "label": "Today kWh",
+            "left": 1,
+            "top": 33,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_d_yield_today_kwh",
+            "typ": "Value",
+            "color": "Amber"
+        },
+        {
+            "label": "Max Today W",
+            "left": 1,
+            "top": 35,
+            "width": 3,
+            "height": 2,
+            "series": "f32_victron_mppt_d_max_power_today_w",
+            "typ": {
+                "Gague": {
+                    "min": 0,
+                    "max": 1200
+                }
+            },
+            "color": "Amber"
+        },
+        {
+            "label": "Current Power W",
+            "left": 4,
+            "top": 33,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_d_panel_power_w",
+            "typ": "Line",
+            "color": "Amber"
+        },
+        {
+            "label": "Panel Voltage",
+            "left": 4,
+            "top": 35,
+            "width": 9,
+            "height": 2,
+            "series": "f32_victron_mppt_d_panel_v",
             "typ": "Line",
             "color": "Amber"
         },
@@ -444,7 +510,7 @@
         {
             "label": "∿ Inverter",
             "left": 1,
-            "top": 32,
+            "top": 37,
             "width": 6,
             "height": 1,
             "series": "",
@@ -454,7 +520,7 @@
         {
             "label": "",
             "left": 7,
-            "top": 32,
+            "top": 37,
             "width": 3,
             "height": 1,
             "series": "f32_victron_inverter_ac_out_s_w",
@@ -464,7 +530,7 @@
         {
             "label": "Power Out W",
             "left": 1,
-            "top": 33,
+            "top": 38,
             "width": 12,
             "height": 3,
             "series": "f32_victron_inverter_ac_out_s_w",
@@ -475,7 +541,7 @@
         {
             "label": "⛅ Weather",
             "left": 1,
-            "top": 36,
+            "top": 41,
             "width": 6,
             "height": 1,
             "series": "",
@@ -485,7 +551,7 @@
         {
             "label": "",
             "left": 7,
-            "top": 36,
+            "top": 41,
             "width": 3,
             "height": 1,
             "series": "f32_weather_air_temp_c",
@@ -495,7 +561,7 @@
         {
             "label": "Air Temp C",
             "left": 1,
-            "top": 37,
+            "top": 42,
             "width": 3,
             "height": 3,
             "series": "f32_weather_air_temp_c",
@@ -505,7 +571,7 @@
         {
             "label": "Air Temp C",
             "left": 4,
-            "top": 37,
+            "top": 42,
             "width": 9,
             "height": 3,
             "series": "f32_weather_air_temp_c",
@@ -515,7 +581,7 @@
         {
             "label": "Wind m/s",
             "left": 1,
-            "top": 40,
+            "top": 45,
             "width": 3,
             "height": 3,
             "series": "f32_weather_wind_avg_mps",
@@ -525,7 +591,7 @@
         {
             "label": "Wind m/s",
             "left": 4,
-            "top": 40,
+            "top": 45,
             "width": 9,
             "height": 3,
             "series": "f32_weather_wind_avg_mps",
@@ -536,7 +602,7 @@
         {
             "label": "🏠 Cabin",
             "left": 1,
-            "top": 43,
+            "top": 48,
             "width": 6,
             "height": 1,
             "series": "",
@@ -546,7 +612,7 @@
         {
             "label": "",
             "left": 7,
-            "top": 43,
+            "top": 48,
             "width": 3,
             "height": 1,
             "series": "f32_cabin_temperature_c",
@@ -556,7 +622,7 @@
         {
             "label": "Air Temp C",
             "left": 1,
-            "top": 44,
+            "top": 49,
             "width": 3,
             "height": 3,
             "series": "f32_cabin_temperature_c",
@@ -566,7 +632,7 @@
         {
             "label": "Air Temp C",
             "left": 4,
-            "top": 44,
+            "top": 49,
             "width": 9,
             "height": 3,
             "series": "f32_cabin_temperature_c",
@@ -576,7 +642,7 @@
         {
             "label": "Humidity %",
             "left": 1,
-            "top": 47,
+            "top": 52,
             "width": 3,
             "height": 3,
             "series": "f32_cabin_relative_humidity_pct",
@@ -586,7 +652,7 @@
         {
             "label": "Humidity %",
             "left": 4,
-            "top": 47,
+            "top": 52,
             "width": 9,
             "height": 3,
             "series": "f32_cabin_relative_humidity_pct",
