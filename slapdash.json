@@ -17,28 +17,28 @@
             "top": 1,
             "width": 3,
             "height": 1,
-            "series": "f32_battery_residual_capacity_kwh",
+            "series": "f32_battery_monitor_state_of_charge_pct",
             "typ": "Freshness",
             "color": "DeepOrange"
         },
         {
-            "label": "Remaining kWh",
+            "label": "SoC %",
             "left": 4,
             "top": 2,
             "width": 4,
             "height": 2,
-            "series": "f32_battery_residual_capacity_kwh",
+            "series": "f32_battery_state_of_charge_pct",
             "typ": "Value",
             "color": "DeepOrange"
         },
         {
-            "label": "Charge %",
+            "label": "SoC %",
             "left": 1,
             "top": 2,
             "width": 3,
             "height": 4,
 
-            "series": "f32_battery_level_pct",
+            "series": "f32_battery_state_of_charge_pct",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -53,33 +53,33 @@
             "top": 4,
             "width": 2,
             "height": 2,
-            "series": "f32_battery_voltage",
+            "series": "f32_battery_monitor_battery_voltage_v",
             "typ": "Value",
             "color": "DeepOrange"
         },
         {
-            "label": "Cycles",
+            "label": "TtG mins",
             "left": 6,
             "top": 4,
             "width": 2,
             "height": 2,
 
-            "series": "f32_battery_cycles",
+            "series": "f32_battery_monitor_time_to_go_mins",
             "typ": {
                 "Gague": {
                     "min": 0,
-                    "max": 3000
+                    "max": 60
                 }
             },
             "color": "DeepOrange"
         },
         {
-            "label": "Charge %",
+            "label": "SoC %",
             "left": 8,
             "top": 2,
             "width": 5,
             "height": 4,
-            "series": "f32_battery_level_pct",
+            "series": "f32_battery_state_of_charge_pct",
             "typ": "Line",
             "color": "DeepOrange"
         },
