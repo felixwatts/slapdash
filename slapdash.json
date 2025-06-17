@@ -334,24 +334,9 @@
             "left": 1,
             "top": 23,
             "width": 3,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_a_b_yield_today_kwh",
             "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Max Today W",
-            "left": 1,
-            "top": 25,
-            "width": 3,
-            "height": 2,
-            "series": "f32_victron_mppt_a_b_max_power_today_w",
-            "typ": {
-                "Gague": {
-                    "min": 0,
-                    "max": 1200
-                }
-            },
             "color": "Amber"
         },
         {
@@ -359,18 +344,8 @@
             "left": 4,
             "top": 23,
             "width": 9,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_a_b_panel_power_w",
-            "typ": "Line",
-            "color": "Amber"
-        },
-        {
-            "label": "Panel Voltage",
-            "left": 4,
-            "top": 25,
-            "width": 9,
-            "height": 2,
-            "series": "f32_victron_mppt_a_b_panel_v",
             "typ": "Line",
             "color": "Amber"
         },
@@ -400,24 +375,9 @@
             "left": 1,
             "top": 28,
             "width": 3,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_c_yield_today_kwh",
             "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Max Today W",
-            "left": 1,
-            "top": 30,
-            "width": 3,
-            "height": 2,
-            "series": "f32_victron_mppt_c_max_power_today_w",
-            "typ": {
-                "Gague": {
-                    "min": 0,
-                    "max": 1200
-                }
-            },
             "color": "Amber"
         },
         {
@@ -425,23 +385,13 @@
             "left": 4,
             "top": 28,
             "width": 9,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_c_panel_power_w",
             "typ": "Line",
             "color": "Amber"
         },
-        {
-            "label": "Panel Voltage",
-            "left": 4,
-            "top": 30,
-            "width": 9,
-            "height": 2,
-            "series": "f32_victron_mppt_c_panel_v",
-            "typ": "Line",
-            "color": "Amber"
-        },
 
-                {
+        {
             "label": "🌞 Solar - D",
             "left": 1,
             "top": 32,
@@ -466,24 +416,9 @@
             "left": 1,
             "top": 33,
             "width": 3,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_d_yield_today_kwh",
             "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Max Today W",
-            "left": 1,
-            "top": 35,
-            "width": 3,
-            "height": 2,
-            "series": "f32_victron_mppt_d_max_power_today_w",
-            "typ": {
-                "Gague": {
-                    "min": 0,
-                    "max": 1200
-                }
-            },
             "color": "Amber"
         },
         {
@@ -491,18 +426,8 @@
             "left": 4,
             "top": 33,
             "width": 9,
-            "height": 2,
+            "height": 4,
             "series": "f32_victron_mppt_d_panel_power_w",
-            "typ": "Line",
-            "color": "Amber"
-        },
-        {
-            "label": "Panel Voltage",
-            "left": 4,
-            "top": 35,
-            "width": 9,
-            "height": 2,
-            "series": "f32_victron_mppt_d_panel_v",
             "typ": "Line",
             "color": "Amber"
         },
