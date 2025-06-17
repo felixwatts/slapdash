@@ -1,10 +1,10 @@
 <svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 {{ Self::view_box_width(self) }} {{ Self::view_box_height(self) }}" preserveAspectRatio="none"  xmlns="http://www.w3.org/2000/svg">
     <text
-        x="50"
-        y="50"
+        x="{{ Self::view_box_centre_x(self) }}"
+        y="{{ Self::view_box_centre_y(self) }}"
         text-anchor="middle"
         dominant-baseline="middle"
-        textLength="100"
+        textLength="{{ Self::view_box_width(self) }}"
         lengthAdjust="spacingAndGlyphs"
     >
     {{ Self::text(self) }}

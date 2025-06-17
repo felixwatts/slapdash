@@ -49,6 +49,14 @@ impl ValueWidgetTemplate{
     pub fn view_box_height(&self) -> f32 {
         (self.config.height - 1) as f32 * 100.0
     }
+
+    pub fn view_box_centre_x(&self) -> f32 {
+        self.view_box_width() / 2.0
+    }
+
+    pub fn view_box_centre_y(&self) -> f32 {
+        self.view_box_height() / 2.0
+    }
 }   
 
 #[derive(Template)]
