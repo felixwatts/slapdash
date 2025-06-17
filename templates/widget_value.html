@@ -1,7 +1,12 @@
-<h1 style="text-align: center;">
-    {% if let Some(value) = point %}
-        {{ "{:.2}"|format(value)  }}
-    {% else %}
-        No data
-    {% endif %}
-</h1>
+<svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg">
+    <text
+        x="50"
+        y="50"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        textLength="100"
+        lengthAdjust="spacingAndGlyphs"
+    >
+    {{ Self::text(self) }}
+  </text>
+</svg>

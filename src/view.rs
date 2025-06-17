@@ -33,6 +33,15 @@ pub (crate) struct ValueWidgetTemplate{
     pub point: Option<f32>
 }
 
+impl ValueWidgetTemplate{
+    pub fn text(&self) -> String {
+        match self.point {
+            Some(value) => format!("{value:.2}"),
+            None => "No data".into()
+        }
+    }
+}   
+
 #[derive(Template)]
 #[template(path = "widget_freshness.html")]
 pub (crate) struct FreshnessWidgetTemplate{
