@@ -30,6 +30,7 @@ pub (crate) enum WidgetTemplateInner{
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
+    pub config: WidgetConfig,
     pub point: Option<f32>
 }
 

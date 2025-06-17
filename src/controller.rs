@@ -61,6 +61,7 @@ async fn build_widget(config: WidgetConfig, db: &mut PgConnection) -> tide::Resu
     let template = match config.typ {
         WidgetType::Value => WidgetTemplateInner::Value(
             crate::view::ValueWidgetTemplate { 
+                config: config.clone(),
                 point: data.last().map(|p| p.value) 
             }
         ),
