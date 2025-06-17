@@ -17,7 +17,7 @@
             "top": 1,
             "width": 3,
             "height": 1,
-            "series": "f32_battery_monitor_state_of_charge_pct",
+            "series": "f32_victron_battery_monitor_state_of_charge_pct",
             "typ": "Freshness",
             "color": "DeepOrange"
         },
@@ -27,7 +27,7 @@
             "top": 2,
             "width": 4,
             "height": 2,
-            "series": "f32_battery_state_of_charge_pct",
+            "series": "f32_victron_battery_state_of_charge_pct",
             "typ": "Value",
             "color": "DeepOrange"
         },
@@ -38,7 +38,7 @@
             "width": 3,
             "height": 4,
 
-            "series": "f32_battery_state_of_charge_pct",
+            "series": "f32_victron_battery_state_of_charge_pct",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -53,7 +53,7 @@
             "top": 4,
             "width": 2,
             "height": 2,
-            "series": "f32_battery_monitor_battery_voltage_v",
+            "series": "f32_victron_battery_monitor_battery_voltage_v",
             "typ": "Value",
             "color": "DeepOrange"
         },
@@ -64,7 +64,7 @@
             "width": 2,
             "height": 2,
 
-            "series": "f32_battery_monitor_time_to_go_mins",
+            "series": "f32_victron_battery_monitor_time_to_go_mins",
             "typ": {
                 "Gague": {
                     "min": 0,
@@ -79,7 +79,7 @@
             "top": 2,
             "width": 5,
             "height": 4,
-            "series": "f32_battery_state_of_charge_pct",
+            "series": "f32_victron_battery_state_of_charge_pct",
             "typ": "Line",
             "color": "DeepOrange"
         },
