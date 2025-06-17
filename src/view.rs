@@ -70,8 +70,15 @@ impl GagueWidgetTemplate{
                         let radius = 38.0;
                         let start_x = 50.0 + radius * (-PI/2.0).cos();
                         let start_y = 50.0 + radius * (-PI/2.0).sin();
-                        let end_x = 50.0 + radius * (angle - (PI/2.0)).cos();
-                        let end_y = 50.0 + radius * (angle - (PI/2.0)).sin();
+                        
+                        // For full circle, use a point slightly before the end to avoid start/end point collision
+                        let end_angle = if proportion >= 1.0 {
+                            angle - 0.0001
+                        } else {
+                            angle
+                        };
+                        let end_x = 50.0 + radius * (end_angle - (PI/2.0)).cos();
+                        let end_y = 50.0 + radius * (end_angle - (PI/2.0)).sin();
 
                         let large_arc_flag = if angle > PI { "1" } else { "0" };
 
