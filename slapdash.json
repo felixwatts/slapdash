@@ -22,17 +22,7 @@
             "color": "DeepOrange"
         },
         {
-            "label": "SoC %",
-            "left": 4,
-            "top": 2,
-            "width": 4,
-            "height": 2,
-            "series": "f32_victron_battery_monitor_state_of_charge_pct",
-            "typ": "Value",
-            "color": "DeepOrange"
-        },
-        {
-            "label": "SoC %",
+            "label": "SoC",
             "left": 1,
             "top": 2,
             "width": 3,
@@ -48,29 +38,13 @@
             "color": "DeepOrange"
         },
         {
-            "label": "Voltage",
+            "label": "Current A",
             "left": 4,
-            "top": 4,
-            "width": 2,
-            "height": 2,
-            "series": "f32_victron_battery_monitor_battery_voltage_v",
-            "typ": "Value",
-            "color": "DeepOrange"
-        },
-        {
-            "label": "TtG mins",
-            "left": 6,
-            "top": 4,
-            "width": 2,
-            "height": 2,
-
-            "series": "f32_victron_battery_monitor_time_to_go_mins",
-            "typ": {
-                "Gague": {
-                    "min": 0,
-                    "max": 60
-                }
-            },
+            "top": 2,
+            "width": 4,
+            "height": 4,
+            "series": "f32_victron_battery_monitor_battery_current_a",
+            "typ": "Line",
             "color": "DeepOrange"
         },
         {
