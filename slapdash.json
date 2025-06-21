@@ -35,7 +35,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "DeepOrange",
         "widgets": [
           {
@@ -116,7 +116,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Blue",
         "widgets": [
           {
@@ -197,7 +197,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Green",
         "widgets": [
           {
@@ -278,7 +278,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Green",
         "widgets": [
           {
@@ -359,7 +359,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Green",
         "widgets": [
           {
@@ -638,7 +638,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Purple",
         "widgets": [
           {
@@ -691,7 +691,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Blue",
         "widgets": [
           {
@@ -725,7 +725,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Blue",
         "widgets": [
           {
@@ -791,7 +791,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Brown",
         "widgets": [
           {
@@ -825,7 +825,7 @@
     },
     {
       "row": {
-        "height": 3,
+        "height": 4,
         "color": "Brown",
         "widgets": [
           {
