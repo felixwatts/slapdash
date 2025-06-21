@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 use std::fmt::Write;
 use askama::Template;
-use time::PrimitiveDateTime;
+use time::{PrimitiveDateTime, OffsetDateTime};
 use crate::model::*;
 
 #[derive(Template)]
@@ -53,7 +53,7 @@ impl FreshnessWidgetTemplate{
     pub(crate) fn freshness(&self) -> String{
         match self.last_update_time {
             Some(time) => {
-                let age = PrimitiveDateTime::now() - time;
+                let age = OffsetDateTime::now_utc() - time.assume_utc();
                 format!("{} mins", &age.whole_minutes())
             },
             None => "No data".into()
