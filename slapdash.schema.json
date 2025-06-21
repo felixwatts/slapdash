@@ -1,0 +1,332 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Slapdash Dashboard Configuration Schema",
+  "description": "Schema for defining dashboard widgets and layout configuration",
+  "type": "object",
+  "properties": {
+    "widgets": {
+      "type": "array",
+      "description": "Array of widget definitions that make up the dashboard",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "row": {
+                "$ref": "#/definitions/row"
+              }
+            },
+            "required": ["row"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "column": {
+                "$ref": "#/definitions/column"
+              }
+            },
+            "required": ["column"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "label": {
+                "$ref": "#/definitions/label"
+              }
+            },
+            "required": ["label"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "freshness": {
+                "$ref": "#/definitions/freshness"
+              }
+            },
+            "required": ["freshness"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "gague": {
+                "$ref": "#/definitions/gague"
+              }
+            },
+            "required": ["gague"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "line": {
+                "$ref": "#/definitions/line"
+              }
+            },
+            "required": ["line"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "$ref": "#/definitions/value"
+              }
+            },
+            "required": ["value"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": ["widgets"],
+  "definitions": {
+    "row": {
+      "type": "object",
+      "description": "A row container that holds columns and other widgets",
+      "properties": {
+        "height": {
+          "type": "integer",
+          "description": "Height of the row in grid units",
+          "minimum": 1
+        },
+        "color": {
+          "type": "string",
+          "description": "Color theme for the row",
+          "enum": ["Red", "Pink", "Purple", "DeepPurple", "Indigo", "Blue", "LightBlue", "Cyan", "Aqua", "Teal", "Green", "LightGreen", "Lime", "Sand", "Khaki", "Yellow", "Amber", "Orange", "DeepOrange", "BlueGray", "Brown", "LightGray", "Gray", "DarkGray", "PaleRed", "PaleYellow", "PaleGreen", "PaleBlue"]
+        },
+        "widgets": {
+          "type": "array",
+          "description": "Array of widgets contained within this row",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "column": {
+                    "$ref": "#/definitions/column"
+                  }
+                },
+                "required": ["column"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "$ref": "#/definitions/label"
+                  }
+                },
+                "required": ["label"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "freshness": {
+                    "$ref": "#/definitions/freshness"
+                  }
+                },
+                "required": ["freshness"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "gague": {
+                    "$ref": "#/definitions/gague"
+                  }
+                },
+                "required": ["gague"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "$ref": "#/definitions/line"
+                  }
+                },
+                "required": ["line"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "$ref": "#/definitions/value"
+                  }
+                },
+                "required": ["value"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["height", "widgets"],
+      "additionalProperties": false
+    },
+    "column": {
+      "type": "object",
+      "description": "A column container that holds widgets",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "description": "Width of the column in grid units (typically 1-12)",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "color": {
+          "type": "string",
+          "description": "Color theme for the column",
+          "enum": ["Red", "Pink", "Purple", "DeepPurple", "Indigo", "Blue", "LightBlue", "Cyan", "Aqua", "Teal", "Green", "LightGreen", "Lime", "Sand", "Khaki", "Yellow", "Amber", "Orange", "DeepOrange", "BlueGray", "Brown", "LightGray", "Gray", "DarkGray", "PaleRed", "PaleYellow", "PaleGreen", "PaleBlue"]
+        },
+        "widgets": {
+          "type": "array",
+          "description": "Array of widgets contained within this column",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "$ref": "#/definitions/label"
+                  }
+                },
+                "required": ["label"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "freshness": {
+                    "$ref": "#/definitions/freshness"
+                  }
+                },
+                "required": ["freshness"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "gague": {
+                    "$ref": "#/definitions/gague"
+                  }
+                },
+                "required": ["gague"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "$ref": "#/definitions/line"
+                  }
+                },
+                "required": ["line"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "$ref": "#/definitions/value"
+                  }
+                },
+                "required": ["value"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": ["width", "widgets"],
+      "additionalProperties": false
+    },
+    "label": {
+      "type": "object",
+      "description": "A simple text label widget",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text to display in the label"
+        }
+      },
+      "required": ["text"],
+      "additionalProperties": false
+    },
+    "freshness": {
+      "type": "object",
+      "description": "A widget that shows the freshness/age of data",
+      "properties": {
+        "series": {
+          "type": "string",
+          "description": "The data series identifier to check freshness for"
+        }
+      },
+      "required": ["series"],
+      "additionalProperties": false
+    },
+    "gague": {
+      "type": "object",
+      "description": "A gauge widget that displays a value within a range",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label text for the gauge"
+        },
+        "series": {
+          "type": "string",
+          "description": "The data series identifier to display"
+        },
+        "min": {
+          "type": "number",
+          "description": "Minimum value for the gauge scale"
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum value for the gauge scale"
+        }
+      },
+      "required": ["label", "series", "min", "max"],
+      "additionalProperties": false
+    },
+    "line": {
+      "type": "object",
+      "description": "A line chart widget",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label text for the line chart"
+        },
+        "series": {
+          "type": "string",
+          "description": "The data series identifier to plot"
+        }
+      },
+      "required": ["label", "series"],
+      "additionalProperties": false
+    },
+    "value": {
+      "type": "object",
+      "description": "A simple value display widget",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label text for the value"
+        },
+        "series": {
+          "type": "string",
+          "description": "The data series identifier to display"
+        }
+      },
+      "required": ["label", "series"],
+      "additionalProperties": false
+    }
+  }
+} 

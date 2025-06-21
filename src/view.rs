@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 use std::fmt::Write;
 use askama::Template;
-use time::PrimitiveDateTime;
+use time::{PrimitiveDateTime, OffsetDateTime};
 use crate::model::*;
 
 #[derive(Template)]
@@ -15,7 +15,7 @@ pub (crate) struct MainTemplate {
 #[derive(Template)]
 #[template(path = "widget.html")]
 pub (crate) struct WidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub template: WidgetTemplateInner
 }
 
@@ -30,7 +30,7 @@ pub (crate) enum WidgetTemplateInner{
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub point: Option<f32>
 }
 
@@ -53,7 +53,7 @@ impl FreshnessWidgetTemplate{
     pub(crate) fn freshness(&self) -> String{
         match self.last_update_time {
             Some(time) => {
-                let age = PrimitiveDateTime::now() - time;
+                let age = OffsetDateTime::now_utc() - time.assume_utc();
                 format!("{} mins", &age.whole_minutes())
             },
             None => "No data".into()
@@ -64,7 +64,7 @@ impl FreshnessWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_gague.html")]
 pub (crate) struct GagueWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub point: Option<f32>
 }
 
@@ -105,7 +105,7 @@ impl GagueWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_line.html")]
 pub (crate) struct LineWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub data: Vec<Point>
 }
 

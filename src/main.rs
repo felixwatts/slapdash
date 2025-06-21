@@ -2,6 +2,8 @@ mod model;
 mod view;
 mod controller;
 mod db;
+mod config;
+
 use std::env;
 use std::fs::File;
 use std::io::Read;
@@ -30,11 +32,13 @@ async fn main() -> tide::Result<()> {
     Ok(())
 }
 
-fn load_config() -> tide::Result<model::Config> {
+fn load_config() -> tide::Result<model::Dashboard> {
     let mut file = File::open("slapdash.json").map_err(tide::Error::from_display)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents).map_err(tide::Error::from_display)?;
-    serde_json::from_str(&contents).map_err(tide::Error::from_display)
+    let config: config::Config = serde_json::from_str(&contents).map_err(tide::Error::from_display)?;
+    let dashboard = config.to_dashboard();
+    Ok(dashboard)
 }
 
 fn expect_env_var(name: &'static str) -> String{

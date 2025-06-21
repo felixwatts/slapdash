@@ -1,562 +1,861 @@
 {
-    "widgets": [
-
-        {
-            "label": "🔋 Battery",
-            "left": 1,
-            "top": 1,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "DeepOrange"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 1,
-            "width": 3,
-            "height": 1,
-            "series": "f32_victron_battery_monitor_state_of_charge_pct",
-            "typ": "Freshness",
-            "color": "DeepOrange"
-        },
-        {
-            "label": "SoC",
-            "left": 1,
-            "top": 2,
-            "width": 3,
-            "height": 4,
-
-            "series": "f32_victron_battery_monitor_state_of_charge_pct",
-            "typ": {
-                "Gague": {
+  "$schema": "./slapdash.schema.json",
+  "widgets": [
+    {
+      "row": {
+        "height": 1,
+        "color": "DeepOrange",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🔋 Battery"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_victron_battery_monitor_state_of_charge_pct"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "DeepOrange",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "gague": {
+                    "label": "SoC",
+                    "series": "f32_victron_battery_monitor_state_of_charge_pct",
                     "min": 0,
                     "max": 100
+                  }
                 }
-            },
-            "color": "DeepOrange"
-        },
-        {
-            "label": "Current A",
-            "left": 4,
-            "top": 2,
-            "width": 4,
-            "height": 4,
-            "series": "f32_victron_battery_monitor_battery_current_a",
-            "typ": "Line",
-            "color": "DeepOrange"
-        },
-        {
-            "label": "SoC %",
-            "left": 8,
-            "top": 2,
-            "width": 5,
-            "height": 4,
-            "series": "f32_victron_battery_monitor_state_of_charge_pct",
-            "typ": "Line",
-            "color": "DeepOrange"
-        },
-
-
-        {
-            "label": "🚰 Water",
-            "left": 1,
-            "top": 6,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Blue"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 6,
-            "width": 3,
-            "height": 1,
-            "series": "f32_water_level_pct",
-            "typ": "Freshness",
-            "color": "Blue"
-        },
-        {
-            "label": "Level %",
-            "left": 1,
-            "top": 7,
-            "width": 3,
-            "height": 3,
-            "series": "f32_water_level_pct",
-            "typ": "Value",
-            "color": "Blue"
-        },
-        {
-            "label": "Level %",
-            "left": 4,
-            "top": 7,
-            "width": 3,
-            "height": 3,
-            "series": "f32_water_level_pct",
-            "typ": {
-                "Gague": {
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 4,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current A",
+                    "series": "f32_victron_battery_monitor_battery_current_a"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 5,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "SoC %",
+                    "series": "f32_victron_battery_monitor_state_of_charge_pct"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Blue",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🚰 Water"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_water_level_pct"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Blue",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Level %",
+                    "series": "f32_water_level_pct"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "gague": {
+                    "label": "Level %",
+                    "series": "f32_water_level_pct",
                     "min": 0,
                     "max": 100
+                  }
                 }
-            },
-            "color": "Blue"
-        },
-        {
-            "label": "Level %",
-            "left": 7,
-            "top": 7,
-            "width": 6,
-            "height": 3,
-            "series": "f32_water_level_pct",
-            "typ": "Line",
-            "color": "Blue"
-        },
-
-        {
-            "label": "🔌 Mains - Cabin",
-            "left": 1,
-            "top": 10,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Green"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 10,
-            "width": 3,
-            "height": 1,
-            "series": "f32_tapo_cabin_today_energy_kwh",
-            "typ": "Freshness",
-            "color": "Green"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 11,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_cabin_today_energy_kwh",
-            "typ": "Value",
-            "color": "Green"
-        },
-        {
-            "label": "Today Mins",
-            "left": 4,
-            "top": 11,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_cabin_today_runtime_mins",
-            "typ": {
-                "Gague": {
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Level %",
+                    "series": "f32_water_level_pct"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🔌 Mains - Cabin"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_tapo_cabin_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_tapo_cabin_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "gague": {
+                    "label": "Today Mins",
+                    "series": "f32_tapo_cabin_today_runtime_mins",
                     "min": 0,
                     "max": 1440
+                  }
                 }
-            },
-            "color": "Green"
-        },
-        {
-            "label": "Current Power W",
-            "left": 7,
-            "top": 11,
-            "width": 6,
-            "height": 3,
-            "series": "f32_tapo_cabin_current_power_w",
-            "typ": "Line",
-            "color": "Green"
-        },
-
-        {
-            "label": "🔌 Mains - Outside",
-            "left": 1,
-            "top": 14,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Green"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 14,
-            "width": 3,
-            "height": 1,
-            "series": "f32_tapo_outside_today_energy_kwh",
-            "typ": "Freshness",
-            "color": "Green"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 15,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_outside_today_energy_kwh",
-            "typ": "Value",
-            "color": "Green"
-        },
-        {
-            "label": "Today Mins",
-            "left": 4,
-            "top": 15,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_outside_today_runtime_mins",
-            "typ": {
-                "Gague": {
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_tapo_cabin_current_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🔌 Mains - Outside"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_tapo_outside_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_tapo_outside_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "gague": {
+                    "label": "Today Mins",
+                    "series": "f32_tapo_outside_today_runtime_mins",
                     "min": 0,
                     "max": 1440
+                  }
                 }
-            },
-            "color": "Green"
-        },
-        {
-            "label": "Current Power W",
-            "left": 7,
-            "top": 15,
-            "width": 6,
-            "height": 3,
-            "series": "f32_tapo_outside_current_power_w",
-            "typ": "Line",
-            "color": "Green"
-        },
-
-        {
-            "label": "🔌 Mains - Bathroom",
-            "left": 1,
-            "top": 18,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Green"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 18,
-            "width": 3,
-            "height": 1,
-            "series": "f32_tapo_bathroom_today_energy_kwh",
-            "typ": "Freshness",
-            "color": "Green"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 19,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_bathroom_today_energy_kwh",
-            "typ": "Value",
-            "color": "Green"
-        },
-        {
-            "label": "Today Mins",
-            "left": 4,
-            "top": 19,
-            "width": 3,
-            "height": 3,
-            "series": "f32_tapo_bathroom_today_runtime_mins",
-            "typ": {
-                "Gague": {
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_tapo_outside_current_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🔌 Mains - Bathroom"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_tapo_bathroom_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Green",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_tapo_bathroom_today_energy_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "gague": {
+                    "label": "Today Mins",
+                    "series": "f32_tapo_bathroom_today_runtime_mins",
                     "min": 0,
                     "max": 1440
+                  }
                 }
-            },
-            "color": "Green"
-        },
-        {
-            "label": "Current Power W",
-            "left": 7,
-            "top": 19,
-            "width": 6,
-            "height": 3,
-            "series": "f32_tapo_bathroom_current_power_w",
-            "typ": "Line",
-            "color": "Green"
-        },
-
-        {
-            "label": "🌞 Solar - A + B",
-            "left": 1,
-            "top": 22,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Amber"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 22,
-            "width": 3,
-            "height": 1,
-            "series": "f32_victron_mppt_a_b_yield_today_kwh",
-            "typ": "Freshness",
-            "color": "Amber"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 23,
-            "width": 3,
-            "height": 4,
-            "series": "f32_victron_mppt_a_b_yield_today_kwh",
-            "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Current Power W",
-            "left": 4,
-            "top": 23,
-            "width": 9,
-            "height": 4,
-            "series": "f32_victron_mppt_a_b_panel_power_w",
-            "typ": "Line",
-            "color": "Amber"
-        },
-
-        {
-            "label": "🌞 Solar - C",
-            "left": 1,
-            "top": 27,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Amber"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 27,
-            "width": 3,
-            "height": 1,
-            "series": "f32_victron_mppt_c_yield_today_kwh",
-            "typ": "Freshness",
-            "color": "Amber"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 28,
-            "width": 3,
-            "height": 4,
-            "series": "f32_victron_mppt_c_yield_today_kwh",
-            "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Current Power W",
-            "left": 4,
-            "top": 28,
-            "width": 9,
-            "height": 4,
-            "series": "f32_victron_mppt_c_panel_power_w",
-            "typ": "Line",
-            "color": "Amber"
-        },
-
-        {
-            "label": "🌞 Solar - D",
-            "left": 1,
-            "top": 32,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Amber"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 32,
-            "width": 3,
-            "height": 1,
-            "series": "f32_victron_mppt_d_yield_today_kwh",
-            "typ": "Freshness",
-            "color": "Amber"
-        },
-        {
-            "label": "Today kWh",
-            "left": 1,
-            "top": 33,
-            "width": 3,
-            "height": 4,
-            "series": "f32_victron_mppt_d_yield_today_kwh",
-            "typ": "Value",
-            "color": "Amber"
-        },
-        {
-            "label": "Current Power W",
-            "left": 4,
-            "top": 33,
-            "width": 9,
-            "height": 4,
-            "series": "f32_victron_mppt_d_panel_power_w",
-            "typ": "Line",
-            "color": "Amber"
-        },
-
-        {
-            "label": "∿ Inverter",
-            "left": 1,
-            "top": 37,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Purple"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 37,
-            "width": 3,
-            "height": 1,
-            "series": "f32_victron_inverter_ac_out_s_w",
-            "typ": "Freshness",
-            "color": "Purple"
-        },
-        {
-            "label": "Power Out W",
-            "left": 1,
-            "top": 38,
-            "width": 12,
-            "height": 3,
-            "series": "f32_victron_inverter_ac_out_s_w",
-            "typ": "Line",
-            "color": "Purple"
-        },
-
-        {
-            "label": "⛅ Weather",
-            "left": 1,
-            "top": 41,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Blue"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 41,
-            "width": 3,
-            "height": 1,
-            "series": "f32_weather_air_temp_c",
-            "typ": "Freshness",
-            "color": "Blue"
-        },
-        {
-            "label": "Air Temp C",
-            "left": 1,
-            "top": 42,
-            "width": 3,
-            "height": 3,
-            "series": "f32_weather_air_temp_c",
-            "typ": "Value",
-            "color": "Blue"
-        },
-        {
-            "label": "Air Temp C",
-            "left": 4,
-            "top": 42,
-            "width": 9,
-            "height": 3,
-            "series": "f32_weather_air_temp_c",
-            "typ": "Line",
-            "color": "Blue"
-        },
-        {
-            "label": "Wind m/s",
-            "left": 1,
-            "top": 45,
-            "width": 3,
-            "height": 3,
-            "series": "f32_weather_wind_avg_mps",
-            "typ": "Value",
-            "color": "Blue"
-        },
-        {
-            "label": "Wind m/s",
-            "left": 4,
-            "top": 45,
-            "width": 9,
-            "height": 3,
-            "series": "f32_weather_wind_avg_mps",
-            "typ": "Line",
-            "color": "Blue"
-        },
-
-        {
-            "label": "🏠 Cabin",
-            "left": 1,
-            "top": 48,
-            "width": 6,
-            "height": 1,
-            "series": "",
-            "typ": "Label",
-            "color": "Brown"
-        },
-        {
-            "label": "",
-            "left": 7,
-            "top": 48,
-            "width": 3,
-            "height": 1,
-            "series": "f32_cabin_temperature_c",
-            "typ": "Freshness",
-            "color": "Brown"
-        },
-        {
-            "label": "Air Temp C",
-            "left": 1,
-            "top": 49,
-            "width": 3,
-            "height": 3,
-            "series": "f32_cabin_temperature_c",
-            "typ": "Value",
-            "color": "Brown"
-        },
-        {
-            "label": "Air Temp C",
-            "left": 4,
-            "top": 49,
-            "width": 9,
-            "height": 3,
-            "series": "f32_cabin_temperature_c",
-            "typ": "Line",
-            "color": "Brown"
-        },
-        {
-            "label": "Humidity %",
-            "left": 1,
-            "top": 52,
-            "width": 3,
-            "height": 3,
-            "series": "f32_cabin_relative_humidity_pct",
-            "typ": "Value",
-            "color": "Brown"
-        },
-        {
-            "label": "Humidity %",
-            "left": 4,
-            "top": 52,
-            "width": 9,
-            "height": 3,
-            "series": "f32_cabin_relative_humidity_pct",
-            "typ": "Line",
-            "color": "Brown"
-        }
-    ]
-}
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_tapo_bathroom_current_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🌞 Solar - A + B"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_victron_mppt_a_b_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_victron_mppt_a_b_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_victron_mppt_a_b_panel_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🌞 Solar - C"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_victron_mppt_c_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_victron_mppt_c_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_victron_mppt_c_panel_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🌞 Solar - D"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_victron_mppt_d_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Amber",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Today kWh",
+                    "series": "f32_victron_mppt_d_yield_today_kwh"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Current Power W",
+                    "series": "f32_victron_mppt_d_panel_power_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Purple",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "∿ Inverter"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_victron_inverter_ac_out_s_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Purple",
+        "widgets": [
+          {
+            "column": {
+              "width": 12,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Power Out W",
+                    "series": "f32_victron_inverter_ac_out_s_w"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Blue",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "⛅ Weather"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_weather_air_temp_c"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Blue",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Air Temp C",
+                    "series": "f32_weather_air_temp_c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Air Temp C",
+                    "series": "f32_weather_air_temp_c"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Blue",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Wind m/s",
+                    "series": "f32_weather_wind_avg_mps"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Wind m/s",
+                    "series": "f32_weather_wind_avg_mps"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 1,
+        "color": "Brown",
+        "widgets": [
+          {
+            "column": {
+              "width": 6,
+              "widgets": [
+                {
+                  "label": {
+                    "text": "🏠 Cabin"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "freshness": {
+                    "series": "f32_cabin_temperature_c"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Brown",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Air Temp C",
+                    "series": "f32_cabin_temperature_c"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Air Temp C",
+                    "series": "f32_cabin_temperature_c"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "row": {
+        "height": 4,
+        "color": "Brown",
+        "widgets": [
+          {
+            "column": {
+              "width": 3,
+              "widgets": [
+                {
+                  "value": {
+                    "label": "Humidity %",
+                    "series": "f32_cabin_relative_humidity_pct"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "column": {
+              "width": 9,
+              "widgets": [
+                {
+                  "line": {
+                    "label": "Humidity %",
+                    "series": "f32_cabin_relative_humidity_pct"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} 
