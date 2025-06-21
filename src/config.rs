@@ -102,7 +102,7 @@ impl Widget{
             }),
             _ => None
         };
-        
+
         if let Some(model) = model {
             let return_value = (model.width, model.height);
             models.push(model);
@@ -167,7 +167,7 @@ pub struct Value {
 }
 
 impl Config {
-    /// Create a new empty configuration
+    #[cfg(test)]
     pub fn new() -> Self {
         Config {
             widgets: Vec::new(),
@@ -185,122 +185,6 @@ impl Config {
         root.to_model(1, 1, None, None, None, &mut widgets);
         
         Dashboard { widgets }
-    }
-    
-    /// Process a widget and return the flattened widgets and the height consumed
-    fn process_widget(&self, widget: &Widget, left: u16, top: u16) -> (Vec<ModelWidget>, u16) {
-        match widget {
-            Widget::Row(row) => self.process_row(row, left, top),
-            Widget::Column(column) => self.process_column(column, left, top),
-            Widget::Label(label) => {
-                let model_widget = ModelWidget {
-                    label: label.text.clone(),
-                    left,
-                    top,
-                    width: 1, // Default width for labels
-                    height: 1, // Default height for labels
-                    series: String::new(), // Labels don't have series
-                    typ: WidgetType::Label,
-                    color: None,
-                };
-                (vec![model_widget], 1)
-            }
-            Widget::Value(value) => {
-                let model_widget = ModelWidget {
-                    label: value.label.clone(),
-                    left,
-                    top,
-                    width: 1, // Default width for values
-                    height: 1, // Default height for values
-                    series: value.series.clone(),
-                    typ: WidgetType::Value,
-                    color: None,
-                };
-                (vec![model_widget], 1)
-            }
-            Widget::Line(line) => {
-                let model_widget = ModelWidget {
-                    label: line.label.clone(),
-                    left,
-                    top,
-                    width: 1, // Default width for line charts
-                    height: 1, // Default height for line charts
-                    series: line.series.clone(),
-                    typ: WidgetType::Line,
-                    color: None,
-                };
-                (vec![model_widget], 1)
-            }
-            Widget::Gague(gague) => {
-                let model_widget = ModelWidget {
-                    label: gague.label.clone(),
-                    left,
-                    top,
-                    width: 1, // Default width for gauges
-                    height: 1, // Default height for gauges
-                    series: gague.series.clone(),
-                    typ: WidgetType::Gague { 
-                        min: gague.min as f32, 
-                        max: gague.max as f32 
-                    },
-                    color: None,
-                };
-                (vec![model_widget], 1)
-            }
-            Widget::Freshness(freshness) => {
-                let model_widget = ModelWidget {
-                    label: String::new(), // Freshness widgets don't have labels
-                    left,
-                    top,
-                    width: 1, // Default width for freshness indicators
-                    height: 1, // Default height for freshness indicators
-                    series: freshness.series.clone(),
-                    typ: WidgetType::Freshness,
-                    color: None,
-                };
-                (vec![model_widget], 1)
-            }
-        }
-    }
-    
-    /// Process a row widget (horizontal stacking)
-    fn process_row(&self, row: &Row, left: u16, top: u16) -> (Vec<ModelWidget>, u16) {
-        let mut widgets = Vec::new();
-        let mut current_left = left;
-        
-        for widget in &row.widgets {
-            let (new_widgets, _height) = self.process_widget(widget, current_left, top);
-            
-            // Calculate max width before moving new_widgets
-            let max_width = new_widgets.iter().map(|w| w.width).max().unwrap_or(1);
-            
-            widgets.extend(new_widgets);
-            current_left += max_width;
-        }
-        
-        (widgets, row.height as u16)
-    }
-    
-    /// Process a column widget (vertical stacking)
-    fn process_column(&self, column: &Column, left: u16, top: u16) -> (Vec<ModelWidget>, u16) {
-        let mut widgets = Vec::new();
-        let mut current_top = top;
-        let mut total_height = 0u16;
-        
-        for widget in &column.widgets {
-            let (new_widgets, height) = self.process_widget(widget, left, current_top);
-            widgets.extend(new_widgets);
-            current_top += height;
-            total_height += height;
-        }
-        
-        (widgets, total_height)
-    }
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
