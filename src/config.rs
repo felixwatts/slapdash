@@ -11,7 +11,7 @@ pub struct Config {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Row {
     pub widgets: Vec<Widget>,
-    pub height: u32,
+    pub height: u16,
     pub color: Option<Color>,
 }
 
@@ -19,7 +19,7 @@ pub struct Row {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Column {
     pub widgets: Vec<Widget>,
-    pub width: u32,
+    pub width: u16,
     pub color: Option<Color>,
 }
 
@@ -34,6 +34,101 @@ pub enum Widget {
     Value(Value),
     Row(Row),
     Column(Column),
+}
+
+impl Widget{
+    fn to_model(
+        &self, 
+        left: u16, 
+        top: u16, 
+        width: Option<u16>, 
+        height: Option<u16>, 
+        color: Option<Color>,
+        models: &mut Vec<ModelWidget>
+    ) -> (u16, u16) {
+        let model= match self{
+            Widget::Freshness(widget) => Some(ModelWidget{
+                label: String::new(),
+                left: left,
+                top: top,
+                width: width.unwrap_or(1),
+                height: height.unwrap_or(1),
+                series: widget.series.clone(),
+                typ: WidgetType::Freshness,
+                color: color.clone(),
+            }),
+            Widget::Gague(widget) => Some(ModelWidget{
+                label: widget.label.clone(),
+                left: left,
+                top: top,
+                width: width.unwrap_or(1),
+                height: height.unwrap_or(1),
+                series: widget.series.clone(),
+                typ: WidgetType::Gague {
+                    min: widget.min as f32,
+                    max: widget.max as f32,
+                },
+                color: color.clone(),
+            }),
+            Widget::Line(widget) => Some(ModelWidget{
+                label: widget.label.clone(),
+                left: left,
+                top: top,
+                width: width.unwrap_or(1),
+                height: height.unwrap_or(1),
+                series: widget.series.clone(),
+                typ: WidgetType::Line,
+                color: color.clone(),
+            }),
+            Widget::Value(widget) => Some(ModelWidget{
+                label: widget.label.clone(),
+                left: left,
+                top: top,
+                width: width.unwrap_or(1),
+                height: height.unwrap_or(1),
+                series: widget.series.clone(),
+                typ: WidgetType::Value,
+                color: color.clone()
+            }),
+            Widget::Label(widget) => Some(ModelWidget{
+                label: widget.text.clone(),
+                left: left,
+                top: top,
+                width: width.unwrap_or(1),
+                height: height.unwrap_or(1),
+                series: String::new(),
+                typ: WidgetType::Label,
+                color: color.clone(),
+            }),
+            _ => None
+        };
+        if let Some(model) = model {
+            let return_value = (model.width, model.height);
+            println!("Adding widget: {:?}", model);
+            models.push(model);
+            return return_value;
+        }
+        
+        match self{
+            Widget::Row(row) => {
+                let mut current_left = left;
+                for widget in row.widgets.iter(){
+                   let  (width, _height) = widget.to_model(current_left, top, width, Some(row.height), row.color.clone().or(color.clone()), models);
+                   current_left += width;
+                }
+                (current_left, row.height)
+            },
+            Widget::Column(column) => {
+                let mut current_top = top;
+                for widget in column.widgets.iter() {
+                    let  (_width, height) = widget.to_model(left, current_top, Some(column.width), height, column.color.clone().or(color.clone()), models);
+                    current_top += height;
+                }
+                (column.width, current_top)
+            },
+            x => panic!("Invalid widget type: {:?}", x)
+        }
+    }
 }
 
 /// Label widget with text attribute
@@ -79,27 +174,22 @@ impl Config {
         }
     }
 
-    /// Add a row to the configuration
-    pub fn add_row(&mut self, row: Row) {
-        self.widgets.push(Widget::Row(row));
-    }
-
-    /// Add a column to the configuration
-    pub fn add_column(&mut self, column: Column) {
-        self.widgets.push(Widget::Column(column));
-    }
-
     /// Convert this Config to a Dashboard
     pub fn to_dashboard(&self) -> Dashboard {
         let mut widgets = Vec::new();
         let mut current_top = 0u16;
-        
-        // Process all widgets in the root level (implied column)
+
         for widget in &self.widgets {
-            let (new_widgets, height) = self.process_widget(widget, 0, current_top);
-            widgets.extend(new_widgets);
+            let (new_widgets, height) = widget.to_model(0, current_top, None, None, None, &mut widgets);
             current_top += height;
         }
+        
+        // // Process all widgets in the root level (implied column)
+        // for widget in &self.widgets {
+        //     let (new_widgets, height) = self.process_widget(widget, 0, current_top);
+        //     widgets.extend(new_widgets);
+        //     current_top += height;
+        // }
         
         Dashboard { widgets }
     }
@@ -330,7 +420,7 @@ mod tests {
             color: Some(Color::Blue),
         };
 
-        config.add_row(test_row);
+        config.widgets.push(Widget::Row(test_row));
         
         assert_eq!(config.widgets.len(), 1);
         
@@ -351,16 +441,29 @@ mod tests {
         // Create a simple test configuration with a row containing a column
         let test_column = Column {
             widgets: vec![
-                Widget::Label(Label {
-                    text: "Test Label".to_string(),
+                Widget::Row(Row {
+                    height: 3,
+                    widgets: vec![
+                        Widget::Label(Label {
+                            text: "Test Label".to_string(),
+                        })
+                    ],
+                    color: None
                 }),
-                Widget::Value(Value {
-                    label: "Test Value".to_string(),
-                    series: "test_series".to_string(),
+
+                Widget::Row(Row {
+                    height: 4,
+                    widgets: vec![
+                        Widget::Value(Value {
+                            label: "Test Value".to_string(),
+                            series: "test_series".to_string(),
+                        }),
+                    ],
+                    color: None
                 }),
             ],
             width: 6,
-            color: Some(Color::Blue),
+            color: Some(Color::Pink),
         };
         
         let test_row = Row {
@@ -369,7 +472,7 @@ mod tests {
             color: Some(Color::Red),
         };
 
-        config.add_row(test_row);
+        config.widgets.push(Widget::Row(test_row));
         
         // Convert to dashboard
         let dashboard = config.to_dashboard();
@@ -382,8 +485,8 @@ mod tests {
         assert_eq!(label_widget.label, "Test Label");
         assert_eq!(label_widget.left, 0);
         assert_eq!(label_widget.top, 0);
-        assert_eq!(label_widget.width, 1);
-        assert_eq!(label_widget.height, 1);
+        assert_eq!(label_widget.width, 6);
+        assert_eq!(label_widget.height, 3);
         assert_eq!(label_widget.series, "");
         assert!(matches!(label_widget.typ, WidgetType::Label));
         
@@ -391,9 +494,9 @@ mod tests {
         let value_widget = &dashboard.widgets[1];
         assert_eq!(value_widget.label, "Test Value");
         assert_eq!(value_widget.left, 0);
-        assert_eq!(value_widget.top, 1); // Should be below the label
-        assert_eq!(value_widget.width, 1);
-        assert_eq!(value_widget.height, 1);
+        assert_eq!(value_widget.top, 6); // Should be below the label
+        assert_eq!(value_widget.width, 6);
+        assert_eq!(value_widget.height, 4);
         assert_eq!(value_widget.series, "test_series");
         assert!(matches!(value_widget.typ, WidgetType::Value));
     }
@@ -462,8 +565,8 @@ mod tests {
             color: Some(Color::Purple),
         };
         
-        config.add_row(row1);
-        config.add_row(row2);
+        config.widgets.push(Widget::Row(row1));
+        config.widgets.push(Widget::Row(row2));
         
         // Convert to dashboard
         let dashboard = config.to_dashboard();

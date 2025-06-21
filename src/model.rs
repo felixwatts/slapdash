@@ -138,7 +138,7 @@ impl Dashboard {
     }
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone)]
 pub(crate) struct Widget{
     pub label: String,
     pub left: u16,
@@ -160,7 +160,7 @@ impl Widget{
     }
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone)]
 pub(crate) enum WidgetType{
     Value,
     Line,
