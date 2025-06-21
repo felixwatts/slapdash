@@ -102,9 +102,9 @@ impl Widget{
             }),
             _ => None
         };
+        
         if let Some(model) = model {
             let return_value = (model.width, model.height);
-            println!("Adding widget: {:?}", model);
             models.push(model);
             return return_value;
         }
@@ -176,20 +176,13 @@ impl Config {
 
     /// Convert this Config to a Dashboard
     pub fn to_dashboard(&self) -> Dashboard {
+        let root = Widget::Column(Column{
+            widgets: self.widgets.clone(),
+            width: 12,
+            color: None,
+        });
         let mut widgets = Vec::new();
-        let mut current_top = 0u16;
-
-        for widget in &self.widgets {
-            let (new_widgets, height) = widget.to_model(0, current_top, None, None, None, &mut widgets);
-            current_top += height;
-        }
-        
-        // // Process all widgets in the root level (implied column)
-        // for widget in &self.widgets {
-        //     let (new_widgets, height) = self.process_widget(widget, 0, current_top);
-        //     widgets.extend(new_widgets);
-        //     current_top += height;
-        // }
+        root.to_model(1, 1, None, None, None, &mut widgets);
         
         Dashboard { widgets }
     }
