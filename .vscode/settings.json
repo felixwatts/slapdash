@@ -1,0 +1,16 @@
+{
+  "yaml.schemas": {
+    "./slapdash.schema.json": "slapdash.yaml"
+  },
+  "yaml.customTags": [
+    "!row",
+    "!column", 
+    "!label",
+    "!freshness",
+    "!gague",
+    "!line",
+    "!value"
+  ],
+  "yaml.validate": true,
+  "yaml.format.enable": true
+} 

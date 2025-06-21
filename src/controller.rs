@@ -7,9 +7,9 @@ use crate::db;
 
 use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GagueWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
-use crate::{model::{Config, WidgetConfig}, view::{MainTemplate, WidgetTemplate}};
+use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 
-pub(crate) async fn get(req: tide::Request<(String, Config)>) -> tide::Result {
+pub(crate) async fn get(req: tide::Request<(String, Dashboard)>) -> tide::Result {
     let mut db = req.sqlx_conn::<Postgres>().await;
     let (_secret, config) = req.state();
 
@@ -18,7 +18,7 @@ pub(crate) async fn get(req: tide::Request<(String, Config)>) -> tide::Result {
     Ok(askama_tide::into_response(&template))
 }
 
-pub(crate) async fn put(req: tide::Request<(String, Config)>) -> tide::Result {
+pub(crate) async fn put(req: tide::Request<(String, Dashboard)>) -> tide::Result {
     let (expected_secret, _config) = req.state();
     let actual_secret = req.param("secret")?;
 
@@ -40,7 +40,7 @@ pub(crate) async fn put(req: tide::Request<(String, Config)>) -> tide::Result {
     Ok(Response::builder(StatusCode::Ok).build())
 }
 
-pub(crate) async fn build_main(config: &Config, db: &mut PgConnection) -> tide::Result<MainTemplate> {
+pub(crate) async fn build_main(config: &Dashboard, db: &mut PgConnection) -> tide::Result<MainTemplate> {
     let mut widget_templates = vec![];
     for widget_config in config.widgets.iter() {
         let widget_template = build_widget(widget_config.clone(), db).await?;
@@ -56,7 +56,7 @@ pub(crate) async fn build_main(config: &Config, db: &mut PgConnection) -> tide::
     )
 }
 
-async fn build_widget(config: WidgetConfig, db: &mut PgConnection) -> tide::Result<WidgetTemplate>{
+async fn build_widget(config: Widget, db: &mut PgConnection) -> tide::Result<WidgetTemplate>{
     let data = db::get(db, &config.series).await?;
     let template = match config.typ {
         WidgetType::Value => WidgetTemplateInner::Value(

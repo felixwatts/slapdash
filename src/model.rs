@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Clone, Default)]
+#[derive(Debug,Serialize, Deserialize, Clone, Default)]
 pub(crate) enum Color{
     Red,
     Pink,
@@ -114,11 +114,11 @@ impl Point{
 }
 
 #[derive(Deserialize, Clone)]
-pub(crate) struct Config{
-    pub widgets: Vec<WidgetConfig>
+pub(crate) struct Dashboard{
+    pub widgets: Vec<Widget>
 }
 
-impl Config {
+impl Dashboard {
     pub fn width(&self) -> u16 {
         self
             .widgets
@@ -139,7 +139,7 @@ impl Config {
 }
 
 #[derive(Deserialize, Clone)]
-pub(crate) struct WidgetConfig{
+pub(crate) struct Widget{
     pub label: String,
     pub left: u16,
     pub top: u16,
@@ -150,7 +150,7 @@ pub(crate) struct WidgetConfig{
     pub color: Option<Color>
 }
 
-impl WidgetConfig{
+impl Widget{
     pub(crate) fn color_css_class(&self) -> &str {
         self.color.as_ref().map(Color::to_css_class).unwrap_or(Color::default().to_css_class())
     }

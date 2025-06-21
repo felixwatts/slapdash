@@ -15,7 +15,7 @@ pub (crate) struct MainTemplate {
 #[derive(Template)]
 #[template(path = "widget.html")]
 pub (crate) struct WidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub template: WidgetTemplateInner
 }
 
@@ -30,7 +30,7 @@ pub (crate) enum WidgetTemplateInner{
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub point: Option<f32>
 }
 
@@ -64,7 +64,7 @@ impl FreshnessWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_gague.html")]
 pub (crate) struct GagueWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub point: Option<f32>
 }
 
@@ -105,7 +105,7 @@ impl GagueWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_line.html")]
 pub (crate) struct LineWidgetTemplate{
-    pub config: WidgetConfig,
+    pub config: Widget,
     pub data: Vec<Point>
 }
 
