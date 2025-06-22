@@ -3,31 +3,19 @@
   "widgets": [
     {
       "row": {
-        "height": 1,
-        "color": "DeepOrange",
+        "widget_height": 1,
+        "widget_color": "DeepOrange",
         "widgets": [
           {
-            "column": {
-              "width": 6,
-              "widgets": [
-                {
-                  "label": {
-                    "text": "🔋 Battery"
-                  }
-                }
-              ]
+            "label": {
+              "text": "🔋 Battery",
+              "width": 6
             }
           },
           {
-            "column": {
-              "width": 3,
-              "widgets": [
-                {
-                  "freshness": {
-                    "series": "f32_victron_battery_monitor_state_of_charge_pct"
-                  }
-                }
-              ]
+            "freshness": {
+              "series": "f32_victron_battery_monitor_state_of_charge_pct",
+              "width": 3
             }
           }
         ]

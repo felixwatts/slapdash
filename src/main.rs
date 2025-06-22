@@ -3,12 +3,15 @@ mod view;
 mod controller;
 mod db;
 mod config;
+mod cli;
 
 use std::env;
 use std::fs::File;
 use std::io::Read;
 use sqlx::postgres::Postgres;
 use tide_sqlx::SQLxMiddleware;
+
+// const SQLITE_DB_URL: &'static str = "sqlite:slapdash.db?mode=rwc";
 
 #[async_std::main]
 async fn main() -> tide::Result<()> {
