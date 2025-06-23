@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="slapdash.xsd">
+    <row widget_height="1" widget_color="DeepOrange">
+        <label text="🔋 Battery" width="6" />
+        <freshness series="f32_victron_battery_monitor_state_of_charge_pct" width="3" />
+    </row>
+    <row widget_height="4" widget_color="DeepOrange">
+        <gague label="SoC" width="3" series="f32_victron_battery_monitor_state_of_charge_pct" min="0" max="100" />
+        <line label="Current A" width="4" series="f32_victron_battery_monitor_battery_current_a" />
+        <line label="SoC %" width="5" series="f32_victron_battery_monitor_state_of_charge_pct" />
+    </row>
+    
+    <row widget_height="1" widget_color="Blue">
+        <label text="🚰 Water" width="6" />
+        <freshness series="f32_water_level_pct" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Blue">
+        <value label="Level %" width="3" series="f32_water_level_pct" />
+        <gague label="Level %" width="3" series="f32_water_level_pct" min="0" max="100" />
+        <line label="Level %" width="6" series="f32_water_level_pct" />
+    </row>
+    
+    <row widget_height="1" widget_color="Green">
+        <label text="🔌 Mains - Cabin" width="6" />
+        <freshness series="f32_tapo_cabin_today_energy_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Green">
+        <value label="Today kWh" width="3" series="f32_tapo_cabin_today_energy_kwh" />
+        <gague label="Today Mins" width="3" series="f32_tapo_cabin_today_runtime_mins" min="0" max="1440" />
+        <line label="Current Power W" width="6" series="f32_tapo_cabin_current_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Green">
+        <label text="🔌 Mains - Outside" width="6" />
+        <freshness series="f32_tapo_outside_today_energy_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Green">
+        <value label="Today kWh" width="3" series="f32_tapo_outside_today_energy_kwh" />
+        <gague label="Today Mins" width="3" series="f32_tapo_outside_today_runtime_mins" min="0" max="1440" />
+        <line label="Current Power W" width="6" series="f32_tapo_outside_current_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Green">
+        <label text="🔌 Mains - Bathroom" width="6" />
+        <freshness series="f32_tapo_bathroom_today_energy_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Green">
+        <value label="Today kWh" width="3" series="f32_tapo_bathroom_today_energy_kwh" />
+        <gague label="Today Mins" width="3" series="f32_tapo_bathroom_today_runtime_mins" min="0" max="1440" />
+        <line label="Current Power W" width="6" series="f32_tapo_bathroom_current_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Amber">
+        <label text="🌞 Solar - A + B" width="6" />
+        <freshness series="f32_victron_mppt_a_b_yield_today_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Amber">
+        <value label="Today kWh" width="3" series="f32_victron_mppt_a_b_yield_today_kwh" />
+        <line label="Current Power W" width="9" series="f32_victron_mppt_a_b_panel_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Amber">
+        <label text="🌞 Solar - C" width="6" />
+        <freshness series="f32_victron_mppt_c_yield_today_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Amber">
+        <value label="Today kWh" width="3" series="f32_victron_mppt_c_yield_today_kwh" />
+        <line label="Current Power W" width="9" series="f32_victron_mppt_c_panel_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Amber">
+        <label text="🌞 Solar - D" width="6" />
+        <freshness series="f32_victron_mppt_d_yield_today_kwh" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Amber">
+        <value label="Today kWh" width="3" series="f32_victron_mppt_d_yield_today_kwh" />
+        <line label="Current Power W" width="9" series="f32_victron_mppt_d_panel_power_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Purple">
+        <label text="∿ Inverter" width="6" />
+        <freshness series="f32_victron_inverter_ac_out_s_w" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Purple">
+        <line label="Power Out W" width="12" series="f32_victron_inverter_ac_out_s_w" />
+    </row>
+    
+    <row widget_height="1" widget_color="Blue">
+        <label text="⛅ Weather" width="6" />
+        <freshness series="f32_weather_air_temp_c" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Blue">
+        <value label="Air Temp C" width="3" series="f32_weather_air_temp_c" />
+        <line label="Air Temp C" width="9" series="f32_weather_air_temp_c" />
+    </row>
+    <row widget_height="4" widget_color="Blue">
+        <value label="Wind m/s" width="3" series="f32_weather_wind_avg_mps" />
+        <line label="Wind m/s" width="9" series="f32_weather_wind_avg_mps" />
+    </row>
+    
+    <row widget_height="1" widget_color="Brown">
+        <label text="🏠 Cabin" width="6" />
+        <freshness series="f32_cabin_temperature_c" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Brown">
+        <value label="Air Temp C" width="3" series="f32_cabin_temperature_c" />
+        <line label="Air Temp C" width="9" series="f32_cabin_temperature_c" />
+    </row>
+    <row widget_height="4" widget_color="Brown">
+        <value label="Humidity %" width="3" series="f32_cabin_relative_humidity_pct" />
+        <line label="Humidity %" width="9" series="f32_cabin_relative_humidity_pct" />
+    </row>
+</column>

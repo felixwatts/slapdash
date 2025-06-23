@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <!-- Color enumeration based on the Color enum in model.rs -->
+    <xs:simpleType name="ColorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Red"/>
+            <xs:enumeration value="Pink"/>
+            <xs:enumeration value="Purple"/>
+            <xs:enumeration value="DeepPurple"/>
+            <xs:enumeration value="Indigo"/>
+            <xs:enumeration value="Blue"/>
+            <xs:enumeration value="LightBlue"/>
+            <xs:enumeration value="Cyan"/>
+            <xs:enumeration value="Aqua"/>
+            <xs:enumeration value="Teal"/>
+            <xs:enumeration value="Green"/>
+            <xs:enumeration value="LightGreen"/>
+            <xs:enumeration value="Lime"/>
+            <xs:enumeration value="Sand"/>
+            <xs:enumeration value="Khaki"/>
+            <xs:enumeration value="Yellow"/>
+            <xs:enumeration value="Amber"/>
+            <xs:enumeration value="Orange"/>
+            <xs:enumeration value="DeepOrange"/>
+            <xs:enumeration value="BlueGray"/>
+            <xs:enumeration value="Brown"/>
+            <xs:enumeration value="LightGray"/>
+            <xs:enumeration value="Gray"/>
+            <xs:enumeration value="DarkGray"/>
+            <xs:enumeration value="PaleRed"/>
+            <xs:enumeration value="PaleYellow"/>
+            <xs:enumeration value="PaleGreen"/>
+            <xs:enumeration value="PaleBlue"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Common attributes for layout elements (column, row) -->
+    <xs:attributeGroup name="LayoutAttributes">
+        <xs:attribute name="widget_width" type="xs:positiveInteger" use="optional"/>
+        <xs:attribute name="widget_height" type="xs:positiveInteger" use="optional"/>
+        <xs:attribute name="widget_color" type="ColorType" use="optional"/>
+    </xs:attributeGroup>
+
+    <!-- Common attributes for widget elements -->
+    <xs:attributeGroup name="WidgetAttributes">
+        <xs:attribute name="width" type="xs:positiveInteger" use="optional"/>
+        <xs:attribute name="height" type="xs:positiveInteger" use="optional"/>
+        <xs:attribute name="color" type="ColorType" use="optional"/>
+    </xs:attributeGroup>
+
+    <!-- Column element -->
+    <xs:element name="column">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="row"/>
+                    <xs:element ref="label"/>
+                    <xs:element ref="value"/>
+                    <xs:element ref="line"/>
+                    <xs:element ref="gague"/>
+                    <xs:element ref="freshness"/>
+                    <xs:element ref="column"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attributeGroup ref="LayoutAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Row element -->
+    <xs:element name="row">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="label"/>
+                    <xs:element ref="value"/>
+                    <xs:element ref="line"/>
+                    <xs:element ref="gague"/>
+                    <xs:element ref="freshness"/>
+                    <xs:element ref="column"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attributeGroup ref="LayoutAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Label element -->
+    <xs:element name="label">
+        <xs:complexType>
+            <xs:attribute name="text" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Value element -->
+    <xs:element name="value">
+        <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required"/>
+            <xs:attribute name="series" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Line element -->
+    <xs:element name="line">
+        <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required"/>
+            <xs:attribute name="series" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Gague element -->
+    <xs:element name="gague">
+        <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required"/>
+            <xs:attribute name="series" type="xs:string" use="required"/>
+            <xs:attribute name="min" type="xs:decimal" use="required"/>
+            <xs:attribute name="max" type="xs:decimal" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Freshness element -->
+    <xs:element name="freshness">
+        <xs:complexType>
+            <xs:attribute name="series" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema> 
