@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use quick_xml::de;
 use crate::model::{Color, Dashboard, Widget as ModelWidget, WidgetType};
 
 /// Row element with height and color attributes
@@ -34,7 +33,7 @@ pub struct Column {
 pub enum Widget {
     Label(Label),
     Freshness(Freshness),
-    Gague(Gague),
+    Gauge(Gauge),
     Line(Line),
     Value(Value),
     Row(Row),
@@ -53,7 +52,7 @@ impl Widget{
     //         Widget::Freshness(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
     //         Widget::Value(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
     //         Widget::Line(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //         Widget::Gague(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
+    //         Widget::Gauge(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
     //         Widget::Label(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
     //     }
     // }
@@ -69,7 +68,7 @@ impl Widget{
     //         Widget::Freshness(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
     //         Widget::Value(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
     //         Widget::Line(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //         Widget::Gague(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
+    //         Widget::Gauge(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
     //         Widget::Label(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
     //     }
     // }
@@ -100,14 +99,14 @@ impl Widget{
                 typ: WidgetType::Freshness,
                 color: widget.color.clone().or(default_color.clone()),
             }),
-            Widget::Gague(widget) => Some(ModelWidget{
+            Widget::Gauge(widget) => Some(ModelWidget{
                 label: widget.label.clone(),
                 left: left,
                 top: top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: widget.series.clone(),
-                typ: WidgetType::Gague {
+                typ: WidgetType::Gauge {
                     min: widget.min as f32,
                     max: widget.max as f32,
                 },
@@ -218,9 +217,9 @@ pub struct Freshness {
     pub color: Option<Color>,
 }
 
-/// Gague widget with label, series, min, and max attributes
+/// Gauge widget with label, series, min, and max attributes
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Gague {
+pub struct Gauge {
     #[serde(rename = "@label")]
     pub label: String,
     #[serde(rename = "@series")]
@@ -287,7 +286,7 @@ mod tests {
     fn test_complex_nested_conversion() {
         // Create a complex nested structure via XML:
         // Row 1: [Column 1: [Label, Value], Column 2: [Line]]
-        // Row 2: [Column 3: [Gague, Freshness]]
+        // Row 2: [Column 3: [Gauge, Freshness]]
         
         let xml_content = r#"
         <column>
@@ -302,7 +301,7 @@ mod tests {
             </row>
             <row widget_height="2" widget_color="Purple">
                 <column widget_width="6" widget_color="Yellow">
-                    <gague label="Gauge 1" series="series3" min="0" max="100" />
+                    <gauge label="Gauge 1" series="series3" min="0" max="100" />
                     <freshness series="series4" />
                 </column>
             </row>

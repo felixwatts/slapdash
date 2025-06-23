@@ -58,7 +58,7 @@
                     <xs:element ref="label"/>
                     <xs:element ref="value"/>
                     <xs:element ref="line"/>
-                    <xs:element ref="gague"/>
+                    <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
                     <xs:element ref="column"/>
                 </xs:choice>
@@ -75,7 +75,7 @@
                     <xs:element ref="label"/>
                     <xs:element ref="value"/>
                     <xs:element ref="line"/>
-                    <xs:element ref="gague"/>
+                    <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
                     <xs:element ref="column"/>
                 </xs:choice>
@@ -110,8 +110,8 @@
         </xs:complexType>
     </xs:element>
 
-    <!-- Gague element -->
-    <xs:element name="gague">
+    <!-- Gauge element -->
+    <xs:element name="gauge">
         <xs:complexType>
             <xs:attribute name="label" type="xs:string" use="required"/>
             <xs:attribute name="series" type="xs:string" use="required"/>

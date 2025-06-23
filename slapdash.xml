@@ -5,7 +5,7 @@
         <freshness series="f32_victron_battery_monitor_state_of_charge_pct" width="3" />
     </row>
     <row widget_height="4" widget_color="DeepOrange">
-        <gague label="SoC" width="3" series="f32_victron_battery_monitor_state_of_charge_pct" min="0" max="100" />
+        <gauge label="SoC" width="3" series="f32_victron_battery_monitor_state_of_charge_pct" min="0" max="100" />
         <line label="Current A" width="4" series="f32_victron_battery_monitor_battery_current_a" />
         <line label="SoC %" width="5" series="f32_victron_battery_monitor_state_of_charge_pct" />
     </row>
@@ -16,7 +16,7 @@
     </row>
     <row widget_height="4" widget_color="Blue">
         <value label="Level %" width="3" series="f32_water_level_pct" />
-        <gague label="Level %" width="3" series="f32_water_level_pct" min="0" max="100" />
+        <gauge label="Level %" width="3" series="f32_water_level_pct" min="0" max="100" />
         <line label="Level %" width="6" series="f32_water_level_pct" />
     </row>
     
@@ -26,7 +26,7 @@
     </row>
     <row widget_height="4" widget_color="Green">
         <value label="Today kWh" width="3" series="f32_tapo_cabin_today_energy_kwh" />
-        <gague label="Today Mins" width="3" series="f32_tapo_cabin_today_runtime_mins" min="0" max="1440" />
+        <gauge label="Today Mins" width="3" series="f32_tapo_cabin_today_runtime_mins" min="0" max="1440" />
         <line label="Current Power W" width="6" series="f32_tapo_cabin_current_power_w" />
     </row>
     
@@ -36,7 +36,7 @@
     </row>
     <row widget_height="4" widget_color="Green">
         <value label="Today kWh" width="3" series="f32_tapo_outside_today_energy_kwh" />
-        <gague label="Today Mins" width="3" series="f32_tapo_outside_today_runtime_mins" min="0" max="1440" />
+        <gauge label="Today Mins" width="3" series="f32_tapo_outside_today_runtime_mins" min="0" max="1440" />
         <line label="Current Power W" width="6" series="f32_tapo_outside_current_power_w" />
     </row>
     
@@ -46,7 +46,7 @@
     </row>
     <row widget_height="4" widget_color="Green">
         <value label="Today kWh" width="3" series="f32_tapo_bathroom_today_energy_kwh" />
-        <gague label="Today Mins" width="3" series="f32_tapo_bathroom_today_runtime_mins" min="0" max="1440" />
+        <gauge label="Today Mins" width="3" series="f32_tapo_bathroom_today_runtime_mins" min="0" max="1440" />
         <line label="Current Power W" width="6" series="f32_tapo_bathroom_current_power_w" />
     </row>
     

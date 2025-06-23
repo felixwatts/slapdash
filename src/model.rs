@@ -164,7 +164,7 @@ impl Widget{
 pub(crate) enum WidgetType{
     Value,
     Line,
-    Gague{ min: f32, max:f32 },
+    Gauge{ min: f32, max:f32 },
     Label,
     Freshness
 }

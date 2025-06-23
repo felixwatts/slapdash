@@ -6,7 +6,7 @@ use tide_sqlx::SQLxRequestExt;
 use crate::db;
 
 use crate::model::WidgetType;
-use crate::view::{FreshnessWidgetTemplate, GagueWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
+use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 
 pub(crate) async fn get(req: tide::Request<(String, Dashboard)>) -> tide::Result {
@@ -71,8 +71,8 @@ async fn build_widget(config: Widget, db: &mut PgConnection) -> tide::Result<Wid
                 data,
             }
         ),
-        WidgetType::Gague{ .. } => WidgetTemplateInner::Gague(
-            GagueWidgetTemplate{
+        WidgetType::Gauge{ .. } => WidgetTemplateInner::Gauge(
+            GaugeWidgetTemplate{
                 config: config.clone(),
                 point: data.last().map(|p| p.value) 
             }

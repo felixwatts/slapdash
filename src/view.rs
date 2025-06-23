@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 use std::fmt::Write;
 use askama::Template;
-use time::{PrimitiveDateTime, OffsetDateTime};
+use time::OffsetDateTime;
 use crate::model::*;
 
 #[derive(Template)]
@@ -22,7 +22,7 @@ pub (crate) struct WidgetTemplate{
 pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
     Line(LineWidgetTemplate),
-    Gague(GagueWidgetTemplate),
+    Gauge(GaugeWidgetTemplate),
     Label,
     Freshness(FreshnessWidgetTemplate)
 }
@@ -62,16 +62,16 @@ impl FreshnessWidgetTemplate{
 }
 
 #[derive(Template)]
-#[template(path = "widget_gague.html")]
-pub (crate) struct GagueWidgetTemplate{
+#[template(path = "widget_gauge.html")]
+pub (crate) struct GaugeWidgetTemplate{
     pub config: Widget,
     pub point: Option<f32>
 }
 
-impl GagueWidgetTemplate{
+impl GaugeWidgetTemplate{
     pub fn arc_svg(&self) -> String {
         match self.config.typ {
-            WidgetType::Gague { min, max } => {
+            WidgetType::Gauge { min, max } => {
                 match self.point {
                     Some(mut value) => {
                         value = value.clamp(min, max);
