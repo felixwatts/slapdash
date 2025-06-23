@@ -2832,6 +2832,7 @@ dependencies = [
 [[package]]
 name = "tide-sqlx"
 version = "0.6.1"
+source = "git+https://github.com/felixwatts/tide-sqlx.git#6b4f2ac88bac9be96617b3c998aad4b57b95d84e"
 dependencies = [
  "async-std",
  "sqlx",

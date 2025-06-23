@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 tide = "0.16.0"
-tide-sqlx = { path = "../tide-sqlx", features = ["native-tls"] }
+tide-sqlx = { git = "https://github.com/felixwatts/tide-sqlx.git", features = ["native-tls"] }
 sqlx = { version = "0.8.6", features = [ "runtime-async-std-native-tls", "time", "sqlite", "chrono" ] }
 async-std = { version = "1.13.0", features = ["attributes"] }
 serde = { version = "1.0.210", features = ["derive"] }
