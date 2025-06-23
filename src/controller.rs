@@ -12,7 +12,6 @@ use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use sqlx::Acquire;
 
 pub(crate) async fn get(req: tide::Request<(String, Dashboard)>) -> tide::Result {
-    // let db_pool = req.ext::<sqlx::Pool<Sqlite>>().unwrap();
     let mut db = req.sqlx_conn::<Sqlite>().await;
     let db = db.acquire().await?;
     let (_secret, config) = req.state();
