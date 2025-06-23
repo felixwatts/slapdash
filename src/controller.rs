@@ -1,6 +1,7 @@
 use std::num::FpCategory;
 
-use sqlx::{Acquire, PgConnection, Postgres};
+use sqlx::{Pool,pool::PoolConnection};
+use sqlx::Sqlite;
 use tide::{Response, StatusCode};
 use tide_sqlx::SQLxRequestExt;
 use crate::db;
@@ -8,12 +9,15 @@ use crate::db;
 use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
+use sqlx::Acquire;
 
 pub(crate) async fn get(req: tide::Request<(String, Dashboard)>) -> tide::Result {
-    let mut db = req.sqlx_conn::<Postgres>().await;
+    // let db_pool = req.ext::<sqlx::Pool<Sqlite>>().unwrap();
+    let mut db = req.sqlx_conn::<Sqlite>().await;
+    let db = db.acquire().await?;
     let (_secret, config) = req.state();
 
-    let template = build_main(config, db.acquire().await?).await?;
+    let template = build_main(config, db).await?;
 
     Ok(askama_tide::into_response(&template))
 }
@@ -31,8 +35,9 @@ pub(crate) async fn put(req: tide::Request<(String, Dashboard)>) -> tide::Result
 
     match value.classify() {
         FpCategory::Normal | FpCategory::Zero => {
-            let mut db = req.sqlx_conn::<Postgres>().await;
-            db::put(db.acquire().await?, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+            let mut db = req.sqlx_conn::<Sqlite>().await;
+            let db = db.acquire().await?;
+            db::put(db, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
         },
         _ => {}
     }
@@ -40,7 +45,7 @@ pub(crate) async fn put(req: tide::Request<(String, Dashboard)>) -> tide::Result
     Ok(Response::builder(StatusCode::Ok).build())
 }
 
-pub(crate) async fn build_main(config: &Dashboard, db: &mut PgConnection) -> tide::Result<MainTemplate> {
+pub(crate) async fn build_main(config: &Dashboard, db: &mut sqlx::SqliteConnection) -> tide::Result<MainTemplate> {
     let mut widget_templates = vec![];
     for widget_config in config.widgets.iter() {
         let widget_template = build_widget(widget_config.clone(), db).await?;
@@ -56,7 +61,7 @@ pub(crate) async fn build_main(config: &Dashboard, db: &mut PgConnection) -> tid
     )
 }
 
-async fn build_widget(config: Widget, db: &mut PgConnection) -> tide::Result<WidgetTemplate>{
+async fn build_widget(config: Widget, db: &mut sqlx::SqliteConnection) -> tide::Result<WidgetTemplate>{
     let data = db::get(db, &config.series).await?;
     let template = match config.typ {
         WidgetType::Value => WidgetTemplateInner::Value(

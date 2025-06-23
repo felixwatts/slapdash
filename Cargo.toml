@@ -7,8 +7,8 @@ edition = "2021"
 
 [dependencies]
 tide = "0.16.0"
-tide-sqlx = { version = "0.6.1", features = ["postgres", "native-tls"] }
-sqlx = { version = "0.5", features = [ "runtime-async-std-native-tls", "time", "sqlite" ] }
+tide-sqlx = { path = "../tide-sqlx", features = ["native-tls"] }
+sqlx = { version = "0.8.6", features = [ "runtime-async-std-native-tls", "time", "sqlite", "chrono" ] }
 async-std = { version = "1.13.0", features = ["attributes"] }
 serde = { version = "1.0.210", features = ["derive"] }
 time = { version = "0.2.27", features = ["serde"] }
@@ -17,3 +17,4 @@ serde_json = "1.0.128"
 askama = "0.12.1"
 askama_tide = "0.15.0"
 quick-xml = { version = "0.37.5", features = ["serialize"] }
+chrono = { version = "0.4", features = ["serde"] }

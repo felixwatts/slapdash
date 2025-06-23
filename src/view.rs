@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 use std::fmt::Write;
 use askama::Template;
-use time::OffsetDateTime;
+use chrono::NaiveDateTime;
 use crate::model::*;
 
 #[derive(Template)]
@@ -46,15 +46,15 @@ impl ValueWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_freshness.html")]
 pub (crate) struct FreshnessWidgetTemplate{
-    pub last_update_time: Option<time::PrimitiveDateTime>
+    pub last_update_time: Option<chrono::NaiveDateTime>
 }
 
 impl FreshnessWidgetTemplate{
     pub(crate) fn freshness(&self) -> String{
         match self.last_update_time {
             Some(time) => {
-                let age = OffsetDateTime::now_utc() - time.assume_utc();
-                format!("{} mins", &age.whole_minutes())
+                let age = chrono::Utc::now().naive_utc() - time;
+                format!("{} mins", &age.num_minutes())
             },
             None => "N/A".into()
         }
