@@ -16,3 +16,4 @@ dotenv = "0.15.0"
 serde_json = "1.0.128"
 askama = "0.12.1"
 askama_tide = "0.15.0"
+quick-xml = { version = "0.37.5", features = ["serialize"] }

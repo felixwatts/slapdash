@@ -38,7 +38,7 @@ impl ValueWidgetTemplate{
     pub fn text(&self) -> String {
         match self.point {
             Some(value) => format!("{value:.2}"),
-            None => "No data".into()
+            None => "N/A".into()
         }
     }
 }   
@@ -56,7 +56,7 @@ impl FreshnessWidgetTemplate{
                 let age = OffsetDateTime::now_utc() - time.assume_utc();
                 format!("{} mins", &age.whole_minutes())
             },
-            None => "No data".into()
+            None => "N/A".into()
         }
     }
 }

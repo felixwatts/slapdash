@@ -36,10 +36,10 @@ async fn main() -> tide::Result<()> {
 }
 
 fn load_config() -> tide::Result<model::Dashboard> {
-    let mut file = File::open("slapdash.json").map_err(tide::Error::from_display)?;
+    let mut file = File::open("slapdash.xml").map_err(tide::Error::from_display)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents).map_err(tide::Error::from_display)?;
-    let config: config::Config = serde_json::from_str(&contents).map_err(tide::Error::from_display)?;
+    let config: config::Widget = quick_xml::de::from_str(&contents).map_err(tide::Error::from_display)?;
     let dashboard = config.to_dashboard();
     Ok(dashboard)
 }
