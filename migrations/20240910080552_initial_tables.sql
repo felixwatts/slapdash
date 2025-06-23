@@ -1,11 +1,11 @@
 create table series (
-    id serial primary key,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name text not null unique
 );
 
 create table point (
-    id serial primary key,
-    series_id int references series(id) not null,
-    time timestamp without time zone not null,
-    value real not null
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    series_id INTEGER references series(id) not null,
+    time INTEGER not null,
+    value REAL not null
 );

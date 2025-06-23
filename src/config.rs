@@ -276,7 +276,7 @@ mod tests {
         let xml_content = fs::read_to_string("slapdash.xml").unwrap();
         
         // Use the new from_xml method
-        let config = de::from_str::<Widget>(&xml_content).unwrap();
+        let config = quick_xml::de::from_str::<Widget>(&xml_content).unwrap();
         
         // let dashboard = config.to_dashboard();
         // assert_eq!(dashboard.widgets.len(), 5);
@@ -309,7 +309,7 @@ mod tests {
         "#;
         
         // Parse the XML into a Widget
-        let config = de::from_str::<Widget>(xml_content).unwrap();
+        let config = quick_xml::de::from_str::<Widget>(xml_content).unwrap();
         
         // Convert to dashboard
         let dashboard = config.to_dashboard();

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use chrono::NaiveDateTime;
 
 #[derive(Debug,Serialize, Deserialize, Clone, Default)]
 pub(crate) enum Color{
@@ -101,15 +102,15 @@ impl Color{
     }
 }
 
-#[derive(Serialize, Debug)]
+#[derive(sqlx::FromRow, Serialize, Debug)]
 pub(crate) struct Point{
-    pub time: time::PrimitiveDateTime,
+    pub time: NaiveDateTime,
     pub value: f32
 }
 
 impl Point{
     pub fn x(&self) -> i64 {
-        self.time.assume_utc().unix_timestamp()
+        self.time.and_utc().timestamp()
     }
 }
 
