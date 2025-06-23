@@ -6,11 +6,10 @@ use sqlx::Connection;
 pub(crate) async fn put(db: &mut sqlx::SqliteConnection, series: &str, point: f32) -> tide::Result<()> {
     let mut tx = db.begin().await.map_err(tide::Error::from_display)?;
 
-
     // First, insert the series (or ignore if it already exists)
     sqlx::query!("
         INSERT OR IGNORE INTO series (name) 
-        VALUES (?) 
+        VALUES (?)
     ",
     series
     )
@@ -48,7 +47,7 @@ pub(crate) async fn get(db: &mut sqlx::SqliteConnection, series: &str) -> tide::
             value as `value!: f32`
         FROM point
         INNER JOIN series ON point.series_id = series.id
-        WHERE 
+        WHERE
             series.name = $1
             AND time > strftime('%s','now') - 86400
         ORDER BY time ASC

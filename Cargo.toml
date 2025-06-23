@@ -18,3 +18,7 @@ askama = "0.12.1"
 askama_tide = "0.15.0"
 quick-xml = { version = "0.37.5", features = ["serialize"] }
 chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0.98"
+rand = { version = "0.8", features = ["getrandom"] }
+regex = "1.11.1"

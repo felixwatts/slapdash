@@ -10,18 +10,23 @@ use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use sqlx::Acquire;
+use std::collections::HashMap;
 
-pub(crate) async fn get(req: tide::Request<(String, Dashboard)>) -> tide::Result {
+pub(crate) async fn get(req: tide::Request<(String, HashMap<String, Dashboard>)>) -> tide::Result {
     let mut db = req.sqlx_conn::<Sqlite>().await;
     let db = db.acquire().await?;
-    let (_secret, config) = req.state();
+    let (_secret, dashboards) = req.state();
 
-    let template = build_main(config, db).await?;
+    let dashboard_name = req.param("dashboard").unwrap_or("default");
+    let dashboard = dashboards.get(dashboard_name)
+        .ok_or_else(|| tide::Error::from_str(StatusCode::NotFound, "Dashboard not found"))?;
+
+    let template = build_main(dashboard, db).await?;
 
     Ok(askama_tide::into_response(&template))
 }
 
-pub(crate) async fn put(req: tide::Request<(String, Dashboard)>) -> tide::Result {
+pub(crate) async fn put(req: tide::Request<(String, HashMap<String, Dashboard>)>) -> tide::Result {
     let (expected_secret, _config) = req.state();
     let actual_secret = req.param("secret")?;
 
