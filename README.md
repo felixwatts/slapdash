@@ -4,6 +4,8 @@
 
 Slapdash is a data dashboard that's focused on simplicity and ease of use. If you need a dashboard and you want something quick, simple and free then this is for you.
 
+Here is a [real life example](https://9acres.uk)
+
 ## Installation
 
 If you have Rust installed then it's as simple as
@@ -63,7 +65,7 @@ slapdash dashboard new my_amazing_dashboard
 
 ### Edit a dashboard
 
-Each dashboard is configured by the file `~/.slapdash/dashboards/<dashboard name>.xml`. Use you favorite code editor to edit the configuration file. You should get autocomplete and validation due to the provided schema file. Changes to dashboard configuration files are picked up immediately by the server.
+Each dashboard is configured by the file `~/.slapdash/dashboards/<dashboard name>.xml`. Use you favorite code editor to edit the configuration file. You should get autocomplete and validation due to the provided schema file.
 
 ## Dashboard configuration
 
@@ -71,7 +73,7 @@ The dashboard configuration defines what widgets are on your dashboard and how t
 
 ### Layout Components
 
-Layout components arrage the widgets on your dashboard. They can contain widgets and layout components. They may also specify default values for `color`, `width` and `height` of any contained widgets:
+Layout components arrange the widgets on your dashboard. They can contain widgets and layout components. They may also specify default values for `color`, `width` and `height` of any contained widgets:
 
 ```xml
 <row widget_width="3" widget_height="2" widget_color="DeepOrange">
