@@ -15,7 +15,7 @@ use crate::cli::DashboardCommands;
 use crate::config::Dashboards;
 use config::Config;
 
-const SQLITE_DB_URL: &'static str = "sqlite:slapdash.db?mode=rwc";
+const SQLITE_DB_URL: &str = "sqlite:slapdash.db?mode=rwc";
 
 
 #[async_std::main]
@@ -28,7 +28,7 @@ async fn main() -> anyhow::Result<()> {
         Commands::Dashboard { command } => match command {
             DashboardCommands::New { name } => {
                 let msg = Dashboards::new_dashboard(&name)?;
-                println!("{}", msg);
+                println!("{msg}");
             }
         },
     }
@@ -47,8 +47,8 @@ async fn serve(config: Config, listen_addr: &Option<SocketAddr>, secret: &Option
     app.at("/:dashboard").get(controller::get);
     app.at("/:secret/:series/:value").get(controller::put);
 
-    println!("Serving at: http://{}/(<dashboard>)", listen_addr);
-    println!("Dashboards: {}", dashboard_list);
+    println!("Serving at: http://{listen_addr}/(<dashboard>)");
+    println!("Dashboards: {dashboard_list}");
     println!("Push data: GET http://{}/{}/<series>/<value>", listen_addr, &secret);
 
     app.listen(listen_addr).await?;

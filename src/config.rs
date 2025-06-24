@@ -11,13 +11,13 @@ use std::path::PathBuf;
 use anyhow::anyhow;
 use std::fs::{File, create_dir_all, write};
 
-const DEFAULT_LISTEN_ADDR: &'static str = "127.0.0.1:8080";
-const EMPTY_DASHBOARD: &'static str = r#"<?xml version="1.0" encoding="UTF-8"?>
+const DEFAULT_LISTEN_ADDR: &str = "127.0.0.1:8080";
+const EMPTY_DASHBOARD: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
 <column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../dashboard.xsd">
     <label text="Hello, world!" width="12" />
 </column>
 "#;
-const DASHBOARD_XSD: &'static str = include_str!("../dashboard.xsd");
+const DASHBOARD_XSD: &str = include_str!("../dashboard.xsd");
 
 #[derive(Clone)]
 pub struct Config{
@@ -109,7 +109,7 @@ impl Dashboards{
     }
 
     pub fn new_dashboard(name: &str) -> anyhow::Result<String> {
-        let dashboard_file = Self::path()?.join(format!("{}.xml", name));
+        let dashboard_file = Self::path()?.join(format!("{name}.xml"));
         if dashboard_file.exists() {
             return Ok(format!("Dashboard already exists: {}", dashboard_file.display()));
         }
@@ -229,8 +229,8 @@ impl Widget{
         let model= match self{
             Widget::Freshness(widget) => Some(ModelWidget{
                 label: String::new(),
-                left: left,
-                top: top,
+                left,
+                top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: widget.series.clone(),
@@ -239,8 +239,8 @@ impl Widget{
             }),
             Widget::Gauge(widget) => Some(ModelWidget{
                 label: widget.label.clone(),
-                left: left,
-                top: top,
+                left,
+                top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: widget.series.clone(),
@@ -252,8 +252,8 @@ impl Widget{
             }),
             Widget::Line(widget) => Some(ModelWidget{
                 label: widget.label.clone(),
-                left: left,
-                top: top,
+                left,
+                top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: widget.series.clone(),
@@ -262,8 +262,8 @@ impl Widget{
             }),
             Widget::Value(widget) => Some(ModelWidget{
                 label: widget.label.clone(),
-                left: left,
-                top: top,
+                left,
+                top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: widget.series.clone(),
@@ -272,8 +272,8 @@ impl Widget{
             }),
             Widget::Label(widget) => Some(ModelWidget{
                 label: widget.text.clone(),
-                left: left,
-                top: top,
+                left,
+                top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 series: String::new(),
@@ -324,7 +324,7 @@ impl Widget{
                 }
                 (current_width, current_height)
             },
-            x => panic!("Invalid widget type: {:?}", x)
+            x => panic!("Invalid widget type: {x:?}")
         }
     }
 }

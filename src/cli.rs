@@ -6,7 +6,7 @@ use regex::Regex;
 fn validate_socket_addr(addr: &str) -> Result<String, String> {
     addr.parse::<SocketAddr>()
         .map(|_| ())
-        .map_err(|e| format!("Invalid socket address '{}': {}", addr, e))?;
+        .map_err(|e| format!("Invalid socket address '{addr}': {e}"))?;
     Ok(addr.to_string())
 }
 
