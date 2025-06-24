@@ -68,8 +68,8 @@ async fn serve(config: Config, listen_addr: &Option<SocketAddr>, secret: &Option
     let app = Router::new()
         .with_state(AppState { config, db })
         .route("/", get(controller::get))
-        .route("/{dashboard}", get(controller::get))
-        .route("/{secret}/{series}/{value}", get(controller::put));
+        .route("/:dashboard", get(controller::get))
+        .route("/:secret/:series/:value", get(controller::put));
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind(listen_addr).await?;
