@@ -1,5 +1,175 @@
+use std::collections::HashMap;
+use std::io::Read;
+use std::net::SocketAddr;
+use std::str::FromStr;
+use std::env;
 use serde::{Deserialize, Serialize};
 use crate::model::{Color, Dashboard, Widget as ModelWidget, WidgetType};
+use rand::{thread_rng, Rng};
+use rand::distributions::Alphanumeric;
+use std::path::PathBuf;
+use anyhow::anyhow;
+use std::fs::{File, create_dir_all, write};
+
+const DEFAULT_LISTEN_ADDR: &'static str = "127.0.0.1:8080";
+const EMPTY_DASHBOARD: &'static str = r#"<?xml version="1.0" encoding="UTF-8"?>
+<column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../dashboard.xsd">
+    <label text="Hello, world!" width="12" />
+</column>
+"#;
+const DASHBOARD_XSD: &'static str = include_str!("../dashboard.xsd");
+
+#[derive(Clone)]
+pub struct Config{
+    pub settings: Settings,
+    pub dashboards: Dashboards
+}
+
+impl Config{
+    pub fn load() -> anyhow::Result<Self> {
+        DashboardSchemaFile::init()?;
+        Ok(
+            Self{
+                settings: Settings::load()?,
+                dashboards: Dashboards::load()?
+            }
+        )
+    }
+
+    fn path() -> anyhow::Result<PathBuf> {
+        let home_dir = env::var("HOME").map_err(|_| anyhow!(""))?;
+        let config_dir = PathBuf::from(home_dir).join(".slapdash");
+        Ok(config_dir)
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Settings {
+    pub listen_addr: SocketAddr,
+    pub secret: String
+}
+
+impl Settings {
+    pub fn new() -> Self{
+        Self { 
+            listen_addr: SocketAddr::from_str(DEFAULT_LISTEN_ADDR).unwrap(), 
+            secret: Self::generate_secret() 
+        }
+    }
+
+    pub fn load() -> anyhow::Result<Self> {
+        Self::init()?;
+
+        let path = Self::path()?;
+        let config_str = std::fs::read_to_string(&path)?;
+        let config: Settings = serde_ini::from_str(&config_str)?;
+        Ok(config)
+    }
+
+    pub fn save(&self) -> anyhow::Result<()> {
+        let path = Self::path()?;
+        let config_str = serde_ini::to_string(self)?;
+        std::fs::write(&path, &config_str)?;
+        Ok(())
+    }
+
+    fn init() -> anyhow::Result<()> {
+        if !Self::path()?.exists() {
+            let settings = Self::new();
+            settings.save()?;
+        }
+        Ok(())
+    }
+
+    fn path() -> anyhow::Result<PathBuf> {
+        let home_dir = env::var("HOME").map_err(|_| anyhow!(""))?;
+        let config_dir = PathBuf::from(home_dir).join(".slapdash");
+        let config_file = config_dir.join("config.txt");
+        Ok(config_file)
+    }
+
+    fn generate_secret() -> String {
+        let rng = thread_rng();
+        // Generate a 64-character alphanumeric string
+        let secret: String = rng
+            .sample_iter(&Alphanumeric)
+            .take(32)
+            .map(char::from)
+            .collect();
+        secret
+    }
+}
+
+#[derive(Clone)]
+pub struct Dashboards(HashMap<String, Dashboard>);
+
+impl Dashboards{
+    pub fn get(&self, name: &str) -> Option<&Dashboard> {
+        self.0.get(name)
+    }
+
+    pub fn new_dashboard(name: &str) -> anyhow::Result<String> {
+        let dashboard_file = Self::path()?.join(format!("{}.xml", name));
+        if dashboard_file.exists() {
+            return Ok(format!("Dashboard already exists: {}", dashboard_file.display()));
+        }
+        write(&dashboard_file, EMPTY_DASHBOARD)?;
+        Ok(format!("Created a new dashboard at: {}", dashboard_file.display()))
+    }
+
+    pub fn list(&self) -> Vec<String> {
+        self.0.keys().cloned().collect::<Vec<String>>()
+    }
+
+    fn load() -> anyhow::Result<Self> {
+        Self::init()?;
+
+        let mut dashboards = HashMap::new();
+        for entry in std::fs::read_dir(Self::path()?)? {
+            let entry = entry?;
+            let file_name = entry.path().to_string_lossy().to_string();
+            let dashboard = Self::load_dashboard(&file_name)?;
+            let dashboard_name = entry.path().file_stem().unwrap().to_string_lossy().to_string();
+            dashboards.insert(dashboard_name, dashboard);
+        }
+        Ok(Self(dashboards))
+    }
+
+    fn load_dashboard(file_name: &str) -> anyhow::Result<crate::model::Dashboard> {
+        let mut file = File::open(file_name).map_err(anyhow::Error::from)?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).map_err(anyhow::Error::from)?;
+        let config: Widget = quick_xml::de::from_str(&contents).map_err(anyhow::Error::from)?;
+        let dashboard = config.to_dashboard();
+        Ok(dashboard)
+    }
+
+    fn init() -> anyhow::Result<()> {
+        create_dir_all(Self::path()?)?;
+        Self::new_dashboard("default")?;
+        Ok(())
+    }
+
+    fn path() -> anyhow::Result<PathBuf> {
+        Ok(Config::path()?.join("dashboards"))
+    }
+}
+
+struct DashboardSchemaFile{
+}
+
+impl DashboardSchemaFile{
+    fn init() -> anyhow::Result<()> {
+        if !Self::path()?.exists() {
+            write(&Self::path()?, DASHBOARD_XSD)?;
+        }
+        Ok(())
+    }
+
+    fn path() -> anyhow::Result<PathBuf> {
+        Ok(Config::path()?.join("dashboard.xsd"))
+    }
+}
 
 /// Row element with height and color attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -41,38 +211,6 @@ pub enum Widget {
 }
 
 impl Widget{
-    // fn width(&self, default_widget_width: Option<u16>) -> u16 {
-    //     match self {
-    //         Widget::Column(column) => {
-    //             column.widgets.iter().map(|widget| widget.width(column.widget_width.or(default_widget_width))).max().unwrap_or_default()
-    //         },
-    //         Widget::Row(row) => {
-    //             row.widgets.iter().map(|widget| widget.width(row.widget_width.or(default_widget_width))).sum()
-    //         },
-    //         Widget::Freshness(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //         Widget::Value(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //         Widget::Line(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //         Widget::Gauge(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //         Widget::Label(widget) => widget.width.unwrap_or(default_widget_width.unwrap_or(1)),
-    //     }
-    // }
-
-    // fn height(&self, default_widget_height: Option<u16>) -> u16{
-    //     match self {
-    //         Widget::Column(column) => {
-    //             column.widgets.iter().map(|widget| widget.height(column.widget_height.or(default_widget_height))).sum()
-    //         },
-    //         Widget::Row(row) => {
-    //             row.widgets.iter().map(|widget| widget.height(row.widget_height.or(default_widget_height))).max().unwrap_or_default()
-    //         },
-    //         Widget::Freshness(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //         Widget::Value(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //         Widget::Line(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //         Widget::Gauge(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //         Widget::Label(widget) => widget.height.unwrap_or(default_widget_height.unwrap_or(1)),
-    //     }
-    // }
-
     pub(crate) fn to_dashboard(&self) -> Dashboard {
         let mut widgets = Vec::new();
         self.to_model(1, 1, None, None, None, &mut widgets);
@@ -276,7 +414,7 @@ mod tests {
         let xml_content = fs::read_to_string("slapdash.xml").unwrap();
         
         // Use the new from_xml method
-        let config = quick_xml::de::from_str::<Widget>(&xml_content).unwrap();
+        let _ = quick_xml::de::from_str::<Widget>(&xml_content).unwrap();
         
         // let dashboard = config.to_dashboard();
         // assert_eq!(dashboard.widgets.len(), 5);

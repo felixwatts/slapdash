@@ -4,6 +4,7 @@ use sqlx::{Pool,pool::PoolConnection};
 use sqlx::Sqlite;
 use tide::{Response, StatusCode};
 use tide_sqlx::SQLxRequestExt;
+use crate::config::Config;
 use crate::db;
 
 use crate::model::WidgetType;
@@ -12,13 +13,13 @@ use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use sqlx::Acquire;
 use std::collections::HashMap;
 
-pub(crate) async fn get(req: tide::Request<(String, HashMap<String, Dashboard>)>) -> tide::Result {
+pub(crate) async fn get(req: tide::Request<Config>) -> tide::Result {
     let mut db = req.sqlx_conn::<Sqlite>().await;
     let db = db.acquire().await?;
-    let (_secret, dashboards) = req.state();
+    let config = req.state();
 
     let dashboard_name = req.param("dashboard").unwrap_or("default");
-    let dashboard = dashboards.get(dashboard_name)
+    let dashboard = config.dashboards.get(dashboard_name)
         .ok_or_else(|| tide::Error::from_str(StatusCode::NotFound, "Dashboard not found"))?;
 
     let template = build_main(dashboard, db).await?;
@@ -26,11 +27,11 @@ pub(crate) async fn get(req: tide::Request<(String, HashMap<String, Dashboard>)>
     Ok(askama_tide::into_response(&template))
 }
 
-pub(crate) async fn put(req: tide::Request<(String, HashMap<String, Dashboard>)>) -> tide::Result {
-    let (expected_secret, _config) = req.state();
+pub(crate) async fn put(req: tide::Request<Config>) -> tide::Result {
+    let config = req.state();
     let actual_secret = req.param("secret")?;
 
-    if actual_secret != expected_secret {
+    if actual_secret != config.settings.secret {
         return Err(tide::Error::from_str(StatusCode::Unauthorized, "Unauthorized"));
     }
     let series = req.param("series")?;

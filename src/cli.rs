@@ -2,8 +2,6 @@ use clap::{Parser, Subcommand};
 use std::net::SocketAddr;
 use regex::Regex;
 
-const DEFAULT_LISTEN_ADDR: &'static str = "127.0.0.1:8080";
-
 /// Validates that a string is a valid socket address
 fn validate_socket_addr(addr: &str) -> Result<String, String> {
     addr.parse::<SocketAddr>()
@@ -39,8 +37,11 @@ pub enum Commands {
     /// Start the server
     Serve {
         /// Listen address (e.g., 127.0.0.1:8080, [::1]:8080)
-        #[arg(short, long, default_value = DEFAULT_LISTEN_ADDR, value_parser = validate_socket_addr)]
-        listen_addr: String,
+        #[arg(short, long, value_parser = validate_socket_addr)]
+        listen_addr: Option<SocketAddr>,
+        /// A secret string. Anyone who knows or guesses this string can push data to the dashboard.
+        #[arg(short, long, value_parser = validate_socket_addr)]
+        secret: Option<String>,
     },
     
     /// Dashboard management commands

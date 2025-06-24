@@ -22,3 +22,4 @@ clap = { version = "4.4", features = ["derive"] }
 anyhow = "1.0.98"
 rand = { version = "0.8", features = ["getrandom"] }
 regex = "1.11.1"
+serde_ini = "0.2.0"
