@@ -3,3 +3,4 @@
 slapdash.db
 slapdash.db-wal
 slapdash.db-shm
+.sqlx/
