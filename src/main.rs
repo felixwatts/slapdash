@@ -67,8 +67,8 @@ async fn serve(config: Config, listen_addr: &Option<SocketAddr>, secret: &Option
     // build our application with a single route
     let app = Router::new()
         .route("/", get(controller::get))
-        .route("/:dashboard", get(controller::get))
-        .route("/:secret/:series/:value", get(controller::put))
+        .route("/{dashboard}", get(controller::get))
+        .route("/{secret}/{series}/{value}", get(controller::put))
         .with_state(AppState { config, db });
 
     // run our app with hyper, listening globally on port 3000

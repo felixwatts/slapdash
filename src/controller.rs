@@ -35,12 +35,10 @@ pub(crate) async fn get (
 }
 
 pub(crate) async fn put(
-    Path(series): Path<String>, 
-    Path(value): Path<f32>,
+    Path((secret, series, value)): Path<(String, String, f32)>, 
     State(AppState { config, db }): State<AppState>,
 ) -> Result<String, StatusCode> {
-    let actual_secret = config.settings.secret.clone();
-    if actual_secret != config.settings.secret {
+    if secret != config.settings.secret {
         return Err(StatusCode::UNAUTHORIZED);
     }
 
