@@ -9,16 +9,16 @@ use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use axum::http::StatusCode;
 use askama::Template;
 use axum::response::Html;
-use crate::AppState;
+use crate::config::Environment;
 
 pub(crate) async fn get (
     Path(dashboard): Path<Option<String>>, 
-    State(AppState { config, db }): State<AppState>,
+    State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
-    let mut db = db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let mut db = env.db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     let dashboard_name = dashboard.unwrap_or("default".to_string());
-    let dashboard = config.dashboards.get(&dashboard_name)
+    let dashboard = env.dashboards.get(&dashboard_name)
         .ok_or_else(|| StatusCode::NOT_FOUND)?;
 
     let template = build_main(dashboard, &mut db)
@@ -34,15 +34,15 @@ pub(crate) async fn get (
 
 pub(crate) async fn put(
     Path((secret, series, value)): Path<(String, String, f32)>, 
-    State(AppState { config, db }): State<AppState>,
+    State(env): State<Environment>,
 ) -> Result<String, StatusCode> {
-    if secret != config.settings.secret {
+    if secret != env.settings.secret {
         return Err(StatusCode::UNAUTHORIZED);
     }
 
     match value.classify() {
         FpCategory::Normal | FpCategory::Zero => {
-            let mut db = db
+            let mut db = env.db
                 .acquire()
                 .await
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

@@ -10,6 +10,8 @@ use rand::distributions::Alphanumeric;
 use std::path::PathBuf;
 use anyhow::anyhow;
 use std::fs::{File, create_dir_all, write};
+use sqlx::pool::PoolConnection;
+use sqlx::Sqlite;
 
 const DEFAULT_LISTEN_ADDR: &str = "127.0.0.1:8080";
 const EMPTY_DASHBOARD: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
@@ -20,18 +22,20 @@ const EMPTY_DASHBOARD: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
 const DASHBOARD_XSD: &str = include_str!("../dashboard.xsd");
 
 #[derive(Clone)]
-pub struct Config{
+pub struct Environment{
     pub settings: Settings,
-    pub dashboards: Dashboards
+    pub dashboards: Dashboards,
+    pub db: Db
 }
 
-impl Config{
-    pub fn load() -> anyhow::Result<Self> {
+impl Environment{
+    pub async fn load() -> anyhow::Result<Self> {
         DashboardSchemaFile::init()?;
         Ok(
             Self{
                 settings: Settings::load()?,
-                dashboards: Dashboards::load()?
+                dashboards: Dashboards::load()?,
+                db: Db::init().await?
             }
         )
     }
@@ -62,8 +66,8 @@ impl Settings {
 
         let path = Self::path()?;
         let config_str = std::fs::read_to_string(&path)?;
-        let config: Settings = serde_ini::from_str(&config_str)?;
-        Ok(config)
+        let settings: Settings = serde_ini::from_str(&config_str)?;
+        Ok(settings)
     }
 
     pub fn save(&self) -> anyhow::Result<()> {
@@ -151,7 +155,7 @@ impl Dashboards{
     }
 
     fn path() -> anyhow::Result<PathBuf> {
-        Ok(Config::path()?.join("dashboards"))
+        Ok(Environment::path()?.join("dashboards"))
     }
 }
 
@@ -167,7 +171,26 @@ impl DashboardSchemaFile{
     }
 
     fn path() -> anyhow::Result<PathBuf> {
-        Ok(Config::path()?.join("dashboard.xsd"))
+        Ok(Environment::path()?.join("dashboard.xsd"))
+    }
+}
+
+#[derive(Clone)]
+pub struct Db(sqlx::SqlitePool);
+
+impl Db{
+    pub async fn acquire(&self) -> anyhow::Result<PoolConnection<Sqlite>> {
+        Ok(self.0.acquire().await.map_err(anyhow::Error::from)?)
+    }
+    
+    fn url() -> anyhow::Result<String> {
+        Ok(format!("sqlite://{}?mode=rwc", &Environment::path()?.join("slapdash.db").display()))
+    }
+
+    async fn init() -> anyhow::Result<Self> {
+        let pool = sqlx::sqlite::SqlitePool::connect(&Self::url()?).await?;
+        sqlx::migrate!("./migrations").run(&pool).await?;
+        Ok(Self(pool))
     }
 }
 
