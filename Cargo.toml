@@ -9,7 +9,7 @@ repository = "https://github.com/felixwatts/slapdash"
 documentation = "https://github.com/felixwatts/slapdash/blob/main/README.md"
 homepage = "https://github.com/felixwatts/slapdash"
 readme = "README.md"
-categories = ["web", "dashboard"]
+categories = ["command-line-utilities", "gui", "visualization"]
 keywords = ["dashboard", "server", "web"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
