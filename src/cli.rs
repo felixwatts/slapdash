@@ -11,7 +11,7 @@ fn validate_socket_addr(addr: &str) -> Result<String, String> {
 }
 
 /// Validates that a string contains only lowercase letters, underscores, and hyphens
-fn validate_dashboard_name(name: &str) -> Result<String, String> {
+fn validate_name(name: &str) -> Result<String, String> {
     if name.is_empty() {
         return Err("Dashboard name cannot be empty".to_string());
     }
@@ -39,8 +39,8 @@ pub enum Commands {
         /// Listen address (e.g., 127.0.0.1:8080, [::1]:8080)
         #[arg(short, long, value_parser = validate_socket_addr)]
         listen_addr: Option<SocketAddr>,
-        /// A secret string. Anyone who knows or guesses this string can push data to the dashboard.
-        #[arg(short, long, value_parser = validate_socket_addr)]
+        /// A secret string. Anyone who knows or guesses this string can push data to the dashboard
+        #[arg(short, long)]
         secret: Option<String>,
     },
     
@@ -49,6 +49,15 @@ pub enum Commands {
         #[command(subcommand)]
         command: DashboardCommands,
     },
+
+    /// Push a data point to the dashboard
+    Push{
+        /// The name of the series that the data point belongs to
+        #[arg(value_parser = validate_name)]
+        series: String,
+        /// The data point, a number
+        value: f32
+    }
 }
 
 #[derive(Subcommand)]
@@ -56,7 +65,7 @@ pub enum DashboardCommands {
     /// Create a new dashboard
     New {
         /// Name of the dashboard (lowercase letters, underscores, and hyphens only)
-        #[arg(value_parser = validate_dashboard_name)]
+        #[arg(value_parser = validate_name)]
         name: String,
     },
 }

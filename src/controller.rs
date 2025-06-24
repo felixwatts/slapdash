@@ -1,54 +1,66 @@
 use std::num::FpCategory;
 
-use sqlx::Sqlite;
-use tide::{Response, StatusCode};
-use tide_sqlx::SQLxRequestExt;
+use sqlx::{AnyConnection, Sqlite, SqliteConnection};
 use crate::config::Config;
 use crate::db;
-
+use axum::extract::{Path, State};
 use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use sqlx::Acquire;
+use axum::http::StatusCode;
+use askama::Template;
+use axum::response::Html;
+use crate::AppState;
 
-pub(crate) async fn get(req: tide::Request<Config>) -> tide::Result {
-    let mut db = req.sqlx_conn::<Sqlite>().await;
-    let db = db.acquire().await?;
-    let config = req.state();
+pub(crate) async fn get (
+    Path(dashboard): Path<Option<String>>, 
+    State(AppState { config, db }): State<AppState>,
+) -> Result<Html<String>, StatusCode>
+{
+    let mut db = db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let dashboard_name = dashboard.unwrap_or("default".to_string());
+    let dashboard = config.dashboards.get(&dashboard_name)
+        .ok_or_else(|| StatusCode::NOT_FOUND)?;
 
-    let dashboard_name = req.param("dashboard").unwrap_or("default");
-    let dashboard = config.dashboards.get(dashboard_name)
-        .ok_or_else(|| tide::Error::from_str(StatusCode::NotFound, "Dashboard not found"))?;
+    let template = build_main(dashboard, &mut db)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    let template = build_main(dashboard, db).await?;
+    let html = template
+        .render()
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    Ok(askama_tide::into_response(&template))
+    Ok(Html(html))
 }
 
-pub(crate) async fn put(req: tide::Request<Config>) -> tide::Result {
-    let config = req.state();
-    let actual_secret = req.param("secret")?;
-
+pub(crate) async fn put(
+    Path(series): Path<String>, 
+    Path(value): Path<f32>,
+    State(AppState { config, db }): State<AppState>,
+) -> Result<(), StatusCode> {
+    let actual_secret = config.settings.secret.clone();
     if actual_secret != config.settings.secret {
-        return Err(tide::Error::from_str(StatusCode::Unauthorized, "Unauthorized"));
+        return Err(StatusCode::UNAUTHORIZED);
     }
-    let series = req.param("series")?;
-    let value_str = req.param("value")?;
-    let value: f32 = value_str.parse()?;
 
     match value.classify() {
         FpCategory::Normal | FpCategory::Zero => {
-            let mut db = req.sqlx_conn::<Sqlite>().await;
-            let db = db.acquire().await?;
-            db::put(db, series, value).await.map_err(|msg| tide::Error::from_str(StatusCode::InternalServerError, msg))?;
+            let mut db = db
+                .acquire()
+                .await
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            db::put(&mut db, &series, value)
+                .await
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         },
         _ => {}
     }
 
-    Ok(Response::builder(StatusCode::Ok).build())
+    Ok(())
 }
 
-pub(crate) async fn build_main(config: &Dashboard, db: &mut sqlx::SqliteConnection) -> tide::Result<MainTemplate> {
+pub(crate) async fn build_main(config: &Dashboard, db: &mut SqliteConnection) -> anyhow::Result<MainTemplate> {
     let mut widget_templates = vec![];
     for widget_config in config.widgets.iter() {
         let widget_template = build_widget(widget_config.clone(), db).await?;
@@ -64,7 +76,7 @@ pub(crate) async fn build_main(config: &Dashboard, db: &mut sqlx::SqliteConnecti
     )
 }
 
-async fn build_widget(config: Widget, db: &mut sqlx::SqliteConnection) -> tide::Result<WidgetTemplate>{
+async fn build_widget(config: Widget, db: &mut SqliteConnection) -> anyhow::Result<WidgetTemplate>{
     let data = db::get(db, &config.series).await?;
     let template = match config.typ {
         WidgetType::Value => WidgetTemplateInner::Value(
