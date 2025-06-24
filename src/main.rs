@@ -50,7 +50,7 @@ async fn push(config: &Config,series: &str, value: f32) -> anyhow::Result<()> {
     let url = format!("http://{listen_addr}/{secret}/{series}/{value}");
     let response = reqwest::get(&url).await?;
     match response.status() {
-        reqwest::StatusCode::OK => println!("Pushed data to {series}"),
+        reqwest::StatusCode::OK => println!("Pushed {value} to {series}"),
         reqwest::StatusCode::BAD_REQUEST => println!("Failed to push data to {series}: {}", response.text().await?),
         _ => println!("Unexpected response from {url}: {}", response.text().await?),
     }

@@ -13,11 +13,11 @@ fn validate_socket_addr(addr: &str) -> Result<String, String> {
 /// Validates that a string contains only lowercase letters, underscores, and hyphens
 fn validate_name(name: &str) -> Result<String, String> {
     if name.is_empty() {
-        return Err("Dashboard name cannot be empty".to_string());
+        return Err("Cannot be empty".to_string());
     }
     
     if !Regex::new("^[a-z0-9_-]+$").unwrap().is_match(name){
-        return Err("Dashboard name must contain only lowercase letters, underscores, and hyphens".to_string());
+        return Err("Must contain only lowercase letters, underscores, and hyphens".to_string());
     }
     
     Ok(name.to_string())
