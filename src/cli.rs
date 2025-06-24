@@ -57,7 +57,10 @@ pub enum Commands {
         series: String,
         /// The data point, a number
         value: f32
-    }
+    },
+
+    /// List the dashboards
+    List,
 }
 
 #[derive(Subcommand)]

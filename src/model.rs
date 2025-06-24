@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 use chrono::NaiveDateTime;
 
+use crate::env::Dashboards;
+use std::path::PathBuf;
+
 #[derive(Debug,Serialize, Deserialize, Clone, Default)]
 pub(crate) enum Color{
     Red,
@@ -116,10 +119,15 @@ impl Point{
 
 #[derive(Deserialize, Clone)]
 pub(crate) struct Dashboard{
+    pub name: String,
     pub widgets: Vec<Widget>
 }
 
 impl Dashboard {
+    pub fn path(&self) -> anyhow::Result<PathBuf> {
+        Ok(Dashboards::path()?.join(&format!("{}.xml", self.name)))
+    }
+
     pub fn width(&self) -> u16 {
         self
             .widgets

@@ -9,15 +9,25 @@ use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use axum::http::StatusCode;
 use askama::Template;
 use axum::response::Html;
-use crate::config::Environment;
+use crate::env::Environment;
 
-pub(crate) async fn get (
-    Path(dashboard): Path<Option<String>>, 
+pub(crate) async fn get_default (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
+    _get("default", &env).await
+}
+
+pub(crate) async fn get (
+    Path(dashboard): Path<String>, 
+    State(env): State<Environment>,
+) -> Result<Html<String>, StatusCode>
+{
+    _get(&dashboard, &env).await
+}
+
+async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
     let mut db = env.db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    let dashboard_name = dashboard.unwrap_or("default".to_string());
     let dashboard = env.dashboards.get(&dashboard_name)
         .ok_or_else(|| StatusCode::NOT_FOUND)?;
 

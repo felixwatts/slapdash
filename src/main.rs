@@ -2,7 +2,7 @@ mod model;
 mod view;
 mod controller;
 mod db;
-mod config;
+mod env;
 mod cli;
 
 use std::net::SocketAddr;
@@ -10,8 +10,8 @@ use clap::Parser;
 use cli::Cli;
 use crate::cli::Commands;
 use crate::cli::DashboardCommands;
-use crate::config::Dashboards;
-use config::Environment;
+use crate::env::Dashboards;
+use env::Environment;
 use axum::{
     routing::get,
     Router,
@@ -30,7 +30,11 @@ async fn main() -> anyhow::Result<()> {
                 println!("{msg}");
             }
         },
-        Commands::Push { series, value } => push(&env, &series, value).await?
+        Commands::Push { series, value } => push(&env, &series, value).await?,
+        Commands::List => {
+            let dashboards = env.dashboards.list();
+            println!("Dashboards:\n\t{}", dashboards.join("\n\t"));
+        }
     }
 
     Ok(())
@@ -51,12 +55,12 @@ async fn push(env: &Environment,series: &str, value: f32) -> anyhow::Result<()> 
 
 async fn serve(env: Environment, listen_addr: &Option<SocketAddr>, secret: &Option<String>) -> anyhow::Result<()> {
     let secret = secret.as_ref().unwrap_or(&env.settings.secret).to_string();
-    let dashboard_list = env.dashboards.list().join(", ");
+    let dashboard_list = env.dashboards.list();
     let listen_addr = listen_addr.unwrap_or(env.settings.listen_addr);
 
     // build our application with a single route
     let app = Router::new()
-        .route("/", get(controller::get))
+        .route("/", get(controller::get_default))
         .route("/{dashboard}", get(controller::get))
         .route("/{secret}/{series}/{value}", get(controller::put))
         .with_state(env);
@@ -65,7 +69,7 @@ async fn serve(env: Environment, listen_addr: &Option<SocketAddr>, secret: &Opti
     let listener = tokio::net::TcpListener::bind(listen_addr).await?;
 
     println!("Serving at: http://{listen_addr}/(<dashboard>)");
-    println!("Dashboards: {dashboard_list}");
+    println!("Dashboards:\n\t{}", &dashboard_list.join("\n\t"));
     println!("Push data: GET http://{}/{}/<series>/<value>", listen_addr, &secret);
 
     axum::serve(listener, app).await?;

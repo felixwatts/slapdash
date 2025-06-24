@@ -122,7 +122,7 @@ impl Dashboards{
     }
 
     pub fn list(&self) -> Vec<String> {
-        self.0.keys().cloned().collect::<Vec<String>>()
+        self.0.values().map(|d| format!("{} {}", &d.name, d.path().unwrap().display())).collect()
     }
 
     fn load() -> anyhow::Result<Self> {
@@ -132,19 +132,19 @@ impl Dashboards{
         for entry in std::fs::read_dir(Self::path()?)? {
             let entry = entry?;
             let file_name = entry.path().to_string_lossy().to_string();
-            let dashboard = Self::load_dashboard(&file_name)?;
             let dashboard_name = entry.path().file_stem().unwrap().to_string_lossy().to_string();
+            let dashboard = Self::load_dashboard(&file_name, &dashboard_name)?;
             dashboards.insert(dashboard_name, dashboard);
         }
         Ok(Self(dashboards))
     }
 
-    fn load_dashboard(file_name: &str) -> anyhow::Result<crate::model::Dashboard> {
+    fn load_dashboard(file_name: &str, name: &str) -> anyhow::Result<crate::model::Dashboard> {
         let mut file = File::open(file_name).map_err(anyhow::Error::from)?;
         let mut contents = String::new();
         file.read_to_string(&mut contents).map_err(anyhow::Error::from)?;
         let config: Widget = quick_xml::de::from_str(&contents).map_err(anyhow::Error::from)?;
-        let dashboard = config.to_dashboard();
+        let dashboard = config.to_dashboard(name);
         Ok(dashboard)
     }
 
@@ -154,7 +154,7 @@ impl Dashboards{
         Ok(())
     }
 
-    fn path() -> anyhow::Result<PathBuf> {
+    pub (crate)fn path() -> anyhow::Result<PathBuf> {
         Ok(Environment::path()?.join("dashboards"))
     }
 }
@@ -188,7 +188,6 @@ impl Db{
     }
 
     async fn init() -> anyhow::Result<Self> {
-        println!("{}", Self::url()?);
         let pool = sqlx::sqlite::SqlitePool::connect(&Self::url()?).await?;
         sqlx::migrate!("./migrations").run(&pool).await?;
         Ok(Self(pool))
@@ -235,10 +234,10 @@ pub enum Widget {
 }
 
 impl Widget{
-    pub(crate) fn to_dashboard(&self) -> Dashboard {
+    pub(crate) fn to_dashboard(&self, name: &str) -> Dashboard {
         let mut widgets = Vec::new();
         self.to_model(1, 1, None, None, None, &mut widgets);
-        Dashboard { widgets }
+        Dashboard { name: name.to_string(), widgets }
     }
 
     fn to_model(
@@ -474,7 +473,7 @@ mod tests {
         let config = quick_xml::de::from_str::<Widget>(xml_content).unwrap();
         
         // Convert to dashboard
-        let dashboard = config.to_dashboard();
+        let dashboard = config.to_dashboard("test");
         
         // Should have 5 widgets total: 2 in row1 + 2 in row2
         assert_eq!(dashboard.widgets.len(), 5);
