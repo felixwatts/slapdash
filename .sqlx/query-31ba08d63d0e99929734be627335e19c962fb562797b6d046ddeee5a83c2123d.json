@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            INSERT OR IGNORE INTO series (name) \n            VALUES (?)\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "31ba08d63d0e99929734be627335e19c962fb562797b6d046ddeee5a83c2123d"
+}

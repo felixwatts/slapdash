@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            SELECT \n                datetime(time, 'unixepoch') as `time!: NaiveDateTime`, \n                value as `value!: f32`\n            FROM point\n            INNER JOIN series ON point.series_id = series.id\n            WHERE\n                series.name = $1\n                AND time > strftime('%s','now') - 86400\n            ORDER BY time ASC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "time!: NaiveDateTime",
+        "ordinal": 0,
+        "type_info": "Null"
+      },
+      {
+        "name": "value!: f32",
+        "ordinal": 1,
+        "type_info": "Float"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      null,
+      false
+    ]
+  },
+  "hash": "b608da32ef249ecc14e15ae29f1ea8b854a0cd3e27c469fbcac39e54d65358b7"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO point (series_id, time, value)\n        VALUES (\n            (SELECT id FROM series WHERE name = ?),\n            strftime('%s','now'),\n            ?\n        )\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "86e7b9af925379fa60bdbb9e473d1469cb4e560e2c33c7b758a607a30328b09d"
+}
