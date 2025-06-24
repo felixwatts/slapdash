@@ -6,7 +6,6 @@ mod config;
 mod cli;
 
 use std::net::SocketAddr;
-use sqlx::Sqlite;
 use clap::Parser;
 use cli::Cli;
 use crate::cli::Commands;

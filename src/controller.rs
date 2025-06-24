@@ -1,13 +1,11 @@
 use std::num::FpCategory;
 
-use sqlx::{AnyConnection, Sqlite, SqliteConnection};
-use crate::config::Config;
+use sqlx::SqliteConnection;
 use crate::db;
 use axum::extract::{Path, State};
 use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
-use sqlx::Acquire;
 use axum::http::StatusCode;
 use askama::Template;
 use axum::response::Html;
