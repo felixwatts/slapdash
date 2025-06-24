@@ -5,14 +5,11 @@ mod db;
 mod config;
 mod cli;
 
-use std::io::Read;
 use std::net::SocketAddr;
 use tide_sqlx::SQLxMiddleware;
 use sqlx::Sqlite;
 use clap::Parser;
 use cli::Cli;
-use std::fs;
-use std::collections::HashMap;
 use crate::cli::Commands;
 use crate::cli::DashboardCommands;
 use crate::config::Dashboards;

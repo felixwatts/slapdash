@@ -1,6 +1,5 @@
 use std::num::FpCategory;
 
-use sqlx::{Pool,pool::PoolConnection};
 use sqlx::Sqlite;
 use tide::{Response, StatusCode};
 use tide_sqlx::SQLxRequestExt;
@@ -11,7 +10,6 @@ use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
 use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
 use sqlx::Acquire;
-use std::collections::HashMap;
 
 pub(crate) async fn get(req: tide::Request<Config>) -> tide::Result {
     let mut db = req.sqlx_conn::<Sqlite>().await;

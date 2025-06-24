@@ -1,4 +1,3 @@
-use sqlx::{Pool, pool::PoolConnection, Sqlite};
 use crate::model::*;
 use sqlx::types::chrono::NaiveDateTime;
 use sqlx::Connection;
