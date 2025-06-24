@@ -75,6 +75,7 @@ pub(crate) async fn build_main(config: &Dashboard, db: &mut SqliteConnection) ->
 
     Ok(
         MainTemplate{
+            name: config.name.clone(),
             width: config.width(),
             height: config.height(),
             widgets: widget_templates
