@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="slapdash.xsd">
+<column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="dashboard.xsd">
     <row widget_height="1" widget_color="DeepOrange">
         <label text="🔋 Battery" width="6" />
         <freshness series="f32_victron_battery_monitor_state_of_charge_pct" width="3" />

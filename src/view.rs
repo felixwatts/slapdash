@@ -1,7 +1,6 @@
 use std::f32::consts::PI;
 use std::fmt::Write;
 use askama::Template;
-use chrono::NaiveDateTime;
 use crate::model::*;
 
 #[derive(Template)]
