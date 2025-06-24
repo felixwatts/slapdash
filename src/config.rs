@@ -188,6 +188,7 @@ impl Db{
     }
 
     async fn init() -> anyhow::Result<Self> {
+        println!("{}", Self::url()?);
         let pool = sqlx::sqlite::SqlitePool::connect(&Self::url()?).await?;
         sqlx::migrate!("./migrations").run(&pool).await?;
         Ok(Self(pool))
