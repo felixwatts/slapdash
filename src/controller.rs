@@ -38,7 +38,7 @@ pub(crate) async fn put(
     Path(series): Path<String>, 
     Path(value): Path<f32>,
     State(AppState { config, db }): State<AppState>,
-) -> Result<(), StatusCode> {
+) -> Result<String, StatusCode> {
     let actual_secret = config.settings.secret.clone();
     if actual_secret != config.settings.secret {
         return Err(StatusCode::UNAUTHORIZED);
@@ -57,7 +57,7 @@ pub(crate) async fn put(
         _ => {}
     }
 
-    Ok(())
+    Ok("OK".to_string())
 }
 
 pub(crate) async fn build_main(config: &Dashboard, db: &mut SqliteConnection) -> anyhow::Result<MainTemplate> {
