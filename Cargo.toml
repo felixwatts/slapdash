@@ -2,6 +2,15 @@
 name = "slapdash"
 version = "0.1.0"
 edition = "2021"
+license = "GNU AGPLv3"
+description = "A simple dashboard server"
+authors = ["Felix Watts <felixwatts@gmail.com>"]
+repository = "https://github.com/felixwatts/slapdash"
+documentation = "https://github.com/felixwatts/slapdash/blob/main/README.md"
+homepage = "https://github.com/felixwatts/slapdash"
+readme = "README.md"
+categories = ["web", "dashboard"]
+keywords = ["dashboard", "server", "web"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
