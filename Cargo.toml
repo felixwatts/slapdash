@@ -18,7 +18,6 @@ keywords = ["dashboard", "server", "web"]
 sqlx = { version = "0.8.6", features = [ "runtime-tokio-native-tls", "time", "sqlite", "chrono" ] }
 serde = { version = "1.0.210", features = ["derive"] }
 askama = "0.14.0"
-askama_tide = "0.15.0"
 quick-xml = { version = "0.37.5", features = ["serialize"] }
 chrono = { version = "0.4", features = ["serde"] }
 clap = { version = "4.4", features = ["derive"] }
