@@ -3,7 +3,6 @@ use axum::{Router, routing::get};
 use crate::env::Environment;
 use crate::controller;
 use std::net::SocketAddr;
-use crate::env::Settings;
 
 pub struct Server;
 

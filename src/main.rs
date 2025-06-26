@@ -6,17 +6,12 @@ mod env;
 mod cli;
 mod server;
 
-use std::net::SocketAddr;
 use clap::Parser;
 use cli::Cli;
 use crate::cli::Commands;
 use crate::cli::DashboardCommands;
 use crate::env::Dashboards;
 use env::Environment;
-use axum::{
-    routing::get,
-    Router,
-};
 use server::Server;
 
 #[tokio::main]
