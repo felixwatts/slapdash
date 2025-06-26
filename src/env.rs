@@ -180,7 +180,7 @@ pub struct Db(sqlx::SqlitePool);
 
 impl Db{
     pub async fn acquire(&self) -> anyhow::Result<PoolConnection<Sqlite>> {
-        Ok(self.0.acquire().await.map_err(anyhow::Error::from)?)
+        self.0.acquire().await.map_err(anyhow::Error::from)
     }
     
     fn url() -> anyhow::Result<String> {
