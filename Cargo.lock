@@ -1757,9 +1757,9 @@ checksum = "f9fbbcab51052fe104eb5e5d351cf728d30a5be1fe14d9be8a3b097481fb97de"
 
 [[package]]
 name = "libredox"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0ff37bd590ca25063e35af745c343cb7a0271906fb7b37e4813e8f79f00268d"
+checksum = "1580801010e535496706ba011c15f8532df6b42297d2e471fec38ceadd8c0638"
 dependencies = [
  "bitflags 2.9.1",
  "libc",
@@ -2755,6 +2755,7 @@ dependencies = [
  "chrono",
  "clap",
  "dotenv",
+ "notify",
  "quick-xml",
  "rand 0.8.5",
  "regex",
@@ -2765,7 +2766,6 @@ dependencies = [
  "sqlx",
  "time 0.2.27",
  "tokio",
- "watchr_filesystem",
 ]
 
 [[package]]
@@ -3791,16 +3791,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "watchr_filesystem"
-version = "0.1.0"
-source = "git+https://github.com/felixwatts/watchr#150b8ea0f36b376db479bfb74594a423c36d68bb"
-dependencies = [
- "anyhow",
- "notify",
- "tokio",
 ]
 
 [[package]]

@@ -12,6 +12,8 @@ use anyhow::anyhow;
 use std::fs::{File, create_dir_all, write};
 use sqlx::pool::PoolConnection;
 use sqlx::Sqlite;
+use notify::{RecommendedWatcher, RecursiveMode, Watcher, Config, Event};
+use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver};
 
 const DEFAULT_LISTEN_ADDR: &str = "127.0.0.1:8080";
 const EMPTY_DASHBOARD: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
@@ -123,6 +125,21 @@ impl Dashboards{
 
     pub fn list(&self) -> Vec<String> {
         self.0.values().map(|d| format!("{} {}", &d.name, d.path().unwrap().display())).collect()
+    }
+
+    pub fn watch() -> anyhow::Result<(RecommendedWatcher, UnboundedReceiver<notify::Result<Event>>)> {
+        let (tx, rx) = unbounded_channel();
+
+        let mut watcher = RecommendedWatcher::new(
+            move |res| {
+                tx.send(res).unwrap();
+            },
+            Config::default(),
+        )?;
+
+        watcher.watch(Self::path()?.as_ref(), RecursiveMode::Recursive)?;
+    
+        Ok((watcher, rx))
     }
 
     fn load() -> anyhow::Result<Self> {

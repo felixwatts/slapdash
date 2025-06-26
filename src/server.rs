@@ -8,15 +8,7 @@ pub struct Server;
 
 impl Server{
     pub async fn serve(listen_addr: &Option<SocketAddr>, secret: &Option<String>) -> anyhow::Result<()> {
-        let (dashboards_changed_tx, mut dashboards_changed_rx) = tokio::sync::mpsc::unbounded_channel::<()>();
-        let watcher = watchr_filesystem::FileWatcher::new(vec![
-            Dashboards::path()?
-        ]);
-        tokio::spawn(async move {
-            let _ = watcher.watch(move |_| { 
-                let _ = dashboards_changed_tx.send(());
-            }).await;
-        });
+        let (_watcher, mut dashboards_changed_rx) = Dashboards::watch()?;
 
         loop{
             let env = Environment::load().await?;
