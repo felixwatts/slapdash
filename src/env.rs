@@ -32,7 +32,7 @@ pub struct Environment{
 
 impl Environment{
     pub async fn load() -> anyhow::Result<Self> {
-        DashboardSchemaFile::init()?;
+        Self::init()?;
         Ok(
             Self{
                 settings: Settings::load()?,
@@ -46,6 +46,14 @@ impl Environment{
         let home_dir = env::var("HOME").map_err(|_| anyhow!(""))?;
         let config_dir = PathBuf::from(home_dir).join(".slapdash");
         Ok(config_dir)
+    }
+
+    fn init() -> anyhow::Result<()> {
+        create_dir_all(Self::path()?)?;
+        DashboardSchemaFile::init()?;
+        Settings::init()?;
+        Dashboards::init()?;
+        Ok(())
     }
 }
 
