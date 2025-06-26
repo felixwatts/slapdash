@@ -135,12 +135,26 @@ impl Dashboards{
         self.0.values().map(|d| format!("{} {}", &d.name, d.path().unwrap().display())).collect()
     }
 
-    pub fn watch() -> anyhow::Result<(RecommendedWatcher, UnboundedReceiver<notify::Result<Event>>)> {
+    pub fn watch() -> anyhow::Result<(RecommendedWatcher, UnboundedReceiver<()>)> {
         let (tx, rx) = unbounded_channel();
 
         let mut watcher = RecommendedWatcher::new(
-            move |res| {
-                tx.send(res).unwrap();
+            move |res: notify::Result<Event>| {
+                match res {
+                    Ok(event) => {
+                        match event.kind {
+                            notify::EventKind::Modify(_) 
+                            | notify::EventKind::Create(_)
+                            | notify::EventKind::Remove(_) => {
+                                let _ = tx.send(());
+                            },
+                            _ => {}
+                        }
+                    }
+                    Err(e) => {
+                        eprintln!("Error watching dashboards: {e}");
+                    }
+                }
             },
             Config::default(),
         )?;
