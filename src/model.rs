@@ -125,7 +125,7 @@ pub(crate) struct Dashboard{
 
 impl Dashboard {
     pub fn path(&self) -> anyhow::Result<PathBuf> {
-        Ok(Dashboards::path()?.join(&format!("{}.xml", self.name)))
+        Ok(Dashboards::path()?.join(format!("{}.xml", self.name)))
     }
 
     pub fn width(&self) -> u16 {

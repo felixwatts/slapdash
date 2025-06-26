@@ -40,7 +40,7 @@ impl Environment{
         )
     }
 
-    fn path() -> anyhow::Result<PathBuf> {
+    pub fn path() -> anyhow::Result<PathBuf> {
         let home_dir = env::var("HOME").map_err(|_| anyhow!(""))?;
         let config_dir = PathBuf::from(home_dir).join(".slapdash");
         Ok(config_dir)
@@ -85,7 +85,7 @@ impl Settings {
         Ok(())
     }
 
-    fn path() -> anyhow::Result<PathBuf> {
+    pub fn path() -> anyhow::Result<PathBuf> {
         let home_dir = env::var("HOME").map_err(|_| anyhow!(""))?;
         let config_dir = PathBuf::from(home_dir).join(".slapdash");
         let config_file = config_dir.join("config.txt");
@@ -180,7 +180,7 @@ pub struct Db(sqlx::SqlitePool);
 
 impl Db{
     pub async fn acquire(&self) -> anyhow::Result<PoolConnection<Sqlite>> {
-        Ok(self.0.acquire().await.map_err(anyhow::Error::from)?)
+        self.0.acquire().await.map_err(anyhow::Error::from)
     }
     
     fn url() -> anyhow::Result<String> {

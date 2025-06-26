@@ -28,8 +28,8 @@ pub(crate) async fn get (
 
 async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
     let mut db = env.db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    let dashboard = env.dashboards.get(&dashboard_name)
-        .ok_or_else(|| StatusCode::NOT_FOUND)?;
+    let dashboard = env.dashboards.get(dashboard_name)
+        .ok_or(StatusCode::NOT_FOUND)?;
 
     let template = build_main(dashboard, &mut db)
         .await

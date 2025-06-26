@@ -32,3 +32,4 @@ serde_ini = "0.2.0"
 reqwest = { version = "0.11", features = ["json", "rustls-tls"], default-features = false }
 axum = "0.8.4"
 tokio = { version = "1.45.1", features = ["full"] }
+watchr_filesystem = { git = "https://github.com/felixwatts/watchr" }
