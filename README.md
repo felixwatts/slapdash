@@ -60,9 +60,7 @@ slapdash dashboard new my_amazing_dashboard
 
 ### Edit a dashboard
 
-Each dashboard is configured by the file `~/.slapdash/dashboards/<dashboard name>.xml`. Use you favorite code editor to edit the configuration file. You should get autocomplete and validation due to the provided schema file.
-
-After editing a dashboard you must restart your Slapdash server for the changes to take effect.
+Each dashboard is configured by the file `~/.slapdash/dashboards/<dashboard name>.xml`. Use you favorite code editor to edit the configuration file. You should get autocomplete and validation due to the provided schema file. Changes to dashboard files take effect immediately on save.
 
 ## Dashboard configuration
 
