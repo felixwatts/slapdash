@@ -3796,6 +3796,7 @@ dependencies = [
 [[package]]
 name = "watchr_filesystem"
 version = "0.1.0"
+source = "git+https://github.com/felixwatts/watchr#150b8ea0f36b376db479bfb74594a423c36d68bb"
 dependencies = [
  "anyhow",
  "notify",
