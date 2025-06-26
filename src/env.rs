@@ -5,8 +5,8 @@ use std::str::FromStr;
 use std::env;
 use serde::{Deserialize, Serialize};
 use crate::model::{Color, Dashboard, Widget as ModelWidget, WidgetType};
-use rand::{thread_rng, Rng};
-use rand::distributions::Alphanumeric;
+use rand::{rng, Rng};
+use rand_distr::Alphanumeric;
 use std::path::PathBuf;
 use anyhow::anyhow;
 use std::fs::{File, create_dir_all, write};
@@ -95,7 +95,7 @@ impl Settings {
     }
 
     fn generate_secret() -> String {
-        let rng = thread_rng();
+        let rng = rng();
         // Generate a 64-character alphanumeric string
         let secret: String = rng
             .sample_iter(&Alphanumeric)
