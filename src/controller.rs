@@ -1,5 +1,4 @@
 use std::num::FpCategory;
-
 use sqlx::SqliteConnection;
 use crate::db;
 use axum::extract::{Path, State};
@@ -27,21 +26,36 @@ pub(crate) async fn get (
 }
 
 async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
-    let mut db = env.db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let mut db = env
+        .db
+        .acquire()
+        .await
+        .map_err(|e| {
+            println!("Error while acquiring database connection: {}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+
     let dashboard = env.dashboards.get(dashboard_name)
         .ok_or(StatusCode::NOT_FOUND)?;
 
     let template = build_main(dashboard, &mut db)
         .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+            println!("Error while building template: {}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
 
     let html = template
         .render()
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+            println!("Error while rendering template: {}", e);
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
 
     Ok(Html(html))
 }
 
+#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn put(
     Path((secret, series, value)): Path<(String, String, f32)>, 
     State(env): State<Environment>,
