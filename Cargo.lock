@@ -2047,7 +2047,6 @@ dependencies = [
  "serde_ini",
  "sqlx",
  "tokio",
- "tracing",
 ]
 
 [[package]]

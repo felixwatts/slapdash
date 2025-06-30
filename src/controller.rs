@@ -1,7 +1,5 @@
 use std::num::FpCategory;
-
 use sqlx::SqliteConnection;
-use tracing::instrument;
 use crate::db;
 use axum::extract::{Path, State};
 use crate::model::WidgetType;
@@ -12,7 +10,6 @@ use askama::Template;
 use axum::response::Html;
 use crate::env::Environment;
 
-#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn get_default (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
@@ -20,7 +17,6 @@ pub(crate) async fn get_default (
     _get("default", &env).await
 }
 
-#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn get (
     Path(dashboard): Path<String>, 
     State(env): State<Environment>,
@@ -29,7 +25,6 @@ pub(crate) async fn get (
     _get(&dashboard, &env).await
 }
 
-#[instrument(err, level = "error", skip_all)]
 async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
     let mut db = env
         .db
