@@ -55,7 +55,6 @@ async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, S
     Ok(Html(html))
 }
 
-#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn put(
     Path((secret, series, value)): Path<(String, String, f32)>, 
     State(env): State<Environment>,
