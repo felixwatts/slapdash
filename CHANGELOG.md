@@ -1,3 +1,7 @@
+# 0.1.5
+
+- Add: push-all command for importing historic data.
+
 # 0.1.4
 
 - Fix: Fix file watching on Linux
