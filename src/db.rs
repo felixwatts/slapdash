@@ -20,7 +20,7 @@ pub(crate) async fn put_all(db: &mut sqlx::SqliteConnection, points: Vec<(String
             .await
             .map_err(|e| anyhow::anyhow!("Failed to insert series: {}", e))?;
 
-        let timestamp = time.timestamp();
+        let timestamp = time.and_utc().timestamp();
 
         // Then insert the point
         sqlx::query!("

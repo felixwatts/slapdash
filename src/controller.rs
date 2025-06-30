@@ -1,7 +1,7 @@
 use std::num::FpCategory;
 
 use sqlx::SqliteConnection;
-use tracing::{error, instrument};
+use tracing::instrument;
 use crate::db;
 use axum::extract::{Path, State};
 use crate::model::WidgetType;
