@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use std::net::SocketAddr;
+use std::{net::SocketAddr, path::PathBuf};
 use regex::Regex;
 
 /// Validates that a string is a valid socket address
@@ -57,6 +57,20 @@ pub enum Commands {
         series: String,
         /// The data point, a number
         value: f32
+    },
+
+    /// Push multiple data points to the dashboard from a CSV file.
+    #[command(
+        long_about = "Push multiple data points to the dashboard from a CSV file.\n\
+The CSV file should contain columns: series, time, and value. Each row represents a data point to be pushed. There should be no header row. \
+The 'series' column specifies the series name, 'time' is the timestamp and must be formatted YYYY-MM-dd HH:mm:ss, and 'value' is the data point value and must parse as an f32. \
+This is an example row:\n\n
+my_example_series,2024-06-13 15:30:00,32.14
+"
+    )]
+    PushAll {
+        /// CSV filename. The CSV should contain columns: series, time and value.
+        filename: PathBuf
     },
 
     /// List the dashboards

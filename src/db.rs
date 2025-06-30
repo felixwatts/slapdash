@@ -2,6 +2,49 @@ use crate::model::*;
 use sqlx::types::chrono::NaiveDateTime;
 use sqlx::Connection;
 
+pub(crate) async fn put_all(db: &mut sqlx::SqliteConnection, points: Vec<(String, NaiveDateTime, f32)>) -> anyhow::Result<()> {
+    let mut tx = db
+        .begin()
+        .await
+        .map_err(|_| anyhow::anyhow!("Failed to begin transaction"))?;
+
+    for (series, time, value) in points {
+        // First, insert the series (or ignore if it already exists)
+        sqlx::query!("
+                INSERT OR IGNORE INTO series (name) 
+                VALUES (?)
+            ",
+            series
+            )
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| anyhow::anyhow!("Failed to insert series: {}", e))?;
+
+        let timestamp = time.timestamp();
+
+        // Then insert the point
+        sqlx::query!("
+                INSERT INTO point (series_id, time, value)
+                VALUES (
+                    (SELECT id FROM series WHERE name = ?),
+                    ?,
+                    ?
+                )
+            ",
+            series,
+            timestamp,
+            value
+            )
+            .execute(&mut *tx)
+            .await
+            .map_err(|_| anyhow::anyhow!("Failed to insert point"))?;
+    }
+
+    tx.commit().await.map_err(|_| anyhow::anyhow!("Failed to commit transaction"))?;
+
+    Ok(())
+}
+
 pub(crate) async fn put(db: &mut sqlx::SqliteConnection, series: &str, point: f32) -> anyhow::Result<()> {
     let mut tx = db
         .begin()
@@ -58,7 +101,7 @@ pub(crate) async fn get(db: &mut sqlx::SqliteConnection, series: &str) -> anyhow
         )
         .fetch_all(db)
         .await
-        .map_err(|_| anyhow::anyhow!("Failed to fetch points"))?;
+        .map_err(|e| anyhow::anyhow!("Failed to fetch points: {}", e.to_string()))?;
 
     Ok(points)
 }

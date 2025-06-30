@@ -1,6 +1,7 @@
 use std::num::FpCategory;
 
 use sqlx::SqliteConnection;
+use tracing::{error, instrument};
 use crate::db;
 use axum::extract::{Path, State};
 use crate::model::WidgetType;
@@ -11,6 +12,7 @@ use askama::Template;
 use axum::response::Html;
 use crate::env::Environment;
 
+#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn get_default (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
@@ -18,6 +20,7 @@ pub(crate) async fn get_default (
     _get("default", &env).await
 }
 
+#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn get (
     Path(dashboard): Path<String>, 
     State(env): State<Environment>,
@@ -26,22 +29,38 @@ pub(crate) async fn get (
     _get(&dashboard, &env).await
 }
 
+#[instrument(err, level = "error", skip_all)]
 async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
-    let mut db = env.db.acquire().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    let mut db = env
+        .db
+        .acquire()
+        .await
+        .map_err(|e| {
+            println!("Error while acquiring database connection: {}", e.to_string());
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
+
     let dashboard = env.dashboards.get(dashboard_name)
         .ok_or(StatusCode::NOT_FOUND)?;
 
     let template = build_main(dashboard, &mut db)
         .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+            println!("Error while building template: {}", e.to_string());
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
 
     let html = template
         .render()
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        .map_err(|e| {
+            println!("Error while rendering template: {}", e.to_string());
+            StatusCode::INTERNAL_SERVER_ERROR
+        })?;
 
     Ok(Html(html))
 }
 
+#[instrument(err, level = "error", skip_all)]
 pub(crate) async fn put(
     Path((secret, series, value)): Path<(String, String, f32)>, 
     State(env): State<Environment>,
