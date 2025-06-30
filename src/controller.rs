@@ -36,7 +36,7 @@ async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, S
         .acquire()
         .await
         .map_err(|e| {
-            println!("Error while acquiring database connection: {}", e.to_string());
+            println!("Error while acquiring database connection: {}", e);
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
@@ -46,14 +46,14 @@ async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, S
     let template = build_main(dashboard, &mut db)
         .await
         .map_err(|e| {
-            println!("Error while building template: {}", e.to_string());
+            println!("Error while building template: {}", e);
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
     let html = template
         .render()
         .map_err(|e| {
-            println!("Error while rendering template: {}", e.to_string());
+            println!("Error while rendering template: {}", e);
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
