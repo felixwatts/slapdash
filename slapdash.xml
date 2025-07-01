@@ -113,44 +113,50 @@
 
     <row widget_height="1" widget_color="DarkGray">
         <label text="🤖🌞 Solar Server" width="6" />
-        <freshness series="f32_computer_solar_load_avg_5mins" width="3" />
+        <freshness series="f32_computer_solar_load_avg_pct_5mins" width="3" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Load Avg" series="f32_computer_solar_load_avg_5mins" />
-        <line width="8" label="Load Avg" series="f32_computer_solar_load_avg_5mins" />
+        <value width="3" label="Load %" series="f32_computer_solar_load_avg_pct_5mins" />
+        <gauge width="3" label="Load" series="f32_computer_solar_load_avg_pct_5mins" min="0" max="100" />
+        <line width="6" label="Load %" series="f32_computer_solar_load_avg_pct_5mins" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Disk Free" series="f32_computer_solar_disk_free" />
-        <line width="8" label="Disk Free" series="f32_computer_solar_disk_free" />
+        <value width="3" label="Disk Free %" series="f32_computer_solar_disk_free_pct" />
+        <gauge width="3" label="Disk Free" series="f32_computer_solar_disk_free_pct" min="0" max="100" />
+        <line width="6" label="Disk Free %" series="f32_computer_solar_disk_free_pct" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Memory Free" series="f32_computer_solar_memory_free" />
-        <line width="8" label="Memory Free" series="f32_computer_solar_memory_free" />
+        <value width="3" label="Memory Free %" series="f32_computer_solar_memory_free_pct" />
+        <gauge width="3" label="Memory Free" series="f32_computer_solar_memory_free_pct" min="0" max="100" />
+        <line width="6" label="Memory Free %" series="f32_computer_solar_memory_free_pct" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="# Processes" series="f32_computer_solar_proc_total" />
-        <line width="8" label="# Processes" series="f32_computer_solar_proc_total" />
+        <value width="3" label="# Processes" series="f32_computer_solar_proc_total" />
+        <line width="9" label="# Processes" series="f32_computer_solar_proc_total" />
     </row>
 
     <row widget_height="1" widget_color="DarkGray">
         <label text="🤖🏠 Cabin Server" width="6" />
-        <freshness series="f32_computer_cabin_load_avg_5mins" width="3" />
+        <freshness series="f32_computer_cabin_load_avg_pct_5mins" width="3" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Load Avg" series="f32_computer_cabin_load_avg_5mins" />
-        <line width="8" label="Load Avg" series="f32_computer_cabin_load_avg_5mins" />
+        <value width="3" label="Load %" series="f32_computer_cabin_load_avg_pct_5mins" />
+        <gauge width="3" label="Load" series="f32_computer_cabin_load_avg_pct_5mins" min="0" max="100" />
+        <line width="6" label="Load %" series="f32_computer_cabin_load_avg_pct_5mins" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Disk Free" series="f32_computer_cabin_disk_free" />
-        <line width="8" label="Disk Free" series="f32_computer_cabin_disk_free" />
+        <value width="3" label="Disk Free %" series="f32_computer_cabin_disk_free_pct" />
+        <gauge width="3" label="Disk Free" series="f32_computer_cabin_disk_free_pct" min="0" max="100" />
+        <line width="6" label="Disk Free %" series="f32_computer_cabin_disk_free_pct" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="Memory Free" series="f32_computer_cabin_memory_free" />
-        <line width="8" label="Memory Free" series="f32_computer_cabin_memory_free" />
+        <value width="3" label="Memory Free %" series="f32_computer_cabin_memory_free_pct" />
+        <gauge width="3" label="Memory Free" series="f32_computer_cabin_memory_free_pct" min="0" max="100" />
+        <line width="6" label="Memory Free %" series="f32_computer_cabin_memory_free_pct" />
     </row>
     <row widget_height="4" widget_color="DarkGray">
-        <value width="4" label="# Processes" series="f32_computer_cabin_proc_total" />
-        <line width="8" label="# Processes" series="f32_computer_cabin_proc_total" />
+        <value width="3" label="# Processes" series="f32_computer_cabin_proc_total" />
+        <line width="9" label="# Processes" series="f32_computer_cabin_proc_total" />
     </row>
     
 </column>
