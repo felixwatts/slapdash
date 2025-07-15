@@ -97,6 +97,12 @@
         <value label="Wind m/s" width="3" series="f32_weather_wind_avg_mps" />
         <line label="Wind m/s" width="9" series="f32_weather_wind_avg_mps" />
     </row>
+    <row widget_height="4" widget_color="Blue">
+        <line label="Rain mm/min" width="12" series="f32_weather_rain_amount_over_previous_minute_mm" />
+    </row>
+    <row widget_height="4" widget_color="Blue">
+        <line label="Solar Radiation w/m^2" width="12" series="f32_weather_solar_radiation_wpm" />
+    </row>
     
     <row widget_height="1" widget_color="Brown">
         <label text="🏠 Cabin" width="6" />
