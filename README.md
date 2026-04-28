@@ -99,6 +99,14 @@ A vertical stack of components. It can contain widgets, rows and columns.
 
 Widgets display data on your dashboard. All widgets have attributes for `color`, `width` and `height`, which are optional.
 
+#### Time range
+
+A link to set the time range for the displayed data. By default data for the last 24 hours is shown but you can show data for any range ending in the present. Set the range attribute to a number of seconds.
+
+```xml
+<range range="3600" label="1h" />
+```
+
 #### Label
 
 A hardcoded text display widget. Good for making titles to dashboard sections.
@@ -120,7 +128,7 @@ Displays the number of minutes since the last update to the given series.
 A textual display of the latest value of the given series.
 
 ```xml
-<value series="cpu_temp_c" />
+<value series="cpu_temp_c" label="CPU Temp." />
 ```
 
 #### Gauge
@@ -128,7 +136,7 @@ A textual display of the latest value of the given series.
 Displays a gauge type widget which shows the latest value of the given series relative to given maximum and minimum values.
 
 ```xml
-<gauge series="cpu_temp_c" min="0" max="100 />
+<gauge series="cpu_temp_c" min="0" max="100" label="CPU Temp" />
 ```
 
 #### Line
@@ -136,7 +144,7 @@ Displays a gauge type widget which shows the latest value of the given series re
 A line chart of the history of the given series over the past 24 hours.
 
 ```xml
-<line series="cpu_temp_c">
+<line series="cpu_temp_c" label="CPU Temp" />
 ```
 
 
