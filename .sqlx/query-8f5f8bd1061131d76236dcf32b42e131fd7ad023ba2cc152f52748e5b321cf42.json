@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            WITH filtered AS (\n                SELECT p.time, p.value\n                FROM point p\n                WHERE p.series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)\n                    AND p.time > strftime('%s','now') - $2\n            ),\n            bounds AS (\n                SELECT MIN(time) AS min_t, MAX(time) AS max_t\n                FROM filtered\n            ),\n            bucketed AS (\n                SELECT\n                    f.time,\n                    f.value,\n                    CASE\n                        WHEN $3 <= 1 OR b.max_t = b.min_t THEN 0\n                        ELSE CAST((f.time - b.min_t) * $3 / (b.max_t - b.min_t + 1) AS INTEGER)\n                    END AS bucket\n                FROM filtered f\n                CROSS JOIN bounds b\n            ),\n            picked AS (\n                SELECT\n                    time,\n                    value,\n                    ROW_NUMBER() OVER (PARTITION BY bucket ORDER BY time ASC) AS rn\n                FROM bucketed\n            )\n            SELECT\n                datetime(time, 'unixepoch') as `time!: NaiveDateTime`,\n                CAST(value AS REAL) as `value!: f32`\n            FROM picked\n            WHERE rn = 1\n            ORDER BY time ASC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "time!: NaiveDateTime",
+        "ordinal": 0,
+        "type_info": "Null"
+      },
+      {
+        "name": "value!: f32",
+        "ordinal": 1,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "8f5f8bd1061131d76236dcf32b42e131fd7ad023ba2cc152f52748e5b321cf42"
+}
