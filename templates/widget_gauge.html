@@ -1,3 +1,4 @@
+{% if !self.label.is_empty() %}<h1>{{ self.label }}</h1>{% endif %}
 <svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg">
-    <path d="{{ Self::arc_svg(self) }}" style="fill:none;stroke:{{ config.stroke_css_color() }};stroke-width:24px" />
+    <path d="{{ Self::arc_svg(self) }}" style="fill:none;stroke:{{ self.color }};stroke-width:24px" />
 </svg>

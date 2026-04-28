@@ -263,6 +263,7 @@ pub struct Column {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Widget {
+    Range(Range),
     Label(Label),
     Freshness(Freshness),
     Gauge(Gauge),
@@ -290,56 +291,52 @@ impl Widget{
     ) -> (u16, u16) {
         let model= match self{
             Widget::Freshness(widget) => Some(ModelWidget{
-                label: String::new(),
                 left,
                 top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
-                series: widget.series.clone(),
-                typ: WidgetType::Freshness,
-                color: widget.color.clone().or(default_color.clone()),
-            }),
-            Widget::Gauge(widget) => Some(ModelWidget{
-                label: widget.label.clone(),
-                left,
-                top,
-                width: widget.width.unwrap_or(default_width.unwrap_or(1)),
-                height: widget.height.unwrap_or(default_height.unwrap_or(1)),
-                series: widget.series.clone(),
-                typ: WidgetType::Gauge {
-                    min: widget.min as f32,
-                    max: widget.max as f32,
-                },
+      
+                typ: WidgetType::Freshness{ series: widget.series.clone() },
                 color: widget.color.clone().or(default_color.clone()),
             }),
             Widget::Line(widget) => Some(ModelWidget{
-                label: widget.label.clone(),
                 left,
                 top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
-                series: widget.series.clone(),
-                typ: WidgetType::Line,
+                typ: WidgetType::Line{ series: widget.series.clone(), label: widget.label.clone() },
                 color: widget.color.clone().or(default_color.clone()),
             }),
             Widget::Value(widget) => Some(ModelWidget{
-                label: widget.label.clone(),
                 left,
                 top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
-                series: widget.series.clone(),
-                typ: WidgetType::Value,
+                typ: WidgetType::Value{ series: widget.series.clone(), label: widget.label.clone() },
                 color: widget.color.clone().or(default_color.clone()),
             }),
             Widget::Label(widget) => Some(ModelWidget{
-                label: widget.text.clone(),
                 left,
                 top,
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
-                series: String::new(),
-                typ: WidgetType::Label,
+                typ: WidgetType::Label{ text: widget.text.clone() },
+                color: widget.color.clone().or(default_color.clone()),
+            }),
+            Widget::Range(widget) => Some(ModelWidget{
+                left,
+                top,
+                width: widget.width.unwrap_or(default_width.unwrap_or(1)),
+                height: widget.height.unwrap_or(default_height.unwrap_or(1)),
+                typ: WidgetType::Range{ range: widget.range, label: widget.label.clone() },
+                color: widget.color.clone().or(default_color.clone()),
+            }),
+            Widget::Gauge(widget) => Some(ModelWidget{
+                left,
+                top,
+                width: widget.width.unwrap_or(default_width.unwrap_or(1)),
+                height: widget.height.unwrap_or(default_height.unwrap_or(1)),
+                typ: WidgetType::Gauge{ series: widget.series.clone(), min: widget.min, max: widget.max, label: widget.label.clone() },
                 color: widget.color.clone().or(default_color.clone()),
             }),
             _ => None
@@ -404,6 +401,21 @@ pub struct Label {
     pub color: Option<Color>,
 }
 
+/// Range widget with width and height attributes
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Range {
+    #[serde(rename = "@range")]
+    pub range: u32,
+    #[serde(rename = "@label")]
+    pub label: String,
+    #[serde(rename = "@width")]
+    pub width: Option<u16>,
+    #[serde(rename = "@height")]
+    pub height: Option<u16>,
+    #[serde(rename = "@color")]
+    pub color: Option<Color>,
+}
+
 /// Freshness widget with series attribute
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Freshness {
@@ -425,9 +437,9 @@ pub struct Gauge {
     #[serde(rename = "@series")]
     pub series: String,
     #[serde(rename = "@min")]
-    pub min: f64,
+    pub min: f32,
     #[serde(rename = "@max")]
-    pub max: f64,
+    pub max: f32,
     #[serde(rename = "@width")]
     pub width: Option<u16>,
     #[serde(rename = "@height")]
@@ -528,34 +540,32 @@ mod tests {
         let mut found_freshness = false;
         
         for widget in &dashboard.widgets {
-            match widget.label.as_str() {
-                "Section 1" => {
+            match &widget.typ {
+                WidgetType::Label{ text } if text == "Section 1" => {
                     assert_eq!(widget.left, 1);
                     assert_eq!(widget.top, 1);
                     found_section1 = true;
                 }
-                "Value 1" => {
+                WidgetType::Value{ series, label } if series == "series1" && label == "Value 1" => {
                     assert_eq!(widget.left, 1);
                     assert_eq!(widget.top, 3);
                     found_value1 = true;
                 }
-                "Chart 1" => {
+                WidgetType::Line{ series, label } if series == "series2" && label == "Chart 1" => {
                     assert_eq!(widget.left, 4); // Should be to the right of column1
                     assert_eq!(widget.top, 1);
                     found_chart1 = true;
                 }
-                "Gauge 1" => {
+                WidgetType::Gauge{ series, .. } if series == "series3" => {
                     assert_eq!(widget.left, 1);
                     assert_eq!(widget.top, 5); // Should be in row2
                     found_gauge1 = true;
                 }
-                "" => {
+                WidgetType::Freshness{ series } if series == "series4" => {
                     // Freshness widget has empty label
-                    if widget.series == "series4" {
-                        assert_eq!(widget.left, 1);
-                        assert_eq!(widget.top, 7); // Should be below gauge in row2
-                        found_freshness = true;
-                    }
+                    assert_eq!(widget.left, 1);
+                    assert_eq!(widget.top, 7); // Should be below gauge in row2
+                    found_freshness = true;
                 }
                 _ => {}
             }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <column xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="dashboard.xsd">
+
+    <row>
+        <range range="60" label="1m" />
+        <range range="600" label="10m" />
+        <range range="1800" label="30m" />
+        <range range="3600" label="1h" />
+        <range range="86400" label="1d" />
+        <range range="604800" label="1w" />
+        <range range="2592000" label="1M" />
+        <range range="7776000" label="3M" />
+    </row>
+
     <row widget_height="1" widget_color="DeepOrange">
         <label text="🔋 Battery" width="6" />
         <freshness series="f32_victron_battery_monitor_state_of_charge_pct" width="3" />

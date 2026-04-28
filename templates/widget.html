@@ -1,16 +1,16 @@
 <div class="{{ config.color_css_class() }} w3-round w3-container" style="grid-column-start: {{ config.left }}; grid-column-end: {{ config.left + config.width }}; grid-row-start: {{ config.top }}; grid-row-end: {{ config.top + config.height }};">
-    {% if !config.label.is_empty() %}
-        <h1>{{ config.label }}</h1>
-    {% endif %}
     {% match template %}
-    {% when WidgetTemplateInner::Line with (template) %}
-        {{ template|safe }}
-    {% when WidgetTemplateInner::Value with (template) %}
-        {{ template|safe }}
-    {% when WidgetTemplateInner::Gauge with (template) %}
-        {{ template|safe }}
-    {% when WidgetTemplateInner::Freshness with (template) %}
-        {{ template|safe }}
-    {% when WidgetTemplateInner::Label %}
+        {% when WidgetTemplateInner::Line with (template) %}
+            {{ template|safe }}
+        {% when WidgetTemplateInner::Value with (template) %}
+            {{ template|safe }}
+        {% when WidgetTemplateInner::Gauge with (template) %}
+            {{ template|safe }}
+        {% when WidgetTemplateInner::Freshness with (template) %}
+            {{ template|safe }}
+        {% when WidgetTemplateInner::Range with (template) %}
+            {{ template|safe }}
+        {% when WidgetTemplateInner::Label with (template) %}
+            {{ template|safe }}
     {% endmatch %}
 </div>

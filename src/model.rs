@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
 use chrono::NaiveDateTime;
+use sqlx::SqliteConnection;
 
-use crate::env::Dashboards;
+use crate::{db, env::Dashboards, view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LabelWidgetTemplate, LineWidgetTemplate, RangeWidgetTemplate, ValueWidgetTemplate, WidgetTemplate, WidgetTemplateInner}};
 use std::path::PathBuf;
 
 #[derive(Debug,Serialize, Deserialize, Clone, Default)]
@@ -149,31 +150,59 @@ impl Dashboard {
 
 #[derive(Debug, Deserialize, Clone)]
 pub(crate) struct Widget{
-    pub label: String,
     pub left: u16,
     pub top: u16,
     pub width: u16,
     pub height: u16,
-    pub series: String,
+    pub color: Option<Color>,
     pub typ: WidgetType,
-    pub color: Option<Color>
 }
 
 impl Widget{
-    pub(crate) fn color_css_class(&self) -> &str {
+    pub(crate) fn color_css_class(&self) -> &'static str {
         self.color.as_ref().map(Color::to_css_class).unwrap_or(Color::default().to_css_class())
     }
 
-    pub(crate) fn stroke_css_color(&self) -> &str {
+    pub(crate) fn stroke_css_color(&self) -> &'static str {
         self.color.as_ref().map(Color::to_css_stroke).unwrap_or(Color::default().to_css_stroke())
+    }
+
+    pub(crate) async fn to_template(&self, db: &mut SqliteConnection, range_seconds: u32) -> anyhow::Result<WidgetTemplate> {
+        let inner_template = match &self.typ {
+            WidgetType::Value{ series, label } => {
+                let point = db::get(db, &series, range_seconds).await?.last().map(|p| p.value);
+                WidgetTemplateInner::Value(ValueWidgetTemplate{ label: label.clone(), point, color: self.stroke_css_color() })
+            },
+            WidgetType::Line{ series, label } => {
+                let data = db::get(db, &series, range_seconds).await?;
+                WidgetTemplateInner::Line(LineWidgetTemplate{ label: label.clone(), data, color: self.stroke_css_color(), width: self.width, height: self.height })
+            },
+            WidgetType::Gauge{ series, min, max, label } => {
+                let point = db::get(db, &series, range_seconds).await?.last().map(|p| p.value);
+                WidgetTemplateInner::Gauge(GaugeWidgetTemplate{ label: label.clone(), point: point.clone(), min: *min, max: *max, color: self.color_css_class() })
+            },  
+            WidgetType::Label{ text } => {
+                WidgetTemplateInner::Label(LabelWidgetTemplate{ text: text.clone() })
+            },
+            WidgetType::Freshness{ series } => {
+                let data = db::get(db, &series, range_seconds).await?;
+                WidgetTemplateInner::Freshness(FreshnessWidgetTemplate{ last_update_time: data.last().map(|p| p.time) })
+            }
+            WidgetType::Range{ range, label } => {
+                WidgetTemplateInner::Range(RangeWidgetTemplate{ range: *range, label: label.clone() })
+            }
+        };
+        let template = WidgetTemplate{ config: self.clone(), template: inner_template };
+        Ok(template)
     }
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub(crate) enum WidgetType{
-    Value,
-    Line,
-    Gauge{ min: f32, max:f32 },
-    Label,
-    Freshness
+    Value{ series: String, label: String },
+    Line{ series: String, label: String },
+    Gauge{ series: String, min: f32, max: f32, label: String },
+    Label{ text: String },
+    Freshness{ series: String },
+    Range{ range: u32, label: String },
 }

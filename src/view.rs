@@ -23,15 +23,25 @@ pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
     Line(LineWidgetTemplate),
     Gauge(GaugeWidgetTemplate),
-    Label,
-    Freshness(FreshnessWidgetTemplate)
+    Label(LabelWidgetTemplate),
+    Freshness(FreshnessWidgetTemplate),
+    Range(RangeWidgetTemplate)
+}
+
+#[derive(Template)]
+#[template(path = "widget_label.html")]
+pub (crate) struct LabelWidgetTemplate{
+    // pub config: Widget,
+    pub text: String
 }
 
 #[derive(Template)]
 #[template(path = "widget_value.html")]
 pub (crate) struct ValueWidgetTemplate{
-    pub config: Widget,
-    pub point: Option<f32>
+    // pub config: Widget,
+    pub point: Option<f32>,
+    pub label: String,
+    pub color: &'static str
 }
 
 impl ValueWidgetTemplate{
@@ -46,6 +56,7 @@ impl ValueWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_freshness.html")]
 pub (crate) struct FreshnessWidgetTemplate{
+    // pub config: Widget,
     pub last_update_time: Option<chrono::NaiveDateTime>
 }
 
@@ -64,40 +75,39 @@ impl FreshnessWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_gauge.html")]
 pub (crate) struct GaugeWidgetTemplate{
-    pub config: Widget,
+    // pub config: Widget,
+    pub label: String,
+    pub color: &'static str,
+    pub min: f32,
+    pub max: f32,
     pub point: Option<f32>
 }
 
 impl GaugeWidgetTemplate{
     pub fn arc_svg(&self) -> String {
-        match self.config.typ {
-            WidgetType::Gauge { min, max } => {
-                match self.point {
-                    Some(mut value) => {
-                        value = value.clamp(min, max);
-                        let proportion = (value - min) / (max - min);
-                        let angle = proportion * 2.0 * PI;
-                        let radius = 38.0;
-                        let start_x = 50.0 + radius * (-PI/2.0).cos();
-                        let start_y = 50.0 + radius * (-PI/2.0).sin();
-                        
-                        // For full circle, use a point slightly before the end to avoid start/end point collision
-                        let end_angle = if proportion >= 1.0 {
-                            angle - 0.0001
-                        } else {
-                            angle
-                        };
-                        let end_x = 50.0 + radius * (end_angle - (PI/2.0)).cos();
-                        let end_y = 50.0 + radius * (end_angle - (PI/2.0)).sin();
+        match self.point {
+            Some(mut value) => {
+                value = value.clamp(self.min, self.max);
+                let proportion = (value - self.min) / (self.max - self.min);
+                let angle = proportion * 2.0 * PI;
+                let radius = 38.0;
+                let start_x = 50.0 + radius * (-PI/2.0).cos();
+                let start_y = 50.0 + radius * (-PI/2.0).sin();
+                
+                // For full circle, use a point slightly before the end to avoid start/end point collision
+                let end_angle = if proportion >= 1.0 {
+                    angle - 0.0001
+                } else {
+                    angle
+                };
+                let end_x = 50.0 + radius * (end_angle - (PI/2.0)).cos();
+                let end_y = 50.0 + radius * (end_angle - (PI/2.0)).sin();
 
-                        let large_arc_flag = if angle > PI { "1" } else { "0" };
+                let large_arc_flag = if angle > PI { "1" } else { "0" };
 
-                        format!("M {start_x} {start_y} A {radius} {radius} 1 {large_arc_flag} 1 {end_x} {end_y}")
-                    },
-                    None => String::default()
-                }
+                format!("M {start_x} {start_y} A {radius} {radius} 1 {large_arc_flag} 1 {end_x} {end_y}")
             },
-            _ => panic!()
+            None => String::default()
         }
     }
 }
@@ -105,8 +115,12 @@ impl GaugeWidgetTemplate{
 #[derive(Template)]
 #[template(path = "widget_line.html")]
 pub (crate) struct LineWidgetTemplate{
-    pub config: Widget,
-    pub data: Vec<Point>
+    // pub config: Widget,
+    pub data: Vec<Point>,
+    pub color: &'static str,
+    pub label: String,
+    pub width: u16,
+    pub height: u16,
 }
 
 impl LineWidgetTemplate{
@@ -177,11 +191,11 @@ impl LineWidgetTemplate{
     }
 
     pub fn view_box_width(&self) -> f32 {
-        self.config.width as f32 * 100.0
+        self.width as f32 * 100.0
     }
 
     pub fn view_box_height(&self) -> f32 {
-        (self.config.height - 1) as f32 * 100.0
+        (self.height - 1) as f32 * 100.0
     }
 
     pub fn y_axis_left(&self) -> f32 {
@@ -191,4 +205,12 @@ impl LineWidgetTemplate{
     pub fn y_axis_bottom(&self) -> f32 {
         self.view_box_height()
     }
+}
+
+#[derive(Template)]
+#[template(path = "widget_range.html")]
+pub (crate) struct RangeWidgetTemplate{
+    // pub config: Widget,
+    pub range: u32,
+    pub label: String
 }

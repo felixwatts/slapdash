@@ -2,6 +2,8 @@ use crate::model::*;
 use sqlx::types::chrono::NaiveDateTime;
 use sqlx::Connection;
 
+const MAX_POINTS: i64 = 512;
+
 pub(crate) async fn put_all(db: &mut sqlx::SqliteConnection, points: Vec<(String, NaiveDateTime, f32)>) -> anyhow::Result<()> {
     let mut tx = db
         .begin()
@@ -83,21 +85,48 @@ pub(crate) async fn put(db: &mut sqlx::SqliteConnection, series: &str, point: f3
     Ok(())
 }
 
-pub(crate) async fn get(db: &mut sqlx::SqliteConnection, series: &str) -> anyhow::Result<Vec<Point>>{
+pub(crate) async fn get(db: &mut sqlx::SqliteConnection, series: &str, range_seconds: u32) -> anyhow::Result<Vec<Point>>{
     let points = sqlx::query_as!(
             Point,
             "
-            SELECT 
-                datetime(time, 'unixepoch') as `time!: NaiveDateTime`, 
-                value as `value!: f32`
-            FROM point
-            INNER JOIN series ON point.series_id = series.id
-            WHERE
-                series.name = $1
-                AND time > strftime('%s','now') - 86400
+            WITH filtered AS (
+                SELECT p.time, p.value
+                FROM point p
+                WHERE p.series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)
+                    AND p.time > strftime('%s','now') - $2
+            ),
+            bounds AS (
+                SELECT MIN(time) AS min_t, MAX(time) AS max_t
+                FROM filtered
+            ),
+            bucketed AS (
+                SELECT
+                    f.time,
+                    f.value,
+                    CASE
+                        WHEN $3 <= 1 OR b.max_t = b.min_t THEN 0
+                        ELSE CAST((f.time - b.min_t) * $3 / (b.max_t - b.min_t + 1) AS INTEGER)
+                    END AS bucket
+                FROM filtered f
+                CROSS JOIN bounds b
+            ),
+            picked AS (
+                SELECT
+                    time,
+                    value,
+                    ROW_NUMBER() OVER (PARTITION BY bucket ORDER BY time ASC) AS rn
+                FROM bucketed
+            )
+            SELECT
+                datetime(time, 'unixepoch') as `time!: NaiveDateTime`,
+                CAST(value AS REAL) as `value!: f32`
+            FROM picked
+            WHERE rn = 1
             ORDER BY time ASC
             ",
-            series
+            series,
+            range_seconds,
+            MAX_POINTS
         )
         .fetch_all(db)
         .await
