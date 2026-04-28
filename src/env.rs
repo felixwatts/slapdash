@@ -14,6 +14,7 @@ use sqlx::pool::PoolConnection;
 use sqlx::Sqlite;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher, Config, Event};
 use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver};
+use rand::RngExt;
 
 const DEFAULT_LISTEN_ADDR: &str = "127.0.0.1:8080";
 const EMPTY_DASHBOARD: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
