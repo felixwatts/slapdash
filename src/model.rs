@@ -170,7 +170,7 @@ impl Widget{
     pub(crate) async fn to_template(&self, db: &mut SqliteConnection, range_seconds: u32) -> anyhow::Result<WidgetTemplate> {
         let inner_template = match &self.typ {
             WidgetType::Value{ series, label } => {
-                let point = db::get(db, series, range_seconds).await?.last().map(|p| p.value);
+                let point = db::get_last(db, series).await?.map(|p| p.value);
                 WidgetTemplateInner::Value(ValueWidgetTemplate{ label: label.clone(), point, color: self.stroke_css_color() })
             },
             WidgetType::Line{ series, label } => {
@@ -178,15 +178,15 @@ impl Widget{
                 WidgetTemplateInner::Line(LineWidgetTemplate{ label: label.clone(), data, color: self.stroke_css_color(), width: self.width, height: self.height })
             },
             WidgetType::Gauge{ series, min, max, label } => {
-                let point = db::get(db, series, range_seconds).await?.last().map(|p| p.value);
-                WidgetTemplateInner::Gauge(GaugeWidgetTemplate{ label: label.clone(), point: point, min: *min, max: *max, color: self.color_css_class() })
+                let point = db::get_last(db, series).await?.map(|p| p.value);
+                WidgetTemplateInner::Gauge(GaugeWidgetTemplate{ label: label.clone(), point: point, min: *min, max: *max, color: self.stroke_css_color() })
             },  
             WidgetType::Label{ text } => {
                 WidgetTemplateInner::Label(LabelWidgetTemplate{ text: text.clone() })
             },
             WidgetType::Freshness{ series } => {
-                let data = db::get(db, series, range_seconds).await?;
-                WidgetTemplateInner::Freshness(FreshnessWidgetTemplate{ last_update_time: data.last().map(|p| p.time) })
+                let data = db::get_last(db, series).await?;
+                WidgetTemplateInner::Freshness(FreshnessWidgetTemplate{ last_update_time: data.map(|p| p.time) })
             }
             WidgetType::Range{ range, label } => {
                 WidgetTemplateInner::Range(RangeWidgetTemplate{ range: *range, label: label.clone() })

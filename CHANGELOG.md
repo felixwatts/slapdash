@@ -1,3 +1,8 @@
+# 0.1.7
+
+- Fix: Gauge doesn't display correctly
+- Chg: Slight render speed improvement
+
 # 0.1.6
 
 - Add: Range widget

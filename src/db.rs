@@ -134,3 +134,28 @@ pub(crate) async fn get(db: &mut sqlx::SqliteConnection, series: &str, range_sec
 
     Ok(points)
 }
+
+pub(crate) async fn get_last(db: &mut sqlx::SqliteConnection, series: &str) -> anyhow::Result<Option<Point>>{
+    let point = sqlx::query_as!(
+        Point,
+        "
+            SELECT 
+                datetime(time, 'unixepoch') as `time!: NaiveDateTime`, 
+                CAST(value AS REAL) as `value!: f32`
+            FROM 
+                point
+            WHERE 
+                series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)
+            ORDER BY 
+                time DESC
+            LIMIT 
+                1
+        ",
+        series
+    )
+    .fetch_optional(db)
+    .await
+    .map_err(|e| anyhow::anyhow!("Failed to fetch last point: {}", e.to_string()))?;
+
+    Ok(point)
+}
