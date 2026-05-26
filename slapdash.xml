@@ -31,35 +31,10 @@
         <gauge label="Level %" width="3" series="f32_water_level_pct" min="0" max="100" />
         <line label="Level %" width="6" series="f32_water_level_pct" />
     </row>
-    
-    <row widget_height="1" widget_color="Green">
-        <label text="🔌 Mains - Cabin" width="6" />
-        <freshness series="f32_tapo_cabin_today_energy_kwh" width="3" />
-    </row>
-    <row widget_height="4" widget_color="Green">
-        <value label="Today kWh" width="3" series="f32_tapo_cabin_today_energy_kwh" />
-        <gauge label="Today Mins" width="3" series="f32_tapo_cabin_today_runtime_mins" min="0" max="1440" />
-        <line label="Current Power W" width="6" series="f32_tapo_cabin_current_power_w" />
-    </row>
-    
-    <row widget_height="1" widget_color="Green">
-        <label text="🔌 Mains - Outside" width="6" />
-        <freshness series="f32_tapo_outside_today_energy_kwh" width="3" />
-    </row>
-    <row widget_height="4" widget_color="Green">
-        <value label="Today kWh" width="3" series="f32_tapo_outside_today_energy_kwh" />
-        <gauge label="Today Mins" width="3" series="f32_tapo_outside_today_runtime_mins" min="0" max="1440" />
-        <line label="Current Power W" width="6" series="f32_tapo_outside_current_power_w" />
-    </row>
-    
-    <row widget_height="1" widget_color="Green">
-        <label text="🔌 Mains - Bathroom" width="6" />
-        <freshness series="f32_tapo_bathroom_today_energy_kwh" width="3" />
-    </row>
-    <row widget_height="4" widget_color="Green">
-        <value label="Today kWh" width="3" series="f32_tapo_bathroom_today_energy_kwh" />
-        <gauge label="Today Mins" width="3" series="f32_tapo_bathroom_today_runtime_mins" min="0" max="1440" />
-        <line label="Current Power W" width="6" series="f32_tapo_bathroom_current_power_w" />
+    <row widget_height="4" widget_color="Blue">
+        <value label="TDS PPM" width="3" series="f32_water_total_dissolved_solids_ppm" />
+        <gauge label="TDS PPM" width="3" series="f32_water_total_dissolved_solids_ppm" min="0" max="200" />
+        <line label="TDS PPM" width="6" series="f32_water_total_dissolved_solids_ppm" />
     </row>
     
     <row widget_height="1" widget_color="Amber">
@@ -100,22 +75,22 @@
         <line label="Voltage" width="12" series="f32_victron_inverter_ac_voltage_v" />
     </row>
     
-    <row widget_height="1" widget_color="Blue">
+    <row widget_height="1" widget_color="Green">
         <label text="⛅ Weather" width="6" />
         <freshness series="f32_weather_air_temp_c" width="3" />
     </row>
-    <row widget_height="4" widget_color="Blue">
+    <row widget_height="4" widget_color="Green">
         <value label="Air Temp C" width="3" series="f32_weather_air_temp_c" />
         <line label="Air Temp C" width="9" series="f32_weather_air_temp_c" />
     </row>
-    <row widget_height="4" widget_color="Blue">
+    <row widget_height="4" widget_color="Green">
         <value label="Wind m/s" width="3" series="f32_weather_wind_avg_mps" />
         <line label="Wind m/s" width="9" series="f32_weather_wind_avg_mps" />
     </row>
-    <row widget_height="4" widget_color="Blue">
+    <row widget_height="4" widget_color="Green">
         <line label="Rain mm/min" width="12" series="f32_weather_rain_amount_over_previous_minute_mm" />
     </row>
-    <row widget_height="4" widget_color="Blue">
+    <row widget_height="4" widget_color="Green">
         <line label="Solar Radiation w/m^2" width="12" series="f32_weather_solar_radiation_wpm" />
     </row>
     
