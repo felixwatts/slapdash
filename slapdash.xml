@@ -107,6 +107,14 @@
         <line label="Humidity %" width="9" series="f32_cabin_relative_humidity_pct" />
     </row>
 
+    <row widget_height="1" widget_color="Indigo">
+        <label text="🪴 Irrigation" width="6" />
+        <freshness series="f32_irrigation_on" width="3" />
+    </row>
+    <row widget_height="4" widget_color="Indigo">
+        <line label="Irrigation On" width="12" series="f32_irrigation_on" />
+    </row>
+
     <row widget_height="1" widget_color="DarkGray">
         <label text="🤖🌞 Solar Server" width="6" />
         <freshness series="f32_computer_solar_load_avg_pct_5mins" width="3" />
