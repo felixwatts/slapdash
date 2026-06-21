@@ -109,7 +109,7 @@
 
     <row widget_height="1" widget_color="Lime">
         <label text="🪴 Propagation Table" width="6" />
-        <freshness series="f32_irrigation_on" width="3" />
+        <freshness series="f32_soil_moisture_vwc" width="3" />
     </row>
     <row widget_height="4" widget_color="Lime">
         <line label="Soil Moisture VWC%" width="12" series="f32_soil_moisture_vwc" />
