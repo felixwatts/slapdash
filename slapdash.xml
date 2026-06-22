@@ -24,12 +24,13 @@
     
     <row widget_height="1" widget_color="Blue">
         <label text="🚰 Water" width="6" />
-        <freshness series="f32_water_level_pct" width="3" />
+        <freshness series="f32_water_drinking_bottom_level_pct" width="3" />
+        <freshness series="f32_water_total_dissolved_solids_ppm" width="3" />
     </row>
     <row widget_height="4" widget_color="Blue">
-        <value label="Level %" width="3" series="f32_water_level_pct" />
-        <gauge label="Level %" width="3" series="f32_water_level_pct" min="0" max="100" />
-        <line label="Level %" width="6" series="f32_water_level_pct" />
+        <value label="Level %" width="3" series="f32_water_drinking_bottom_level_pct" />
+        <gauge label="Level %" width="3" series="f32_water_drinking_bottom_level_pct" min="0" max="100" />
+        <line label="Level %" width="6" series="f32_water_drinking_bottom_level_pct" />
     </row>
     <row widget_height="4" widget_color="Blue">
         <value label="TDS PPM" width="3" series="f32_water_total_dissolved_solids_ppm" />
@@ -112,10 +113,14 @@
         <freshness series="f32_soil_moisture_vwc" width="3" />
     </row>
     <row widget_height="4" widget_color="Lime">
-        <line label="Soil Moisture VWC%" width="12" series="f32_soil_moisture_vwc" />
+        <value label="Soil Moisture VWC%" width="3" series="f32_soil_moisture_vwc" />
+        <gauge label="Soil Moisture VWC%" width="3" series="f32_soil_moisture_vwc" min="0" max="100" />
+        <line label="Soil Moisture VWC%" width="6" series="f32_soil_moisture_vwc" />
     </row>
     <row widget_height="4" widget_color="Lime">
-        <line label="Soil Temperature C" width="12" series="f32_soil_temperature_c" />
+        <value label="Soil Temperature C" width="3" series="f32_soil_temperature_c" />
+        <gauge label="Soil Temperature C" width="3" series="f32_soil_temperature_c" min="0" max="100" />
+        <line label="Soil Temperature C" width="6" series="f32_soil_temperature_c" />
     </row>
 
     <row widget_height="1" widget_color="DarkGray">
