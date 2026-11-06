@@ -5,7 +5,7 @@ use std::str::FromStr;
 use std::env;
 use serde::{Deserialize, Serialize};
 use crate::model::{Color, Dashboard, Widget as ModelWidget, WidgetType};
-use rand::{rng, Rng};
+use rand::rng;
 use rand_distr::Alphanumeric;
 use std::path::PathBuf;
 use anyhow::anyhow;
