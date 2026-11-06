@@ -1,3 +1,4 @@
+{% if !self.label.is_empty() %}<h1>{{ self.label }}</h1>{% endif %}
 <svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"  xmlns="http://www.w3.org/2000/svg">
     <text
         x="50"
@@ -5,7 +6,7 @@
         text-anchor="middle"
         dominant-baseline="middle"
         style="font-size: 32px;font-weight: bold;"
-        fill="{{ config.stroke_css_color() }}"
+        fill="{{ self.color }}"
     >
     {{ Self::text(self) }}
   </text>

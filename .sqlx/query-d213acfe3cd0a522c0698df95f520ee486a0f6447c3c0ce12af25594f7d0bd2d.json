@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            SELECT \n                datetime(time, 'unixepoch') as `time!: NaiveDateTime`, \n                CAST(value AS REAL) as `value!: f32`\n            FROM \n                point\n            WHERE \n                series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)\n            ORDER BY \n                time DESC\n            LIMIT \n                1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "time!: NaiveDateTime",
+        "ordinal": 0,
+        "type_info": "Null"
+      },
+      {
+        "name": "value!: f32",
+        "ordinal": 1,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "d213acfe3cd0a522c0698df95f520ee486a0f6447c3c0ce12af25594f7d0bd2d"
+}

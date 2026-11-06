@@ -1,6 +1,16 @@
 # Unreleased
 
 - Add: single widget pages at `/<dashboard>/<widget index>`; each widget links to its own page.
+- Fix: `serve --listen-addr` panics on startup.
+
+# 0.1.7
+
+- Fix: Gauge doesn't display correctly
+- Chg: Slight render speed improvement
+
+# 0.1.6
+
+- Add: Range widget
 
 # 0.1.5
 

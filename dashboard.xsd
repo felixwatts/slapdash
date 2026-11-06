@@ -61,6 +61,7 @@
                     <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
                     <xs:element ref="column"/>
+                    <xs:element ref="range"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="LayoutAttributes"/>
@@ -78,9 +79,19 @@
                     <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
                     <xs:element ref="column"/>
+                    <xs:element ref="range"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="LayoutAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Range element -->
+    <xs:element name="range">
+        <xs:complexType>
+            <xs:attribute name="range" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="label" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
         </xs:complexType>
     </xs:element>
 
