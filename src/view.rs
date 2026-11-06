@@ -16,6 +16,7 @@ pub (crate) struct MainTemplate {
 #[template(path = "widget.html")]
 pub (crate) struct WidgetTemplate{
     pub config: Widget,
+    pub href: String,
     pub template: WidgetTemplateInner
 }
 

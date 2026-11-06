@@ -4,7 +4,7 @@ use crate::db;
 use axum::extract::{Path, State};
 use crate::model::WidgetType;
 use crate::view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LineWidgetTemplate, WidgetTemplateInner};
-use crate::{model::{Dashboard, Widget}, view::{MainTemplate, WidgetTemplate}};
+use crate::{model::{grid_height, grid_width, Widget}, view::{MainTemplate, WidgetTemplate}};
 use axum::http::StatusCode;
 use askama::Template;
 use axum::response::Html;
@@ -14,7 +14,7 @@ pub(crate) async fn get_default (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
-    _get("default", &env).await
+    get_dashboard("default", &env).await
 }
 
 pub(crate) async fn get (
@@ -22,10 +22,37 @@ pub(crate) async fn get (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
-    _get(&dashboard, &env).await
+    get_dashboard(&dashboard, &env).await
 }
 
-async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
+pub(crate) async fn get_widget (
+    Path((dashboard, index)): Path<(String, usize)>,
+    State(env): State<Environment>,
+) -> Result<Html<String>, StatusCode>
+{
+    let dashboard = env.dashboards.get(&dashboard)
+        .ok_or(StatusCode::NOT_FOUND)?;
+
+    let mut widget = dashboard.widgets.get(index)
+        .ok_or(StatusCode::NOT_FOUND)?
+        .clone();
+    widget.left = 1;
+    widget.top = 1;
+
+    render(&dashboard.name, vec![(index, widget)], &env).await
+}
+
+async fn get_dashboard(dashboard_name: &str, env: &Environment) -> Result<Html<String>, StatusCode> {
+    let dashboard = env.dashboards.get(dashboard_name)
+        .ok_or(StatusCode::NOT_FOUND)?;
+
+    let widgets = dashboard.widgets.iter().cloned().enumerate().collect();
+
+    render(&dashboard.name, widgets, env).await
+}
+
+/// Render a page of the given widgets, each paired with its index in the named dashboard.
+async fn render(dashboard_name: &str, widgets: Vec<(usize, Widget)>, env: &Environment) -> Result<Html<String>, StatusCode> {
     let mut db = env
         .db
         .acquire()
@@ -35,10 +62,7 @@ async fn _get(dashboard_name: &str, env: &Environment) -> Result<Html<String>, S
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
-    let dashboard = env.dashboards.get(dashboard_name)
-        .ok_or(StatusCode::NOT_FOUND)?;
-
-    let template = build_main(dashboard, &mut db)
+    let template = build_main(dashboard_name, widgets, &mut db)
         .await
         .map_err(|e| {
             println!("Error while building template: {}", e);
@@ -79,24 +103,27 @@ pub(crate) async fn put(
     Ok("OK".to_string())
 }
 
-pub(crate) async fn build_main(config: &Dashboard, db: &mut SqliteConnection) -> anyhow::Result<MainTemplate> {
+pub(crate) async fn build_main(dashboard_name: &str, widgets: Vec<(usize, Widget)>, db: &mut SqliteConnection) -> anyhow::Result<MainTemplate> {
+    let configs: Vec<Widget> = widgets.iter().map(|(_, w)| w.clone()).collect();
+
     let mut widget_templates = vec![];
-    for widget_config in config.widgets.iter() {
-        let widget_template = build_widget(widget_config.clone(), db).await?;
+    for (index, widget_config) in widgets {
+        let href = format!("/{dashboard_name}/{index}");
+        let widget_template = build_widget(widget_config, href, db).await?;
         widget_templates.push(widget_template)
     }
 
     Ok(
         MainTemplate{
-            name: config.name.clone(),
-            width: config.width(),
-            height: config.height(),
+            name: dashboard_name.to_string(),
+            width: grid_width(&configs),
+            height: grid_height(&configs),
             widgets: widget_templates
         }
     )
 }
 
-async fn build_widget(config: Widget, db: &mut SqliteConnection) -> anyhow::Result<WidgetTemplate>{
+async fn build_widget(config: Widget, href: String, db: &mut SqliteConnection) -> anyhow::Result<WidgetTemplate>{
     let data = db::get(db, &config.series).await?;
     let template = match config.typ {
         WidgetType::Value => WidgetTemplateInner::Value(
@@ -127,6 +154,7 @@ async fn build_widget(config: Widget, db: &mut SqliteConnection) -> anyhow::Resu
     Ok(
         WidgetTemplate{
             config,
+            href,
             template,
         }
     )

@@ -127,24 +127,24 @@ impl Dashboard {
     pub fn path(&self) -> anyhow::Result<PathBuf> {
         Ok(Dashboards::path()?.join(format!("{}.xml", self.name)))
     }
+}
 
-    pub fn width(&self) -> u16 {
-        self
-            .widgets
-            .iter()
-            .map(|w| w.left + w.width - 1)
-            .max()
-            .unwrap_or_default()
-    }
+/// Number of grid columns needed to contain the given widgets.
+pub(crate) fn grid_width(widgets: &[Widget]) -> u16 {
+    widgets
+        .iter()
+        .map(|w| w.left + w.width - 1)
+        .max()
+        .unwrap_or_default()
+}
 
-    pub fn height(&self) -> u16 {
-        self
-            .widgets
-            .iter()
-            .map(|w| w.top + w.height - 1)
-            .max()
-            .unwrap_or_default()
-    }
+/// Number of grid rows needed to contain the given widgets.
+pub(crate) fn grid_height(widgets: &[Widget]) -> u16 {
+    widgets
+        .iter()
+        .map(|w| w.top + w.height - 1)
+        .max()
+        .unwrap_or_default()
 }
 
 #[derive(Debug, Deserialize, Clone)]

@@ -52,6 +52,8 @@ Your dashboard is online at [http://localhost:8080](http://localhost:8080).
 
 Slapdash can serve multiple dashboards, each at `http://localhost:8080/<dashboard name>`. There is a `default` dashboard which is served if no dashboard name is specified.
 
+Each widget can also be viewed on its own at `http://localhost:8080/<dashboard name>/<widget index>`, where the index is the widget's 0-based position in the dashboard file. Click any widget to open its page.
+
 ### Create a new dashboard
 
 ```bash

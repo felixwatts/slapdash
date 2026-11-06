@@ -3,11 +3,9 @@ use std::{net::SocketAddr, path::PathBuf};
 use regex::Regex;
 
 /// Validates that a string is a valid socket address
-fn validate_socket_addr(addr: &str) -> Result<String, String> {
+fn validate_socket_addr(addr: &str) -> Result<SocketAddr, String> {
     addr.parse::<SocketAddr>()
-        .map(|_| ())
-        .map_err(|e| format!("Invalid socket address '{addr}': {e}"))?;
-    Ok(addr.to_string())
+        .map_err(|e| format!("Invalid socket address '{addr}': {e}"))
 }
 
 /// Validates that a string contains only lowercase letters, underscores, and hyphens

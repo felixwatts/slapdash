@@ -1,3 +1,7 @@
+# Unreleased
+
+- Add: single widget pages at `/<dashboard>/<widget index>`; each widget links to its own page.
+
 # 0.1.5
 
 - Add: push-all command for importing historic data.
