@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            SELECT\n                CAST(MIN(value) AS REAL) as `min?: f32`,\n                CAST(MAX(value) AS REAL) as `max?: f32`\n            FROM\n                point\n            WHERE\n                series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)\n                AND time > strftime('%s','now') - $2\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "min?: f32",
+        "ordinal": 0,
+        "type_info": "Float"
+      },
+      {
+        "name": "max?: f32",
+        "ordinal": 1,
+        "type_info": "Float"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      true,
+      true
+    ]
+  },
+  "hash": "764c41d9a68b42bcf6dbbde5f51ed6e88922f7c740040c4382a619953ddf7203"
+}

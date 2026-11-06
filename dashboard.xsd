@@ -57,6 +57,7 @@
                     <xs:element ref="row"/>
                     <xs:element ref="label"/>
                     <xs:element ref="value"/>
+                    <xs:element ref="minmax"/>
                     <xs:element ref="line"/>
                     <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
@@ -75,6 +76,7 @@
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element ref="label"/>
                     <xs:element ref="value"/>
+                    <xs:element ref="minmax"/>
                     <xs:element ref="line"/>
                     <xs:element ref="gauge"/>
                     <xs:element ref="freshness"/>
@@ -105,6 +107,15 @@
 
     <!-- Value element -->
     <xs:element name="value">
+        <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required"/>
+            <xs:attribute name="series" type="xs:string" use="required"/>
+            <xs:attributeGroup ref="WidgetAttributes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- MinMax element -->
+    <xs:element name="minmax">
         <xs:complexType>
             <xs:attribute name="label" type="xs:string" use="required"/>
             <xs:attribute name="series" type="xs:string" use="required"/>
