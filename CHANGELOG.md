@@ -1,4 +1,4 @@
-# Unreleased
+# 0.1.9
 
 - Chg: MinMax widget shows a [ range marker beside its two values.
 
