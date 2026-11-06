@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use chrono::NaiveDateTime;
 use sqlx::SqliteConnection;
 
-use crate::{db, env::Dashboards, view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LabelWidgetTemplate, LineWidgetTemplate, RangeWidgetTemplate, ValueWidgetTemplate, WidgetTemplate, WidgetTemplateInner}};
+use crate::{db, env::Dashboards, view::{FreshnessWidgetTemplate, GaugeWidgetTemplate, LabelWidgetTemplate, LineWidgetTemplate, MinMaxWidgetTemplate, RangeWidgetTemplate, ValueWidgetTemplate, WidgetTemplate, WidgetTemplateInner}};
 use std::path::PathBuf;
 
 #[derive(Debug,Serialize, Deserialize, Clone, Default)]
@@ -177,6 +177,10 @@ impl Widget{
                 let data = db::get(db, series, range_seconds).await?;
                 WidgetTemplateInner::Line(LineWidgetTemplate{ label: label.clone(), data, color: self.stroke_css_color(), width: self.width, height: self.height })
             },
+            WidgetType::MinMax{ series, label } => {
+                let min_max = db::get_min_max(db, series, range_seconds).await?;
+                WidgetTemplateInner::MinMax(MinMaxWidgetTemplate{ label: label.clone(), min_max, color: self.stroke_css_color() })
+            },
             WidgetType::Gauge{ series, min, max, label } => {
                 let point = db::get_last(db, series).await?.map(|p| p.value);
                 WidgetTemplateInner::Gauge(GaugeWidgetTemplate{ label: label.clone(), point: point, min: *min, max: *max, color: self.stroke_css_color() })
@@ -202,6 +206,7 @@ pub(crate) enum WidgetType{
     Value{ series: String, label: String },
     Line{ series: String, label: String },
     Gauge{ series: String, min: f32, max: f32, label: String },
+    MinMax{ series: String, label: String },
     Label{ text: String },
     Freshness{ series: String },
     Range{ range: u32, label: String },

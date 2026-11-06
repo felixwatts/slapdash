@@ -270,6 +270,7 @@ pub enum Widget {
     Gauge(Gauge),
     Line(Line),
     Value(Value),
+    MinMax(MinMax),
     Row(Row),
     Column(Column),
 }
@@ -314,6 +315,14 @@ impl Widget{
                 width: widget.width.unwrap_or(default_width.unwrap_or(1)),
                 height: widget.height.unwrap_or(default_height.unwrap_or(1)),
                 typ: WidgetType::Value{ series: widget.series.clone(), label: widget.label.clone() },
+                color: widget.color.clone().or(default_color.clone()),
+            }),
+            Widget::MinMax(widget) => Some(ModelWidget{
+                left,
+                top,
+                width: widget.width.unwrap_or(default_width.unwrap_or(1)),
+                height: widget.height.unwrap_or(default_height.unwrap_or(1)),
+                typ: WidgetType::MinMax{ series: widget.series.clone(), label: widget.label.clone() },
                 color: widget.color.clone().or(default_color.clone()),
             }),
             Widget::Label(widget) => Some(ModelWidget{
@@ -479,6 +488,21 @@ pub struct Value {
     pub color: Option<Color>,
 }
 
+/// MinMax widget with label and series attributes
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MinMax {
+    #[serde(rename = "@label")]
+    pub label: String,
+    #[serde(rename = "@series")]
+    pub series: String,
+    #[serde(rename = "@width")]
+    pub width: Option<u16>,
+    #[serde(rename = "@height")]
+    pub height: Option<u16>,
+    #[serde(rename = "@color")]
+    pub color: Option<Color>,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -493,6 +517,23 @@ mod tests {
         
         // let dashboard = config.to_dashboard();
         // assert_eq!(dashboard.widgets.len(), 5);
+    }
+
+    #[test]
+    fn test_minmax_conversion() {
+        let xml = r#"<column><minmax label="Temp range" series="temp" width="2" /></column>"#;
+        let config = quick_xml::de::from_str::<Widget>(xml).unwrap();
+        let dashboard = config.to_dashboard("test");
+
+        assert_eq!(dashboard.widgets.len(), 1);
+        assert_eq!(dashboard.widgets[0].width, 2);
+        match &dashboard.widgets[0].typ {
+            WidgetType::MinMax{ series, label } => {
+                assert_eq!(series, "temp");
+                assert_eq!(label, "Temp range");
+            },
+            other => panic!("Expected MinMax widget, got {other:?}"),
+        }
     }
 
     #[test]

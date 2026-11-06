@@ -159,3 +159,26 @@ pub(crate) async fn get_last(db: &mut sqlx::SqliteConnection, series: &str) -> a
 
     Ok(point)
 }
+
+/// The minimum and maximum values of the series within the time range, or None if it has no points in the range.
+pub(crate) async fn get_min_max(db: &mut sqlx::SqliteConnection, series: &str, range_seconds: u32) -> anyhow::Result<Option<(f32, f32)>>{
+    let row = sqlx::query!(
+        "
+            SELECT
+                CAST(MIN(value) AS REAL) as `min?: f32`,
+                CAST(MAX(value) AS REAL) as `max?: f32`
+            FROM
+                point
+            WHERE
+                series_id = (SELECT id FROM series WHERE name = $1 LIMIT 1)
+                AND time > strftime('%s','now') - $2
+        ",
+        series,
+        range_seconds
+    )
+    .fetch_one(db)
+    .await
+    .map_err(|e| anyhow::anyhow!("Failed to fetch min and max: {}", e.to_string()))?;
+
+    Ok(row.min.zip(row.max))
+}

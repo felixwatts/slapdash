@@ -8,6 +8,8 @@
             {{ template|safe }}
         {% when WidgetTemplateInner::Value with (template) %}
             {{ template|safe }}
+        {% when WidgetTemplateInner::MinMax with (template) %}
+            {{ template|safe }}
         {% when WidgetTemplateInner::Gauge with (template) %}
             {{ template|safe }}
         {% when WidgetTemplateInner::Freshness with (template) %}

@@ -133,6 +133,14 @@ A textual display of the latest value of the given series.
 <value series="cpu_temp_c" label="CPU Temp." />
 ```
 
+#### MinMax
+
+Displays the minimum and maximum values of the given series within the selected time range, with the maximum at the top and the minimum at the bottom.
+
+```xml
+<minmax series="cpu_temp_c" label="CPU Temp. Range" />
+```
+
 #### Gauge
 
 Displays a gauge type widget which shows the latest value of the given series relative to given maximum and minimum values.

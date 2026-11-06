@@ -23,6 +23,7 @@ pub (crate) struct WidgetTemplate{
 
 pub (crate) enum WidgetTemplateInner{
     Value(ValueWidgetTemplate),
+    MinMax(MinMaxWidgetTemplate),
     Line(LineWidgetTemplate),
     Gauge(GaugeWidgetTemplate),
     Label(LabelWidgetTemplate),
@@ -54,6 +55,30 @@ impl ValueWidgetTemplate{
         }
     }
 }   
+
+#[derive(Template)]
+#[template(path = "widget_minmax.html")]
+pub (crate) struct MinMaxWidgetTemplate{
+    pub min_max: Option<(f32, f32)>,
+    pub label: String,
+    pub color: &'static str
+}
+
+impl MinMaxWidgetTemplate{
+    pub fn min_text(&self) -> String {
+        match self.min_max {
+            Some((min, _)) => format!("{min:.2}"),
+            None => "N/A".into()
+        }
+    }
+
+    pub fn max_text(&self) -> String {
+        match self.min_max {
+            Some((_, max)) => format!("{max:.2}"),
+            None => "N/A".into()
+        }
+    }
+}
 
 #[derive(Template)]
 #[template(path = "widget_freshness.html")]
