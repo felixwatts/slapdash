@@ -1,4 +1,4 @@
-# Unreleased
+# 0.1.8
 
 - Add: MinMax widget showing the minimum and maximum of a series over the time range.
 - Add: single widget pages at `/<dashboard>/<widget index>`; each widget links to its own page.
