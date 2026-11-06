@@ -1,20 +1,24 @@
 {% if !self.label.is_empty() %}<h1>{{ self.label }}</h1>{% endif %}
-<svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"  xmlns="http://www.w3.org/2000/svg">
+<svg style="width:100%;height:calc(100% - 80px);" viewBox="0 0 130 100" preserveAspectRatio="xMidYMid"  xmlns="http://www.w3.org/2000/svg">
+    <!-- Range marker: a [ whose bars point at the vertical middle of each number.
+         The text baselines sit 11.5 below each bar: half the height of digits at 32px in Verdana (w3.css). -->
+    <path
+        d="M 14 25 H 4 V 75 H 14"
+        style="fill:none;stroke:{{ self.color }};stroke-width:4px;stroke-linecap:round;stroke-linejoin:round"
+    />
     <text
-        x="50"
-        y="25"
+        x="76"
+        y="36.5"
         text-anchor="middle"
-        dominant-baseline="middle"
         style="font-size: 32px;font-weight: bold;"
         fill="{{ self.color }}"
     >
     {{ Self::max_text(self) }}
   </text>
     <text
-        x="50"
-        y="75"
+        x="76"
+        y="86.5"
         text-anchor="middle"
-        dominant-baseline="middle"
         style="font-size: 32px;font-weight: bold;"
         fill="{{ self.color }}"
     >
