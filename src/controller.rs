@@ -2,7 +2,8 @@ use std::num::FpCategory;
 use sqlx::SqliteConnection;
 use crate::db;
 use axum::extract::{Path, Query, State};
-use crate::{model::Dashboard, view::MainTemplate};
+use crate::model::{grid_height, grid_width, Widget, WidgetType};
+use crate::view::MainTemplate;
 use axum::http::StatusCode;
 use askama::Template;
 use axum::response::Html;
@@ -21,8 +22,7 @@ pub(crate) async fn get_default (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
-    let range = resolve_range(query.range)?;
-    _get("default", &env, range).await
+    get_dashboard("default", &env, query.range).await
 }
 
 pub(crate) async fn get (
@@ -31,8 +31,25 @@ pub(crate) async fn get (
     State(env): State<Environment>,
 ) -> Result<Html<String>, StatusCode>
 {
-    let range = resolve_range(query.range)?;
-    _get(&dashboard, &env, range).await
+    get_dashboard(&dashboard, &env, query.range).await
+}
+
+pub(crate) async fn get_widget (
+    Path((dashboard, index)): Path<(String, usize)>,
+    Query(query): Query<DashboardQuery>,
+    State(env): State<Environment>,
+) -> Result<Html<String>, StatusCode>
+{
+    let dashboard = env.dashboards.get(&dashboard)
+        .ok_or(StatusCode::NOT_FOUND)?;
+
+    let mut widget = dashboard.widgets.get(index)
+        .ok_or(StatusCode::NOT_FOUND)?
+        .clone();
+    widget.left = 1;
+    widget.top = 1;
+
+    render(&dashboard.name, vec![(index, widget)], &env, query.range).await
 }
 
 fn resolve_range(range: Option<u32>) -> Result<u32, StatusCode> {
@@ -43,7 +60,19 @@ fn resolve_range(range: Option<u32>) -> Result<u32, StatusCode> {
     }
 }
 
-async fn _get(dashboard_name: &str, env: &Environment, range_seconds: u32) -> Result<Html<String>, StatusCode> {
+async fn get_dashboard(dashboard_name: &str, env: &Environment, range: Option<u32>) -> Result<Html<String>, StatusCode> {
+    let dashboard = env.dashboards.get(dashboard_name)
+        .ok_or(StatusCode::NOT_FOUND)?;
+
+    let widgets = dashboard.widgets.iter().cloned().enumerate().collect();
+
+    render(&dashboard.name, widgets, env, range).await
+}
+
+/// Render a page of the given widgets, each paired with its index in the named dashboard.
+async fn render(dashboard_name: &str, widgets: Vec<(usize, Widget)>, env: &Environment, range: Option<u32>) -> Result<Html<String>, StatusCode> {
+    let range_seconds = resolve_range(range)?;
+
     let mut db = env
         .db
         .acquire()
@@ -53,10 +82,7 @@ async fn _get(dashboard_name: &str, env: &Environment, range_seconds: u32) -> Re
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
 
-    let dashboard = env.dashboards.get(dashboard_name)
-        .ok_or(StatusCode::NOT_FOUND)?;
-
-    let template = build_main(dashboard, &mut db, range_seconds)
+    let template = build_main(dashboard_name, widgets, &mut db, range_seconds, range)
         .await
         .map_err(|e| {
             println!("Error while building template: {}", e);
@@ -97,102 +123,36 @@ pub(crate) async fn put(
     Ok("OK".to_string())
 }
 
-pub(crate) async fn build_main(config: &Dashboard, db: &mut SqliteConnection, range_seconds: u32) -> anyhow::Result<MainTemplate> {
+/// `range` is the range explicitly requested by the URL, if any; it is carried through to widget links.
+pub(crate) async fn build_main(
+    dashboard_name: &str,
+    widgets: Vec<(usize, Widget)>,
+    db: &mut SqliteConnection,
+    range_seconds: u32,
+    range: Option<u32>,
+) -> anyhow::Result<MainTemplate> {
+    let configs: Vec<Widget> = widgets.iter().map(|(_, w)| w.clone()).collect();
+
     let mut widget_templates = vec![];
-    for widget_config in config.widgets.iter() {
-        let widget_template = widget_config.to_template(db, range_seconds).await?;
+    for (index, widget_config) in widgets {
+        let href = match widget_config.typ {
+            // The range widget is already a link; nesting links is invalid HTML
+            WidgetType::Range{ .. } => None,
+            _ => Some(match range {
+                Some(range) => format!("/{dashboard_name}/{index}?range={range}"),
+                None => format!("/{dashboard_name}/{index}"),
+            }),
+        };
+        let widget_template = widget_config.to_template(db, range_seconds, href).await?;
         widget_templates.push(widget_template)
     }
 
     Ok(
         MainTemplate{
-            name: config.name.clone(),
-            width: config.width(),
-            height: config.height(),
+            name: dashboard_name.to_string(),
+            width: grid_width(&configs),
+            height: grid_height(&configs),
             widgets: widget_templates
         }
     )
 }
-
-// async fn build_widget(config: Widget, db: &mut SqliteConnection, range_seconds: i64) -> anyhow::Result<WidgetTemplate>{
-    
-//     let color = config.stroke_css_color();
-
-//     let template = match &config.typ {
-//         WidgetType::Value{ series, label } => 
-//         {
-//             let data = db::get(db, &series, range_seconds).await?;
-//             WidgetTemplateInner::Value(
-//                 crate::view::ValueWidgetTemplate { 
-//                     // config: config.clone(),
-//                     color: color,
-//                     label: label.clone(),
-//                     point: data.last().map(|p| p.value) 
-//                 }
-//             )
-//         },
-//         WidgetType::Line{ series, label } => 
-//         {
-//             let data = db::get(db, &series, range_seconds).await?;
-//             WidgetTemplateInner::Line(
-//                 LineWidgetTemplate{
-//                     // config: config.clone(),
-//                     data: data,
-//                     color: color,
-//                     label: label.clone(),
-//                     width: config.width,
-//                     height: config.height,
-//                 }
-//             )   
-//         },
-//         WidgetType::Gauge{ series, min, max, label } => 
-//         {
-//             let data = db::get(db, &series, range_seconds).await?;
-//             WidgetTemplateInner::Gauge(
-//                 GaugeWidgetTemplate{
-//                     // config: config.clone(),
-//                     color: color,
-//                     label: label.clone(),
-//                     min: *min,
-//                     max: *max,
-//                     point: data.last().map(|p| p.value) 
-//                 }
-//             )
-//         },
-//         WidgetType::Label{ text } => 
-//         {
-//             WidgetTemplateInner::Label(
-//                 LabelWidgetTemplate{
-//                     // config: config.clone(),
-//                     text: text.clone()
-//                 }
-//             )
-//         },
-//         WidgetType::Freshness{ series } => 
-//         {
-//             let data = db::get(db, &series, range_seconds).await?;
-//             WidgetTemplateInner::Freshness(
-//                 FreshnessWidgetTemplate{
-//                     // config: config.clone(),
-//                     last_update_time: data.last().map(|p| p.time) 
-//                 }
-//             )
-//         },
-//         WidgetType::Range{ range, label } => 
-//         {
-//             WidgetTemplateInner::Range(
-//                 RangeWidgetTemplate{
-//                     // config: config.clone(),
-//                     range: range.unwrap_or(DEFAULT_RANGE_SECONDS),
-//                     label: label.clone()
-//                 }
-//             )
-//         },
-//     };
-//     Ok(
-//         WidgetTemplate{
-//             config,
-//             template,
-//         }
-//     )
-// }

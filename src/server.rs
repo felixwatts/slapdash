@@ -22,12 +22,14 @@ impl Server{
             let app = Router::new()
                 .route("/", get(controller::get_default))
                 .route("/{dashboard}", get(controller::get))
+                .route("/{dashboard}/{index}", get(controller::get_widget))
                 .route("/{secret}/{series}/{value}", get(controller::put))
                 .with_state(env);
 
             let listener = tokio::net::TcpListener::bind(listen_addr).await?;
         
             println!("Serving at: http://{listen_addr}/(<dashboard>)");
+            println!("Single widget: http://{listen_addr}/<dashboard>/<widget index>");
             println!("Dashboards:\n\t{}", &dashboard_list.join("\n\t"));
             println!("Push data: GET http://{}/{}/<series>/<value>", listen_addr, &secret);
 

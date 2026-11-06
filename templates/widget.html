@@ -1,4 +1,8 @@
+{% if let Some(href) = href %}
+<a href="{{ href }}" class="widget-link {{ config.color_css_class() }} w3-round w3-container" style="grid-column-start: {{ config.left }}; grid-column-end: {{ config.left + config.width }}; grid-row-start: {{ config.top }}; grid-row-end: {{ config.top + config.height }};">
+{% else %}
 <div class="{{ config.color_css_class() }} w3-round w3-container" style="grid-column-start: {{ config.left }}; grid-column-end: {{ config.left + config.width }}; grid-row-start: {{ config.top }}; grid-row-end: {{ config.top + config.height }};">
+{% endif %}
     {% match template %}
         {% when WidgetTemplateInner::Line with (template) %}
             {{ template|safe }}
@@ -13,4 +17,8 @@
         {% when WidgetTemplateInner::Label with (template) %}
             {{ template|safe }}
     {% endmatch %}
+{% if href.is_some() %}
+</a>
+{% else %}
 </div>
+{% endif %}

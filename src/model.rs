@@ -128,24 +128,24 @@ impl Dashboard {
     pub fn path(&self) -> anyhow::Result<PathBuf> {
         Ok(Dashboards::path()?.join(format!("{}.xml", self.name)))
     }
+}
 
-    pub fn width(&self) -> u16 {
-        self
-            .widgets
-            .iter()
-            .map(|w| w.left + w.width - 1)
-            .max()
-            .unwrap_or_default()
-    }
+/// Number of grid columns needed to contain the given widgets.
+pub(crate) fn grid_width(widgets: &[Widget]) -> u16 {
+    widgets
+        .iter()
+        .map(|w| w.left + w.width - 1)
+        .max()
+        .unwrap_or_default()
+}
 
-    pub fn height(&self) -> u16 {
-        self
-            .widgets
-            .iter()
-            .map(|w| w.top + w.height - 1)
-            .max()
-            .unwrap_or_default()
-    }
+/// Number of grid rows needed to contain the given widgets.
+pub(crate) fn grid_height(widgets: &[Widget]) -> u16 {
+    widgets
+        .iter()
+        .map(|w| w.top + w.height - 1)
+        .max()
+        .unwrap_or_default()
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -167,7 +167,7 @@ impl Widget{
         self.color.as_ref().map(Color::to_css_stroke).unwrap_or(Color::default().to_css_stroke())
     }
 
-    pub(crate) async fn to_template(&self, db: &mut SqliteConnection, range_seconds: u32) -> anyhow::Result<WidgetTemplate> {
+    pub(crate) async fn to_template(&self, db: &mut SqliteConnection, range_seconds: u32, href: Option<String>) -> anyhow::Result<WidgetTemplate> {
         let inner_template = match &self.typ {
             WidgetType::Value{ series, label } => {
                 let point = db::get_last(db, series).await?.map(|p| p.value);
@@ -192,7 +192,7 @@ impl Widget{
                 WidgetTemplateInner::Range(RangeWidgetTemplate{ range: *range, label: label.clone() })
             }
         };
-        let template = WidgetTemplate{ config: self.clone(), template: inner_template };
+        let template = WidgetTemplate{ config: self.clone(), href, template: inner_template };
         Ok(template)
     }
 }
