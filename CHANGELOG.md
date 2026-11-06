@@ -1,3 +1,7 @@
+# Unreleased
+
+- Chg: MinMax widget shows a [ range marker beside its two values.
+
 # 0.1.8
 
 - Add: MinMax widget showing the minimum and maximum of a series over the time range.
