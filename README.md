@@ -4,7 +4,7 @@
 
 Slapdash is a data dashboard that's focused on simplicity and ease of use. If you need a dashboard and you want something quick, simple and free then this is for you.
 
-Here is a [real life example](https://9acres.uk)
+Here is a [real life example](https://dash.9acres.uk)
 
 ## Installation
 
@@ -109,6 +109,8 @@ A link to set the time range for the displayed data. By default data for the las
 <range range="3600" label="1h" />
 ```
 
+![Time range widget](docs/images/widget_range.png)
+
 #### Label
 
 A hardcoded text display widget. Good for making titles to dashboard sections.
@@ -116,6 +118,8 @@ A hardcoded text display widget. Good for making titles to dashboard sections.
 ```xml
 <label text="Hello, world!" />
 ```
+
+![Label widget](docs/images/widget_label.png)
 
 #### Freshness
 
@@ -125,6 +129,8 @@ Displays the number of minutes since the last update to the given series.
 <freshness series="cpu_temp_c" />
 ```
 
+![Freshness widget](docs/images/widget_freshness.png)
+
 #### Value
 
 A textual display of the latest value of the given series.
@@ -132,6 +138,8 @@ A textual display of the latest value of the given series.
 ```xml
 <value series="cpu_temp_c" label="CPU Temp." />
 ```
+
+![Value widget](docs/images/widget_value.png)
 
 #### MinMax
 
@@ -141,6 +149,8 @@ Displays the minimum and maximum values of the given series within the selected 
 <minmax series="cpu_temp_c" label="CPU Temp. Range" />
 ```
 
+![MinMax widget](docs/images/widget_minmax.png)
+
 #### Gauge
 
 Displays a gauge type widget which shows the latest value of the given series relative to given maximum and minimum values.
@@ -149,6 +159,8 @@ Displays a gauge type widget which shows the latest value of the given series re
 <gauge series="cpu_temp_c" min="0" max="100" label="CPU Temp" />
 ```
 
+![Gauge widget](docs/images/widget_gauge.png)
+
 #### Line
 
 A line chart of the history of the given series over the past 24 hours.
@@ -156,5 +168,7 @@ A line chart of the history of the given series over the past 24 hours.
 ```xml
 <line series="cpu_temp_c" label="CPU Temp" />
 ```
+
+![Line widget](docs/images/widget_line.png)
 
 

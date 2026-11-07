@@ -1,3 +1,8 @@
+# 0.1.10
+
+- Doc: README shows a screenshot of each widget type.
+- Doc: README example link points to https://dash.9acres.uk.
+
 # 0.1.9
 
 - Chg: MinMax widget shows a [ range marker beside its two values.
